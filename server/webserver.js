@@ -33,17 +33,27 @@ app.post('/api/createAccount', urlencodedParser, function (req, res) {
     });
     connection.connect();
 
-    hashPassword(password, (hash, salt) => {
-        try {
-            let userRecords = "INSERT INTO user (username, email, passwordHash, passwordSalt) values ?";
-            let recordValues = [
-                [username, email, hash, salt]
-            ];
-            connection.query(userRecords, [recordValues]);
-            res.send({ status: "success", msg: "Account Created." });
-        } catch (e) {
-            res.send({ status: "error", msg: e });
+    let checkIfExists = `SELECT * FROM user WHERE username = '${username}'`;
+    connection.query(checkIfExists, (err, result, fields) => {
+        if (result[0]) {
+            res.send({ status: "error", msg: "username taken" });
+            return;
         }
+
+        hashPassword(password, (hash, salt) => {
+            try {
+                let userRecords = "INSERT INTO user (username, email, passwordHash, passwordSalt) values ?";
+                let recordValues = [
+                    [username, email, hash, salt]
+                ];
+                connection.query(userRecords, [recordValues]);
+                res.send({ status: "success", msg: "Account Created." });
+                return;
+            } catch (e) {
+                res.send({ status: "error", msg: e });
+                return;
+            }
+        });
     });
 });
 
