@@ -3,10 +3,18 @@ const app = express();
 const fs = require("fs");
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser')
+const session = require("express-session");
 
 var urlencodedParser = bodyParser.json({
     extended: false
 })
+
+app.use(session({
+    secret: "174683815744815909",
+    name: "SWSession",
+    resave: false,
+    saveUninitialized: false
+}));
 
 app.use("/html", express.static("../public_html/html"));
 app.use("/css", express.static("../public_html/css"));
@@ -83,6 +91,49 @@ app.post('/api/deleteAccount', urlencodedParser, function (req, res) {
     });
 });
 
+app.post('/api/login', urlencodedParser, function (req, res) {
+    res.setHeader("Content-Type", "application/json");
+    const password = req.body.password;
+    const user = req.body.username ?? req.body.email;
+
+    authenticate(user, password, (result) => {
+        if (result.status == 200) {
+            req.session.loggedIn = true;
+            req.session.email = result.user.email;
+            req.session.name = result.user.username;
+            req.session.uid = result.user.ID;
+            req.session.save(function (err) {
+                console.log(err);
+            });
+            res.status(200).send({"result": "Successfully logged in."})
+        }
+        else {
+            res.status(400).send({"result": "Failed to log in."})
+        }
+    })
+});
+
+app.get("/api/logout", function (req, res) {
+    if (req.session) {
+        req.session.destroy(function (error) {
+            if (error) {
+                res.status(400).send({"result": "Failed", "msg": "Could not log out."})
+            } else {
+                res.status(200).send({"result": "Succeeded", "msg": "Successfully logged out."})
+            }
+        });
+    }
+});
+
+app.get('/api/getUserInfo', urlencodedParser, function(req, res) {
+    if (req.session.loggedIn) {
+        res.send({"loggedIn": true, "name": req.session.name, "email": req.session.email, "uid": req.session.uid});
+    }
+    else {
+        res.send({"loggedIn": false});
+    }
+});
+
 app.use(function (req, res, next) {
     res.status(404).send("404");
 })
@@ -117,7 +168,9 @@ async function authenticate(email, password, callback) {
         //console.log(results)
         const authenticated = await bcrypt.compare(password, results[0].passwordHash);
         if (authenticated) {
-            callback(results[0])
+            callback({"status": 200, "user": results[0]});
+        } else {
+            callback({"status": 200, "user": {}});
         }
     });
 
