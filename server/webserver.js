@@ -22,7 +22,12 @@ app.use("/js", express.static("./public_html/js"));
 app.use("/img", express.static("./public_html/img"));
 
 app.get('/', function (req, res) {
-    let doc = fs.readFileSync('./public_html/html/index.html', "utf8");
+    let doc = fs.readFileSync('../public_html/html/index.html', "utf8");
+    res.send(doc);
+});
+
+app.get('/login', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/login.html', "utf8");
     res.send(doc);
 });
 
