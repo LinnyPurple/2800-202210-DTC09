@@ -11,7 +11,8 @@
                 let res = await postRequest("/api/createAccount", {
                     password: "testPass",
                     username: "testUser",
-                    email: "testEmail"
+                    email: "testEmail",
+                    accessLevel: 1
                 });
                 console.log(res);
             }
@@ -36,7 +37,8 @@
             async function editAccount() {
                 let res = await postRequest("/api/editAccount", {
                     newUsername: "testEdit",
-                    newEmail: "TestEditEmail@test.ca"
+                    newEmail: "TestEditEmail@test.ca",
+                    newAccessLevel: 2
                 });
                 console.log(res);
             }

@@ -31,6 +31,7 @@ app.post('/api/createAccount', urlencodedParser, function (req, res) {
     const password = req.body.password;
     const username = req.body.username;
     const email = req.body.email;
+    const accessLevel = req.body.accessLevel;
 
     const mysql = require("mysql2")
     const connection = mysql.createConnection({
@@ -50,9 +51,9 @@ app.post('/api/createAccount', urlencodedParser, function (req, res) {
 
         hashPassword(password, (hash, salt) => {
             try {
-                let userRecords = "INSERT INTO user (username, email, passwordHash, passwordSalt) values ?";
+                let userRecords = "INSERT INTO user (username, email, passwordHash, passwordSalt, accessLevel) values ?";
                 let recordValues = [
-                    [username, email, hash, salt]
+                    [username, email, hash, salt, accessLevel]
                 ];
                 connection.query(userRecords, [recordValues]);
                 res.send({ status: "success", msg: "Account Created." });
@@ -97,6 +98,7 @@ app.post('/api/editAccount', urlencodedParser, function(req, res) {
         const newUsername = req.body.newUsername;
         const newPassword = req.body.newPassword;
         const newEmail = req.body.newEmail;
+        const newAccessLevel = req.body.newAccessLevel;
 
         const mysql = require("mysql2")
         const connection = mysql.createConnection({
@@ -107,13 +109,14 @@ app.post('/api/editAccount', urlencodedParser, function(req, res) {
         });
         connection.connect();
 
-        let query = "UPDATE user SET username = ?, email = ? WHERE ID = ?;"
-        connection.query(query, [newUsername ?? req.session.username, newEmail ?? req.session.email, req.session.uid], (err, result) => {
+        let query = "UPDATE user SET username = ?, email = ?, accessLevel = ? WHERE ID = ?;"
+        connection.query(query, [newUsername ?? req.session.username, newEmail ?? req.session.email, newAccessLevel ?? req.session.accessLevel, req.session.uid], (err, result) => {
             if (err) {
                 console.log(err);
             }
             req.session.name = newUsername ?? req.session.username;
             req.session.email = newEmail ?? req.session.email;
+            req.session.email = newAccessLevel ?? req.session.accessLevel;
             res.status(200).send({"result": "Account info has been updated."})
         });
     }
@@ -126,10 +129,13 @@ app.post('/api/login', urlencodedParser, function (req, res) {
 
     authenticate(user, password, (result) => {
         if (result.status == 200) {
+
             req.session.loggedIn = true;
             req.session.email = result.user.email;
             req.session.name = result.user.username;
             req.session.uid = result.user.ID;
+            req.session.accessLevel = result.user.accessLevel;
+
             req.session.save(function (err) {
                 console.log(err);
             });
@@ -155,7 +161,7 @@ app.get("/api/logout", function (req, res) {
 
 app.get('/api/getUserInfo', urlencodedParser, function(req, res) {
     if (req.session.loggedIn) {
-        res.send({"loggedIn": true, "name": req.session.name, "email": req.session.email, "uid": req.session.uid});
+        res.send({"loggedIn": true, "name": req.session.name, "email": req.session.email, "uid": req.session.uid, "accessLevel": req.session.accessLevel});
     }
     else {
         res.send({"loggedIn": false});
@@ -221,6 +227,7 @@ async function initializeDB() {
         email varchar(30) NOT NULL,
         passwordHash varchar(100) NOT NULL,
         passwordSalt varchar(100) NOT NULL,
+        accessLevel int NOT NULL,
         PRIMARY KEY (ID));`;
     await connection.query(createDBAndTables);
     console.log('Listening on port ' + port);
