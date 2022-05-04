@@ -16,13 +16,13 @@ app.use(session({
     saveUninitialized: false
 }));
 
-app.use("/html", express.static("../public_html/html"));
-app.use("/css", express.static("../public_html/css"));
-app.use("/js", express.static("../public_html/js"));
-app.use("/img", express.static("../public_html/img"));
+app.use("/html", express.static("./public_html/html"));
+app.use("/css", express.static("./public_html/css"));
+app.use("/js", express.static("./public_html/js"));
+app.use("/img", express.static("./public_html/img"));
 
 app.get('/', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/index.html', "utf8");
+    let doc = fs.readFileSync('./public_html/html/index.html', "utf8");
     res.send(doc);
 });
 
