@@ -65,6 +65,22 @@
                 let res = await getRequest("/api/getUserInfo");
                 console.log(res);
             }
+
+            async function postListing() {
+                let res = await postRequest("/api/postListing", {
+                    title: "Test Title",
+                    description: "This is a test description for posting listings."
+                });
+                console.log(res);
+            }
+
+            async function archiveListing(arhivePostID) {
+                let res = await postRequest("/api/archiveListing", {
+                    postID: arhivePostID
+                });
+                console.log(res);
+            }
+
             //deleteAccount();
             //createAccount();
         </script>

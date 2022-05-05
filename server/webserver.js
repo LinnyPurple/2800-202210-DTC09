@@ -16,10 +16,10 @@ app.use(session({
     saveUninitialized: false
 }));
 
-app.use("/html", express.static("./public_html/html"));
-app.use("/css", express.static("./public_html/css"));
-app.use("/js", express.static("./public_html/js"));
-app.use("/img", express.static("./public_html/img"));
+app.use("/html", express.static("../public_html/html"));
+app.use("/css", express.static("../public_html/css"));
+app.use("/js", express.static("../public_html/js"));
+app.use("/img", express.static("../public_html/img"));
 
 app.get('/', function (req, res) {
     let doc = fs.readFileSync('../public_html/html/index.html', "utf8");
@@ -30,6 +30,10 @@ app.get('/login', function (req, res) {
     let doc = fs.readFileSync('../public_html/html/login.html', "utf8");
     res.send(doc);
 });
+
+//#region API
+
+//#region USER INFO
 
 app.post('/api/createAccount', urlencodedParser, function (req, res) {
     res.setHeader("Content-Type", "application/json");
@@ -173,6 +177,80 @@ app.get('/api/getUserInfo', urlencodedParser, function(req, res) {
     }
 });
 
+//#endregion
+
+//#region LISTINGS
+
+app.post('/api/postListing', urlencodedParser, function (req, res) {
+    res.setHeader("Content-Type", "application/json");
+
+    if (req.session.loggedIn) {
+        const title = req.body.title;
+        const description = req.body.description;
+        const images = req.body.images;
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection({
+            host: "localhost",
+            user: "root",
+            password: "",
+            database: "SwapOmen"
+        });
+        connection.connect();
+
+        let query = "INSERT INTO listing (posterID, title, description, images) values ?";
+        let values = [
+            [req.session.uid, title, description, images]
+        ]
+
+        connection.query(query, [values], (result, err) => {
+            console.log(err);
+            res.status(200).send({"Result": "Success", "msg": "Successfully posted listing.", "id": err.insertId});
+        })
+
+    } else {
+        res.status(400).send({"Result": "Failed", "msg": "Not logged in", "id": null})
+    }
+});
+
+app.post('/api/archiveListing', urlencodedParser, function(req, res) {
+    res.setHeader("Content-Type", "application/json");
+
+    if (req.session.loggedIn) {
+        const id = req.body.postID;
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection({
+            host: "localhost",
+            user: "root",
+            password: "",
+            database: "SwapOmen"
+        });
+        connection.connect();
+
+        connection.query(`SELECT posterID FROM listing WHERE ID = ${id}`, (errAuth, resAuth) => {
+            if (resAuth[0] == null) { 
+                res.status(400).send({"Result": "Failed", "msg": "Listing not found."}); 
+                return;
+            }
+            if (resAuth[0].posterID == req.session.uid) {
+                let query = "UPDATE listing SET archived = ? WHERE ID = ?";
+                let values = [1, id];
+    
+                connection.query(query, values, (result, err) => {
+                    res.status(200).send({"Result": "Success", "msg": "Successfully archived listing."});
+                })
+            }
+        });
+    } else {
+        res.status(400).send({"Result": "Failed", "msg": "Not logged in"})
+    }
+});
+
+//#endregion
+
+//#endregion
+
 app.use(function (req, res, next) {
     res.status(404).send("404");
 })
@@ -243,6 +321,7 @@ async function initializeDB() {
             description TEXT NOT NULL,
             posted DATETIME default CURRENT_TIMESTAMP NOT NULL,
             images TEXT,
+            archived BIT default 0,
             PRIMARY KEY (ID)
         );
         `;
