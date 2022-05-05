@@ -227,13 +227,25 @@ async function initializeDB() {
     const createDBAndTables = `CREATE DATABASE IF NOT EXISTS SwapOmen;
         use SwapOmen;
         CREATE TABLE IF NOT EXISTS user (
-        ID int NOT NULL AUTO_INCREMENT,
-        username varchar(30) UNIQUE NOT NULL,
-        email varchar(30) NOT NULL,
-        passwordHash varchar(100) NOT NULL,
-        passwordSalt varchar(100) NOT NULL,
-        accessLevel int NOT NULL,
-        PRIMARY KEY (ID));`;
+            ID int NOT NULL AUTO_INCREMENT,
+            username varchar(30) UNIQUE NOT NULL,
+            email varchar(30) NOT NULL,
+            passwordHash varchar(100) NOT NULL,
+            passwordSalt varchar(100) NOT NULL,
+            accessLevel int NOT NULL,
+            PRIMARY KEY (ID)
+        );
+        
+        CREATE TABLE IF NOT EXISTS listing (
+            ID int NOT NULL AUTO_INCREMENT,
+            posterID int NOT NULL,
+            title varchar(50) NOT NULL,
+            description TEXT NOT NULL,
+            posted DATETIME default CURRENT_TIMESTAMP NOT NULL,
+            images TEXT,
+            PRIMARY KEY (ID)
+        );
+        `;
     await connection.query(createDBAndTables);
     console.log('Listening on port ' + port);
 }
