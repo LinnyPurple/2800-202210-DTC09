@@ -4,6 +4,7 @@ const fs = require("fs");
 const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser')
 const session = require("express-session");
+const res = require('express/lib/response');
 
 var urlencodedParser = bodyParser.json({
     extended: false
@@ -247,6 +248,35 @@ app.post('/api/archiveListing', urlencodedParser, function(req, res) {
     }
 });
 
+app.get("/api/getListingData", async function(req, res) {
+    let auctionID = req.query.id;
+    let result = await getListingData(auctionID);
+    
+    res.status(result.Result == "Success" ? 200 : 400).send(result.Data);
+});
+
+function getListingData(auctionID) {
+    return new Promise(resolve => {
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection({
+            host: "localhost",
+            user: "root",
+            password: "",
+            database: "SwapOmen"
+        });
+        connection.connect();
+    
+        let query = "SELECT * FROM listing WHERE ID = ?";
+        connection.query(query, auctionID, (err, result) => {
+            if (result != null) {
+                resolve({"Result": "Success", "Data": result[0]});
+            } else {
+                resolve({"Result": "Failed", "Data": null});
+            }
+        });
+    })
+}
+
 //#endregion
 
 //#endregion
@@ -321,7 +351,7 @@ async function initializeDB() {
             description TEXT NOT NULL,
             posted DATETIME default CURRENT_TIMESTAMP NOT NULL,
             images TEXT,
-            archived BIT default 0,
+            archived int default 0,
             PRIMARY KEY (ID)
         );
         `;
