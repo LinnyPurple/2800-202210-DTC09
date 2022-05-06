@@ -5,6 +5,11 @@ const bcrypt = require('bcrypt');
 const bodyParser = require('body-parser')
 const session = require("express-session");
 const res = require('express/lib/response');
+const childProcess = require('child_process');
+const net = require('net');
+const { resolve } = require('path');
+
+const websocketServer = childProcess.fork('websocketServer.js');
 
 var urlencodedParser = bodyParser.json({
     extended: false
@@ -22,6 +27,8 @@ app.use("/css", express.static("../public_html/css"));
 app.use("/js", express.static("../public_html/js"));
 app.use("/img", express.static("../public_html/img"));
 
+//#region PUBLIC PAGES
+
 app.get('/', function (req, res) {
     let doc = fs.readFileSync('../public_html/html/index.html', "utf8");
     res.send(doc);
@@ -31,6 +38,13 @@ app.get('/login', function (req, res) {
     let doc = fs.readFileSync('../public_html/html/login.html', "utf8");
     res.send(doc);
 });
+
+app.get('/websocket', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/websocket.html', "utf8");
+    res.send(doc);
+});
+
+//#endregion
 
 //#region API
 
@@ -170,11 +184,31 @@ app.get("/api/logout", function (req, res) {
 });
 
 app.get('/api/getUserInfo', urlencodedParser, function(req, res) {
-    if (req.session.loggedIn) {
-        res.send({"loggedIn": true, "name": req.session.name, "email": req.session.email, "uid": req.session.uid, "accessLevel": req.session.accessLevel});
-    }
-    else {
-        res.send({"loggedIn": false});
+    if ((req.query.uid == undefined && req.query.username == undefined) || (req.query.uid == null && req.query.username == null)) {
+        if (req.session.loggedIn) {
+            res.send({"loggedIn": true, "name": req.session.name, "email": req.session.email, "uid": req.session.uid, "accessLevel": req.session.accessLevel});
+        }
+        else {
+            res.send({"loggedIn": false});
+        }
+    } else {
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection({
+            host: "localhost",
+            user: "root",
+            password: "",
+            database: "SwapOmen"
+        });
+        connection.connect();
+
+        let checkIfExists = `SELECT * FROM user WHERE username = '${req.query.username}' OR ID = ${parseInt(req.query.uid??-1)}`;
+        connection.query(checkIfExists, (err, result) => {
+            if (result != null) {
+                res.status(200).send({'result': 'Success', 'msg': 'Sucessfully found user.', 'uid': result[0].ID, 'username': result[0].username});
+            } else {
+                res.status(400).send({'result': 'Failed', 'msg': 'User not found.'})
+            }
+        });
     }
 });
 
@@ -279,6 +313,49 @@ function getListingData(auctionID) {
 
 //#endregion
 
+//#region WEBSOCKET
+
+let ids = {}
+
+let responses = {}
+
+websocketServer.on('message', (msg) => {
+    responses[msg.id] = msg.data;
+    ids[msg.id].callback(msg.data);
+});
+
+app.get('/getWSID', (req, res) => {
+    let id = Object.keys(ids).length;
+    websocketServer.send({'type': 'wsid', 'id': id, 'u1': req.query.requestor, 'u2': req.query.target});
+    ids[id] = {'callback': (wsid) => {
+        res.status(200).send({'wsid': wsid});
+    }};
+});
+
+app.get('/getMessageLogs', (req, res) => {
+    console.log(req.query.target);
+    if (req.session.loggedIn) {
+        const mysql = require("mysql2");
+        const connection = mysql.createConnection({
+            host: "localhost",
+            user: "root",
+            password: "",
+            database: "SwapOmen"
+        });
+
+        let query = `SELECT * FROM message WHERE ((senderID = ${req.session.uid} AND recieverID = ${parseInt(req.query.target)}) OR (senderID = ${parseInt(req.query.target)} AND recieverID = ${req.session.uid}))`;
+        let values = [req.session.uid, parseInt(req.query.target), parseInt(req.query.target), req.session.uid]
+
+        connection.query(query, (err, result) => {
+            res.send(result);
+        });
+    } else {
+        res.send({'result': 'Error, not logged in.'})
+    }
+});
+
+//#endregion
+
 //#endregion
 
 app.use(function (req, res, next) {
@@ -353,6 +430,23 @@ async function initializeDB() {
             images TEXT,
             archived int default 0,
             PRIMARY KEY (ID)
+        );
+
+        CREATE TABLE IF NOT EXISTS message (
+            senderID int NOT NULL,
+            recieverID int NOT NULL,
+            msg TEXT NOT NULL,
+            timestamp DATETIME default CURRENT_TIMESTAMP NOT NULL,
+            PRIMARY KEY (senderID, recieverID, timestamp)
+        );
+
+        CREATE TABLE IF NOT EXISTS review (
+            reviewerID int NOT NULL,
+            revieweeID int NOT NULL,
+            reviewText TEXT NOT NULL,
+            score int NOT NULL,
+            timestamp DATETIME default CURRENT_TIMESTAMP NOT NULL,
+            PRIMARY KEY (reviewerID, revieweeID)
         );
         `;
     await connection.query(createDBAndTables);

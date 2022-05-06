@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Websockets</title>
+    </head>
+    <body>
+        <h1>Websocket Client</h1>
+        <input name="message" id="wsMessage" type="text">
+        <button onclick="sendMessage(document.querySelector('#wsMessage').value)">Send Msg</button>
+
+        <script src="/js/httpRequests.js"></script>
+        <script src="/js/webserverInterface.js"></script>
+        <script>
+            let socket;
+            let wsid;
+            let userInfo;
+
+            async function sendMessage(msg) {
+                if (userInfo.loggedIn) {
+                    socket.send(JSON.stringify({'sender': userInfo.uid, 'msg': msg}));
+                }
+                else {
+                    console.log("User is not logged in.");
+                }
+            }
+
+            async function initWebsocket(targetUser = 3) {
+                userInfo = JSON.parse(await getRequest("/api/getUserInfo"));
+                if (!userInfo.loggedIn) {
+                    console.log("User is not logged in.")
+                    return;
+                }
+                wsid = JSON.parse(await getRequest(`/getWSID?requestor=${encodeURIComponent(userInfo.uid)}&target=${encodeURIComponent(targetUser)}`)).wsid;
+                console.log(`wsid: ${wsid}`);
+                
+                socket = new WebSocket(`ws://localhost:8001?wsid=${encodeURIComponent(wsid)}&uid=${encodeURIComponent(userInfo.uid)}`);
+
+                socket.addEventListener('open', function (event) {
+                    console.log("Successfully connected to websocket.");
+                });
+
+                socket.addEventListener('message', function (event) {
+                    console.log('Message from server: ', event.data);
+                });
+            }
+
+            async function getMessageLogs(target) {
+                let res = JSON.parse(await getRequest(`/getMessageLogs?target=${target}`));
+                console.log(res);
+            }
+
+            initWebsocket();
+        </script>
+    </body>
+</html>
