@@ -4,18 +4,33 @@
         <title>SwapOmen</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link type="text/css" rel="stylesheet" href="/css/index.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     </head>
     <body>
         <header>
-            <h1>SwapOmen</h1>
-        </header>
-
-        <main>
-            <div id="login">
-                <button>Login</button><br>
-                <button>Sign Up</button>
+            <div id="header">
+                <i class="fa-solid fa-rotate"></i>
+                <p>SwapOmen</p>
             </div>
-        </main>
+        </header>
+        <div id="outer">
+            <main>
+                <h1>SwapOmen</h1>
+                <div id="login">
+                    <button>Login</button><br>
+                    <button>Sign Up</button>
+                </div>
+            </main>
+        </div>
+        <footer>
+            <div id="footer">
+                <i class="fa-solid fa-house"></i>
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <i class="fa-solid fa-circle-plus"></i>
+                <i class="fa-solid fa-comment-dots"></i>
+                <i class="fa-solid fa-circle-user"></i>
+            </div>
+        </footer>
 
         <!-- SCRIPTS -->
         <script src="/js/httpRequests.js"></script>
@@ -29,7 +44,6 @@
                 });
                 console.log(res);
             }
-
             async function deleteAccount() {
                 let res = await postRequest("/api/deleteAccount", {
                     password: "testPass",
@@ -38,7 +52,6 @@
                 });
                 console.log(res);
             }
-
             async function login() {
                 let res = await postRequest("/api/login", {
                     password: "testPass",
@@ -46,7 +59,6 @@
                 });
                 console.log(res);
             }
-
             async function editAccount() {
                 let res = await postRequest("/api/editAccount", {
                     newUsername: "testEdit",
@@ -55,18 +67,35 @@
                 });
                 console.log(res);
             }
-
             async function logout() {
                 let res = await getRequest("/api/logout");
                 console.log(res);
             }
-
             async function getUserInfo() {
                 let res = await getRequest("/api/getUserInfo");
                 console.log(res);
             }
+            async function postListing() {
+                let res = await postRequest("/api/postListing", {
+                    title: "Test Title",
+                    description: "This is a test description for posting listings."
+                });
+                console.log(res);
+            }
+
+            async function archiveListing(arhivePostID) {
+                let res = await postRequest("/api/archiveListing", {
+                    postID: arhivePostID
+                });
+                console.log(res);
+            }
+
+            async function getListingData(listingID) {
+                let res = await getRequest(`/api/getListingData?id=${encodeURIComponent(listingID)}`);
+                console.log(res);
+            }
             //deleteAccount();
             //createAccount();
-        </script>
+        </script> -->
     </body>
 </html>
