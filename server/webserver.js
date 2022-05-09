@@ -15,6 +15,9 @@ var urlencodedParser = bodyParser.json({
     extended: false
 })
 
+let sqlStuff = fs.readFileSync('sqlData.json');
+const SQL_DATA = JSON.parse(sqlStuff);
+
 app.use(session({
     secret: "174683815744815909",
     name: "SWSession",
@@ -58,12 +61,7 @@ app.post('/api/createAccount', urlencodedParser, function (req, res) {
     const accessLevel = req.body.accessLevel;
 
     const mysql = require("mysql2")
-    const connection = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "SwapOmen"
-    });
+    const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
     let checkIfExists = `SELECT * FROM user WHERE username = '${username}'`;
@@ -97,12 +95,7 @@ app.post('/api/deleteAccount', urlencodedParser, function (req, res) {
     const email = req.body.email;
 
     const mysql = require("mysql2")
-    const connection = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "SwapOmen"
-    });
+    const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
     authenticate(email, password, (results) => {
@@ -125,22 +118,17 @@ app.post('/api/editAccount', urlencodedParser, function(req, res) {
         const newAccessLevel = req.body.newAccessLevel;
 
         const mysql = require("mysql2")
-        const connection = mysql.createConnection({
-            host: "localhost",
-            user: "root",
-            password: "",
-            database: "SwapOmen"
-        });
+        const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
         let query = "UPDATE user SET username = ?, email = ?, accessLevel = ? WHERE ID = ?;"
-        connection.query(query, [newUsername ?? req.session.username, newEmail ?? req.session.email, newAccessLevel ?? req.session.accessLevel, req.session.uid], (err, result) => {
+        connection.query(query, [newUsername ? newUsername : req.session.username, newEmail ? newEmail : req.session.email, newAccessLevel ? newAccessLevel : req.session.accessLevel, req.session.uid], (err, result) => {
             if (err) {
                 console.log(err);
             }
-            req.session.name = newUsername ?? req.session.username;
-            req.session.email = newEmail ?? req.session.email;
-            req.session.email = newAccessLevel ?? req.session.accessLevel;
+            req.session.name = newUsername ? newUsername : req.session.username;
+            req.session.email = newEmail ? newEmail : req.session.email;
+            req.session.email = newAccessLevel ? newAccessLevel : req.session.accessLevel;
             res.status(200).send({"result": "Account info has been updated."})
         });
     }
@@ -149,7 +137,7 @@ app.post('/api/editAccount', urlencodedParser, function(req, res) {
 app.post('/api/login', urlencodedParser, function (req, res) {
     res.setHeader("Content-Type", "application/json");
     const password = req.body.password;
-    const user = req.body.username ?? req.body.email;
+    const user = req.body.username ? req.body.username : req.body.email;
 
     authenticate(user, password, (result) => {
         if (result.status == 200) {
@@ -193,15 +181,10 @@ app.get('/api/getUserInfo', urlencodedParser, function(req, res) {
         }
     } else {
         const mysql = require("mysql2")
-        const connection = mysql.createConnection({
-            host: "localhost",
-            user: "root",
-            password: "",
-            database: "SwapOmen"
-        });
+        const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let checkIfExists = `SELECT * FROM user WHERE username = '${req.query.username}' OR ID = ${parseInt(req.query.uid??-1)}`;
+        let checkIfExists = `SELECT * FROM user WHERE username = '${req.query.username}' OR ID = ${parseInt(req.query.uid ? req.query.uid : -1)}`;
         connection.query(checkIfExists, (err, result) => {
             if (result != null) {
                 res.status(200).send({'result': 'Success', 'msg': 'Sucessfully found user.', 'uid': result[0].ID, 'username': result[0].username});
@@ -225,12 +208,7 @@ app.post('/api/postListing', urlencodedParser, function (req, res) {
         const images = req.body.images;
 
         const mysql = require("mysql2")
-        const connection = mysql.createConnection({
-            host: "localhost",
-            user: "root",
-            password: "",
-            database: "SwapOmen"
-        });
+        const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
         let query = "INSERT INTO listing (posterID, title, description, images) values ?";
@@ -255,12 +233,7 @@ app.post('/api/archiveListing', urlencodedParser, function(req, res) {
         const id = req.body.postID;
 
         const mysql = require("mysql2")
-        const connection = mysql.createConnection({
-            host: "localhost",
-            user: "root",
-            password: "",
-            database: "SwapOmen"
-        });
+        const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
         connection.query(`SELECT posterID FROM listing WHERE ID = ${id}`, (errAuth, resAuth) => {
@@ -292,12 +265,7 @@ app.get("/api/getListingData", async function(req, res) {
 function getListingData(auctionID) {
     return new Promise(resolve => {
         const mysql = require("mysql2")
-        const connection = mysql.createConnection({
-            host: "localhost",
-            user: "root",
-            password: "",
-            database: "SwapOmen"
-        });
+        const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
     
         let query = "SELECT * FROM listing WHERE ID = ?";
@@ -336,12 +304,7 @@ app.get('/getMessageLogs', (req, res) => {
     console.log(req.query.target);
     if (req.session.loggedIn) {
         const mysql = require("mysql2");
-        const connection = mysql.createConnection({
-            host: "localhost",
-            user: "root",
-            password: "",
-            database: "SwapOmen"
-        });
+        const connection = mysql.createConnection(SQL_DATA);
 
         let query = `SELECT * FROM message WHERE ((senderID = ${req.session.uid} AND recieverID = ${parseInt(req.query.target)}) OR (senderID = ${parseInt(req.query.target)} AND recieverID = ${req.session.uid}))`;
         let values = [req.session.uid, parseInt(req.query.target), parseInt(req.query.target), req.session.uid]
@@ -380,12 +343,7 @@ async function hashPassword(plaintextPassword, callback) {
 
 async function authenticate(email, password, callback) {
     const mysql = require("mysql2")
-    const connection = mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
-        database: "SwapOmen"
-    });
+    const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
     let query = "SELECT * FROM user WHERE email = '" + email + "' or username = '" + email + "'";
     connection.query(query, async function (error, results, fields) {
@@ -403,9 +361,9 @@ async function authenticate(email, password, callback) {
 async function initializeDB() {
     const mysql = require("mysql2/promise");
     const connection = await mysql.createConnection({
-        host: "localhost",
-        user: "root",
-        password: "",
+        host: SQL_DATA.host,
+        user: SQL_DATA.user,
+        password: SQL_DATA.password,
         multipleStatements: true
     });
 

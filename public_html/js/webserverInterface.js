@@ -22,6 +22,10 @@ async function login(username = "testuser") {
     });
     console.log(res);
 }
+async function logout() {
+    let res = await getRequest("/api/logout");
+    console.log(res);
+}
 async function getUserInfo() {
     let res = await getRequest("/api/getUserInfo");
     console.log(res);

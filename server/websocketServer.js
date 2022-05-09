@@ -1,9 +1,13 @@
 const express = require('express');
+const fs = require("fs");
 const app = express();
 const server = require('http').createServer(app);
 const WebSocket = require('ws');
 
 const wss = new WebSocket.Server({ server:server });
+
+let sqlStuff = fs.readFileSync('sqlData.json');
+const SQL_DATA = JSON.parse(sqlStuff);
 
 class Connection {
     constructor(u1, u2) {
@@ -58,12 +62,7 @@ wss.on('connection', function connection(ws, req) {
         let parsedData = JSON.parse(data);
         if (WSIDs[wsid].u1ws != null && WSIDs[wsid].u2ws != null) {
             const mysql = require("mysql2");
-            const connection = mysql.createConnection({
-                host: "localhost",
-                user: "root",
-                password: "",
-                database: "SwapOmen"
-            });
+            const connection = mysql.createConnection(SQL_DATA);
             
             let query = "INSERT INTO message (senderID, recieverID, msg) VALUES ?";
             let values;
@@ -80,7 +79,11 @@ wss.on('connection', function connection(ws, req) {
                 ]
             }
 
-            connection.query(query, [values]);
+            try {
+                connection.query(query, [values]);
+            } catch (e) {
+                console.log(e);
+            }
         }
     });
 });
@@ -89,5 +92,5 @@ function reply(msg) {
     process.send(msg);
 }
 
-let port = 8001
+let port = 8001;
 server.listen(port, console.log("Websocket listening on port " + port));
