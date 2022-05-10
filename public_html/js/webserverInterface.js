@@ -7,6 +7,17 @@ async function createAccount(username = "testuser") {
     });
     console.log(res);
 }
+
+async function createAccountV2(username = "testuser", email = "testEmail", password = "testPass") {
+    let res = await postRequest("/api/createAccount", {
+        password: password,
+        username: username,
+        email: email,
+        accessLevel: 1
+    });
+    console.log(res);
+}
+
 async function deleteAccount() {
     let res = await postRequest("/api/deleteAccount", {
         password: "testPass",
@@ -22,10 +33,20 @@ async function login(username = "testuser") {
     });
     console.log(res);
 }
+
 async function logout() {
     let res = await getRequest("/api/logout");
     console.log(res);
 }
+
+async function loginV2(username = "testuser", password = "testPass") {
+    let res = await postRequest("/api/login", {
+        password: password,
+        username: username
+    });
+    console.log(res);
+}
+
 async function getUserInfo() {
     let res = await getRequest("/api/getUserInfo");
     console.log(res);
