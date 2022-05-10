@@ -12,14 +12,39 @@
             </header>
 
             <main>
-                <div id="login">
-                    <input id="username">
-                    <input id="password">
+                <div id="login-form">
+                    <div id="login-table">
+                        <div class="t-row">
+                            <label for="u">Username:</label>
+                            <input id="username" value="george"><br>
+                        </div>
+                        <div class="t-row">
+                            <label for="e">Email:</label>
+                            <input id="email" value="grozitis@my.bcit.ca"><br>
+                        </div>
+                        <div class="t-row">
+                            <label for="p">Password:</label>
+                            <input id="password" value="123456"><br>
+                        </div>
+                        <button onclick="f()">Login</button><br>
+                    </div>
                 </div>
+                
             </main>
         </div>
 
         <!-- SCRIPTS -->
         <script src="/js/httpRequests.js"></script>
+        <script src="/js/webserverInterface.js"></script>
+        <script>
+            function f() {
+                var username_ = document.getElementById("username").value;
+                var email_ = document.getElementById("email").value;
+                var password_ = document.getElementById("password").value;
+                console.log(username_, email_, password_);
+                createAccountV2(username_, email_, password_);
+                loginV2(username_, password_);
+            }
+        </script>
     </body>
 </html>
