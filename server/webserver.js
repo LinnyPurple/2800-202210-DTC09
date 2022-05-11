@@ -47,6 +47,11 @@ app.get('/websocket', function (req, res) {
     res.send(doc);
 });
 
+app.get('/review', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/review.html', "utf8");
+    res.send(doc);
+});
+
 //#endregion
 
 //#region API
