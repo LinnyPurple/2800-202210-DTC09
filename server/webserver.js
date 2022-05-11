@@ -47,6 +47,11 @@ app.get('/websocket', function (req, res) {
     res.send(doc);
 });
 
+
+app.get('/profile', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/profile.html', "utf8");
+    res.send(doc);
+});
 //#endregion
 
 //#region API
@@ -376,7 +381,9 @@ async function initializeDB() {
             passwordHash varchar(100) NOT NULL,
             passwordSalt varchar(100) NOT NULL,
             accessLevel int NOT NULL,
-            PRIMARY KEY (ID)
+            PRIMARY KEY (ID),
+            images TEXT,
+            location TEXT NOT NULL
         );
         
         CREATE TABLE IF NOT EXISTS listing (
