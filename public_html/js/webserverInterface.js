@@ -51,3 +51,19 @@ async function getListingData(listingID) {
     let res = await getRequest(`/api/getListingData?id=${encodeURIComponent(listingID)}`);
     console.log(res);
 }
+
+async function sendReview(reviewee, reviewText, score) {
+    let res = await postRequest('/api/postReview', {
+        reviewee: reviewee,
+        reviewText: reviewText,
+        score: score
+    });
+    console.log(res);
+}
+
+async function deleteReview(reviewee) {
+    let res = await postRequest('/api/deleteReview', {
+        reviewee: reviewee,
+    });
+    console.log(res);
+}

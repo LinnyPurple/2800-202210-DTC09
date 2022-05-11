@@ -149,7 +149,7 @@ app.post('/api/login', urlencodedParser, function (req, res) {
             req.session.accessLevel = result.user.accessLevel;
 
             req.session.save(function (err) {
-                console.log(err);
+                //console.log(err);
             });
             res.status(200).send({"result": "Successfully logged in."})
         }
@@ -278,6 +278,57 @@ function getListingData(auctionID) {
         });
     })
 }
+
+//#endregion
+
+//#region REVIEWS
+
+app.post('/api/postReview', urlencodedParser, function (req, res) { 
+    res.setHeader("Content-Type", "application/json");
+    if (req.session.loggedIn) {
+        const reviewer = req.session.uid;
+        const reviewee = req.body.reviewee;
+        const reviewText = req.body.reviewText;
+        const score = req.body.score;
+    
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+    
+        let query = "INSERT INTO review (reviewerID, revieweeID, reviewText, score) VALUES ?"
+        let recordValues = [
+            [reviewer, reviewee, reviewText, score]
+        ];
+    
+        connection.query(query, [recordValues], (err, result) => {
+            res.send({"result": "Success", "msg": "Review saved."});
+        });
+    } else {
+        res.send({"result": "Failed", "msg": "Not logged in."})
+    }
+});
+
+app.post('/api/deleteReview', urlencodedParser, (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    if (req.session.loggedIn) {
+        const reviewer = req.session.uid;
+        const reviewee = req.body.reviewee;
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        let query = 'DELETE FROM review WHERE reviewerID = ? AND revieweeID = ?';
+        let values = [reviewer, reviewee];
+
+        connection.query(query, values, (err, result) => {
+            res.send({"result": "Success", "msg": "Review deleted."})
+        });
+    }
+    else {
+        res.send({"result": "Failed", "msg": "Not logged in."})
+    }
+});
 
 //#endregion
 
