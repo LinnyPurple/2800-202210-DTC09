@@ -67,3 +67,13 @@ async function deleteReview(reviewee) {
     });
     console.log(res);
 }
+
+async function getReview(reviewer, reviewee) {
+    let res = await getRequest(`/api/getReview?reviewer=${encodeURIComponent(reviewer)}&reviewee=${encodeURIComponent(reviewee)}`);
+    console.log(res);
+}
+
+async function getReviews(reviewee) {
+    let res = await getRequest(`/api/getReviews?reviewee=${encodeURIComponent(reviewee)}`);
+    console.log(res);
+}

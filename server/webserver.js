@@ -8,6 +8,7 @@ const res = require('express/lib/response');
 const childProcess = require('child_process');
 const net = require('net');
 const { resolve } = require('path');
+const { connection } = require('mongoose');
 
 const websocketServer = childProcess.fork('websocketServer.js');
 
@@ -328,6 +329,71 @@ app.post('/api/deleteReview', urlencodedParser, (req, res) => {
     else {
         res.send({"result": "Failed", "msg": "Not logged in."})
     }
+});
+
+app.post('/api/editReview', urlencodedParser, (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    if (req.session.loggedIn) {
+        const reviewer = req.session.uid;
+        const reviewee = req.body.reviewee;
+        const reviewText = req.body.reviewText;
+        const score = req.body.score;
+
+        const mysql = require("mysql2");
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        let query = 'UPDATE review SET reviewText = ?, score = ? WHERE reviewerID = ? AND revieweeID = ?';
+        let values = [reviewText, score, reviewer, reviewee];
+
+        connection.query(query, values, (err, result) => {
+            res.send({"result": "Success", "msg": "Review updated."})
+        });
+    }
+    else {
+        res.status(400).send({"result": "Failed", "msg": "Not logged in."})
+    }
+});
+
+app.get('/api/getReview', urlencodedParser, (req, res) => {
+    const reviewer = req.query.reviewer;
+    const reviewee = req.query.reviewee;
+
+    const mysql = require("mysql2");
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    let query = 'SELECT * FROM review WHERE reviewerID = ? AND revieweeID = ?';
+    let values = [reviewer, reviewee];
+
+    connection.query(query, values, (err, result) => {
+        if (result[0] != null) {
+            res.send({"result": "Success", "data": result[0]})
+        }
+        else {
+            res.status(400).send({"result": "Failed", "data": null});
+        }
+    });
+});
+
+app.get('/api/getReviews', (req, res) => {
+    const reviewee = req.query.reviewee;
+
+    const mysql = require("mysql2");
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    let query = 'SELECT * FROM review WHERE revieweeID = ?';
+    let values = [reviewee];
+
+    connection.query(query, values, (err, result) => {
+        if (result[0] != null) {
+            res.send({"result": "Success", "data": result})
+        }
+        else {
+            res.status(400).send({"result": "Failed", "data": null});
+        }
+    });
 });
 
 //#endregion
