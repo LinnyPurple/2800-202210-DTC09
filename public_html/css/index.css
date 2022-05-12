@@ -100,6 +100,15 @@ h1 {
   padding: 3rem 1.5rem;
 }
 
+.top-nav__logo h1 {
+    color: #fff;
+    font-family: 'Monoton', cursive;
+    font-size: 3.5rem;
+    font-weight: lighter;
+    margin: 0 1%;
+    /* -webkit-text-stroke: 1px #EE8572;  <- not for mobile screen */
+}
+
 /* menu-bar */
 .menu-bar {
   background-color: #45807E;
