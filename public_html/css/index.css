@@ -100,7 +100,17 @@ h1 {
 }
 
 .menu-bar__item a {
+  color: #f1f1f1;
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.menu-bar__btn {
+  font-size: 6rem;
+}
+
+.menu-bar__label {
+  font-size: 1.5rem;
+  padding: 10% 0 0;
 }
