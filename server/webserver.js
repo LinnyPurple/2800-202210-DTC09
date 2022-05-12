@@ -7,7 +7,9 @@ const session = require("express-session");
 const res = require('express/lib/response');
 const childProcess = require('child_process');
 const net = require('net');
-const { resolve } = require('path');
+const {
+    resolve
+} = require('path');
 
 const websocketServer = childProcess.fork('websocketServer.js');
 
@@ -72,7 +74,10 @@ app.post('/api/createAccount', urlencodedParser, function (req, res) {
     let checkIfExists = `SELECT * FROM user WHERE username = '${username}'`;
     connection.query(checkIfExists, (err, result, fields) => {
         if (result[0]) {
-            res.send({ status: "error", msg: "username taken" });
+            res.send({
+                status: "error",
+                msg: "username taken"
+            });
             return;
         }
 
@@ -83,10 +88,16 @@ app.post('/api/createAccount', urlencodedParser, function (req, res) {
                     [username, email, hash, salt, accessLevel]
                 ];
                 connection.query(userRecords, [recordValues]);
-                res.send({ status: "success", msg: "Account Created." });
+                res.send({
+                    status: "success",
+                    msg: "Account Created."
+                });
                 return;
             } catch (e) {
-                res.send({ status: "error", msg: e });
+                res.send({
+                    status: "error",
+                    msg: e
+                });
                 return;
             }
         });
@@ -106,15 +117,21 @@ app.post('/api/deleteAccount', urlencodedParser, function (req, res) {
     authenticate(email, password, (results) => {
         connection.query(`DELETE FROM user WHERE ID = '${results.ID}'`, (err, result) => {
             if (err) {
-                res.send({ status: "error", msg: e });
+                res.send({
+                    status: "error",
+                    msg: e
+                });
                 return;
             }
-            res.send({ status: "success", msg: "Account Deleted." });
+            res.send({
+                status: "success",
+                msg: "Account Deleted."
+            });
         });
     });
 });
 
-app.post('/api/editAccount', urlencodedParser, function(req, res) {
+app.post('/api/editAccount', urlencodedParser, function (req, res) {
     res.setHeader("Content-Type", "application/json");
     if (req.session.loggedIn) {
         const newUsername = req.body.newUsername;
@@ -134,10 +151,58 @@ app.post('/api/editAccount', urlencodedParser, function(req, res) {
             req.session.name = newUsername ? newUsername : req.session.username;
             req.session.email = newEmail ? newEmail : req.session.email;
             req.session.email = newAccessLevel ? newAccessLevel : req.session.accessLevel;
-            res.status(200).send({"result": "Account info has been updated."})
+            res.status(200).send({
+                "result": "Account info has been updated."
+            })
         });
     }
 });
+
+app.post('/api/editAccount2', urlencodedParser, function (req, res) {
+    res.setHeader("Content-Type", "application/json");
+    if (req.session.loggedIn) {
+        const newUsername = req.body.newUsername;
+        const newPassword = req.body.newPassword;
+        // const newEmail = req.body.newEmail;
+        // const newAccessLevel = req.body.newAccessLevel;
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        if (newPassword == '') {
+            let query = `UPDATE user SET username = ? WHERE ID = ${req.session.uid};`
+
+            connection.query(query,
+                [newUsername ? newUsername : req.session.username, ], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    req.session.name = newUsername ? newUsername : req.session.username;
+
+                    res.status(200).send({
+                        "result": "Account info has been updated."
+                    })
+                });
+        } else {
+            // todo: else -> change password
+            let query = `UPDATE user SET username = ? WHERE ID = ${req.session.uid};`
+
+            connection.query(query,
+                [newUsername ? newUsername : req.session.username, ], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    req.session.name = newUsername ? newUsername : req.session.username;
+
+                    res.status(200).send({
+                        "result": "Account info has been updated."
+                    })
+                });
+        }
+    }
+});
+
 
 app.post('/api/login', urlencodedParser, function (req, res) {
     res.setHeader("Content-Type", "application/json");
@@ -156,10 +221,13 @@ app.post('/api/login', urlencodedParser, function (req, res) {
             req.session.save(function (err) {
                 console.log(err);
             });
-            res.status(200).send({"result": "Successfully logged in."})
-        }
-        else {
-            res.status(400).send({"result": "Failed to log in."})
+            res.status(200).send({
+                "result": "Successfully logged in."
+            })
+        } else {
+            res.status(400).send({
+                "result": "Failed to log in."
+            })
         }
     })
 });
@@ -168,21 +236,34 @@ app.get("/api/logout", function (req, res) {
     if (req.session) {
         req.session.destroy(function (error) {
             if (error) {
-                res.status(400).send({"result": "Failed", "msg": "Could not log out."})
+                res.status(400).send({
+                    "result": "Failed",
+                    "msg": "Could not log out."
+                })
             } else {
-                res.status(200).send({"result": "Succeeded", "msg": "Successfully logged out."})
+                res.status(200).send({
+                    "result": "Succeeded",
+                    "msg": "Successfully logged out."
+                })
             }
         });
     }
 });
 
-app.get('/api/getUserInfo', urlencodedParser, function(req, res) {
+app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
     if ((req.query.uid == undefined && req.query.username == undefined) || (req.query.uid == null && req.query.username == null)) {
         if (req.session.loggedIn) {
-            res.send({"loggedIn": true, "name": req.session.name, "email": req.session.email, "uid": req.session.uid, "accessLevel": req.session.accessLevel});
-        }
-        else {
-            res.send({"loggedIn": false});
+            res.send({
+                "loggedIn": true,
+                "name": req.session.name,
+                "email": req.session.email,
+                "uid": req.session.uid,
+                "accessLevel": req.session.accessLevel
+            });
+        } else {
+            res.send({
+                "loggedIn": false
+            });
         }
     } else {
         const mysql = require("mysql2")
@@ -192,9 +273,17 @@ app.get('/api/getUserInfo', urlencodedParser, function(req, res) {
         let checkIfExists = `SELECT * FROM user WHERE username = '${req.query.username}' OR ID = ${parseInt(req.query.uid ? req.query.uid : -1)}`;
         connection.query(checkIfExists, (err, result) => {
             if (result != null) {
-                res.status(200).send({'result': 'Success', 'msg': 'Sucessfully found user.', 'uid': result[0].ID, 'username': result[0].username});
+                res.status(200).send({
+                    'result': 'Success',
+                    'msg': 'Sucessfully found user.',
+                    'uid': result[0].ID,
+                    'username': result[0].username
+                });
             } else {
-                res.status(400).send({'result': 'Failed', 'msg': 'User not found.'})
+                res.status(400).send({
+                    'result': 'Failed',
+                    'msg': 'User not found.'
+                })
             }
         });
     }
@@ -223,15 +312,23 @@ app.post('/api/postListing', urlencodedParser, function (req, res) {
 
         connection.query(query, [values], (result, err) => {
             console.log(err);
-            res.status(200).send({"Result": "Success", "msg": "Successfully posted listing.", "id": err.insertId});
+            res.status(200).send({
+                "Result": "Success",
+                "msg": "Successfully posted listing.",
+                "id": err.insertId
+            });
         })
 
     } else {
-        res.status(400).send({"Result": "Failed", "msg": "Not logged in", "id": null})
+        res.status(400).send({
+            "Result": "Failed",
+            "msg": "Not logged in",
+            "id": null
+        })
     }
 });
 
-app.post('/api/archiveListing', urlencodedParser, function(req, res) {
+app.post('/api/archiveListing', urlencodedParser, function (req, res) {
     res.setHeader("Content-Type", "application/json");
 
     if (req.session.loggedIn) {
@@ -242,28 +339,37 @@ app.post('/api/archiveListing', urlencodedParser, function(req, res) {
         connection.connect();
 
         connection.query(`SELECT posterID FROM listing WHERE ID = ${id}`, (errAuth, resAuth) => {
-            if (resAuth[0] == null) { 
-                res.status(400).send({"Result": "Failed", "msg": "Listing not found."}); 
+            if (resAuth[0] == null) {
+                res.status(400).send({
+                    "Result": "Failed",
+                    "msg": "Listing not found."
+                });
                 return;
             }
             if (resAuth[0].posterID == req.session.uid) {
                 let query = "UPDATE listing SET archived = ? WHERE ID = ?";
                 let values = [1, id];
-    
+
                 connection.query(query, values, (result, err) => {
-                    res.status(200).send({"Result": "Success", "msg": "Successfully archived listing."});
+                    res.status(200).send({
+                        "Result": "Success",
+                        "msg": "Successfully archived listing."
+                    });
                 })
             }
         });
     } else {
-        res.status(400).send({"Result": "Failed", "msg": "Not logged in"})
+        res.status(400).send({
+            "Result": "Failed",
+            "msg": "Not logged in"
+        })
     }
 });
 
-app.get("/api/getListingData", async function(req, res) {
+app.get("/api/getListingData", async function (req, res) {
     let auctionID = req.query.id;
     let result = await getListingData(auctionID);
-    
+
     res.status(result.Result == "Success" ? 200 : 400).send(result.Data);
 });
 
@@ -272,13 +378,19 @@ function getListingData(auctionID) {
         const mysql = require("mysql2")
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
-    
+
         let query = "SELECT * FROM listing WHERE ID = ?";
         connection.query(query, auctionID, (err, result) => {
             if (result != null) {
-                resolve({"Result": "Success", "Data": result[0]});
+                resolve({
+                    "Result": "Success",
+                    "Data": result[0]
+                });
             } else {
-                resolve({"Result": "Failed", "Data": null});
+                resolve({
+                    "Result": "Failed",
+                    "Data": null
+                });
             }
         });
     })
@@ -299,10 +411,19 @@ websocketServer.on('message', (msg) => {
 
 app.get('/getWSID', (req, res) => {
     let id = Object.keys(ids).length;
-    websocketServer.send({'type': 'wsid', 'id': id, 'u1': req.query.requestor, 'u2': req.query.target});
-    ids[id] = {'callback': (wsid) => {
-        res.status(200).send({'wsid': wsid});
-    }};
+    websocketServer.send({
+        'type': 'wsid',
+        'id': id,
+        'u1': req.query.requestor,
+        'u2': req.query.target
+    });
+    ids[id] = {
+        'callback': (wsid) => {
+            res.status(200).send({
+                'wsid': wsid
+            });
+        }
+    };
 });
 
 app.get('/getMessageLogs', (req, res) => {
@@ -318,7 +439,9 @@ app.get('/getMessageLogs', (req, res) => {
             res.send(result);
         });
     } else {
-        res.send({'result': 'Error, not logged in.'})
+        res.send({
+            'result': 'Error, not logged in.'
+        })
     }
 });
 
@@ -355,9 +478,15 @@ async function authenticate(email, password, callback) {
         //console.log(results)
         const authenticated = await bcrypt.compare(password, results[0].passwordHash);
         if (authenticated) {
-            callback({"status": 200, "user": results[0]});
+            callback({
+                "status": 200,
+                "user": results[0]
+            });
         } else {
-            callback({"status": 200, "user": {}});
+            callback({
+                "status": 200,
+                "user": {}
+            });
         }
     });
 
@@ -381,9 +510,7 @@ async function initializeDB() {
             passwordHash varchar(100) NOT NULL,
             passwordSalt varchar(100) NOT NULL,
             accessLevel int NOT NULL,
-            PRIMARY KEY (ID),
-            images TEXT,
-            location TEXT NOT NULL
+            PRIMARY KEY (ID)
         );
         
         CREATE TABLE IF NOT EXISTS listing (
