@@ -110,3 +110,8 @@ async function adminGetAccounts() {
     let res = await getRequest('/api/admin/getUserList');
     console.log(res);
 }
+
+async function searchListings(query) {
+    let res = await getRequest(`/api/searchListings?s=${encodeURIComponent(query)}`);
+    console.log(res);
+}
