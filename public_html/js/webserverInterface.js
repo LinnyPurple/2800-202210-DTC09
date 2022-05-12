@@ -2,8 +2,7 @@ async function createAccount(username = "testuser") {
     let res = await postRequest("/api/createAccount", {
         password: "testPass",
         username: username,
-        email: "testEmail",
-        accessLevel: 1
+        email: "testEmail"
     });
     console.log(res);
 }
@@ -12,8 +11,7 @@ async function createAccountV2(username = "testuser", email = "testEmail", passw
     let res = await postRequest("/api/createAccount", {
         password: password,
         username: username,
-        email: email,
-        accessLevel: 1
+        email: email
     });
     console.log(res);
 }
@@ -96,5 +94,13 @@ async function getReview(reviewer, reviewee) {
 
 async function getReviews(reviewee) {
     let res = await getRequest(`/api/getReviews?reviewee=${encodeURIComponent(reviewee)}`);
+    console.log(res);
+}
+
+async function promoteAccount(accountID, level) {
+    let res = await postRequest('/api/admin/promoteAccount', {
+        toPromote: accountID,
+        newAccessLevel: level
+    });
     console.log(res);
 }

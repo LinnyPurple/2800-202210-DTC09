@@ -59,7 +59,7 @@ app.post('/api/createAccount', urlencodedParser, function (req, res) {
     const password = req.body.password;
     const username = req.body.username;
     const email = req.body.email;
-    const accessLevel = req.body.accessLevel;
+    const accessLevel = 1;
 
     const mysql = require("mysql2")
     const connection = mysql.createConnection(SQL_DATA);
@@ -116,7 +116,7 @@ app.post('/api/editAccount', urlencodedParser, function(req, res) {
         const newUsername = req.body.newUsername;
         const newPassword = req.body.newPassword;
         const newEmail = req.body.newEmail;
-        const newAccessLevel = req.body.newAccessLevel;
+        const newAccessLevel = req.session.accessLevel;
 
         const mysql = require("mysql2")
         const connection = mysql.createConnection(SQL_DATA);
@@ -129,9 +129,34 @@ app.post('/api/editAccount', urlencodedParser, function(req, res) {
             }
             req.session.name = newUsername ? newUsername : req.session.username;
             req.session.email = newEmail ? newEmail : req.session.email;
-            req.session.email = newAccessLevel ? newAccessLevel : req.session.accessLevel;
+            req.session.accessLevel = newAccessLevel ? newAccessLevel : req.session.accessLevel;
             res.status(200).send({"result": "Account info has been updated."})
         });
+    }
+});
+
+app.post('/api/admin/promoteAccount', urlencodedParser, function (req, res) {
+    res.setHeader("Content-Type", "application/json");
+
+    if (req.session.accessLevel >= 3) {
+        const toPromote = req.body.toPromote;
+        const newAccessLevel = req.body.newAccessLevel;
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+        let query = "UPDATE user SET accessLevel = ? WHERE ID = ?;"
+        let values = [newAccessLevel, toPromote];
+
+        connection.query(query, values, (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            res.status(200).send({"result": "Account has been promoted."});
+        });
+    }
+    else {
+        res.status(400).send({"Result": "Failed", "msg": "User doesn't have the required access level."})
     }
 });
 
