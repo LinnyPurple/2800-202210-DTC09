@@ -49,7 +49,8 @@ async function loginV2(username = "testuser", password = "testPass") {
 
 async function getUserInfo() {
     let res = await getRequest("/api/getUserInfo");
-    console.log(res);
+    // console.log(res);
+    return res;
 }
 async function getOtherUserInfo(id) {
     let res = await getRequest(`/api/getUserInfo?uid=${id}`);

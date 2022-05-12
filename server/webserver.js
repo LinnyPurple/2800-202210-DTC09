@@ -8,7 +8,7 @@ const res = require('express/lib/response');
 const childProcess = require('child_process');
 const net = require('net');
 const { resolve } = require('path');
-const { connection } = require('mongoose');
+// const { connection } = require('mongoose');
 
 const websocketServer = childProcess.fork('websocketServer.js');
 
@@ -40,6 +40,11 @@ app.get('/', function (req, res) {
 
 app.get('/login', function (req, res) {
     let doc = fs.readFileSync('../public_html/html/login.html', "utf8");
+    res.send(doc);
+});
+
+app.get('/account', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/account.html', "utf8");
     res.send(doc);
 });
 

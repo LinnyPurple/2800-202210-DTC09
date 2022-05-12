@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SwapOmen</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    <body onload="f()">
+        <div id="outer">
+            <header>
+                <h1>SwapOmen</h1>
+            </header>
+
+            <main>
+                <div id="current-username"></div>
+                <div id="current-email"></div>
+                <button onclick="g()">GET NAME!!!</button>
+            </main>
+        </div>
+
+        <!-- SCRIPTS -->
+        <script src="/js/httpRequests.js"></script>
+        <script src="/js/webserverInterface.js"></script>
+        <script>
+            async function f() {
+                console.log("On account page");
+                var currentUserInfo = JSON.parse(await getUserInfo());
+                var currentUsername = currentUserInfo.name;
+                var currentUserEmail = currentUserInfo.email;
+                document.getElementById("current-username").innerHTML = `Hello,  ${currentUsername}`;
+                document.getElementById("current-email").innerHTML = `Your email is '${currentUserEmail}'`;
+            }
+        </script>
+    </body>
+</html>
