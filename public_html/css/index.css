@@ -98,3 +98,9 @@ h1 {
   list-style-type: none;
   padding: 2em;
 }
+
+.menu-bar__item a {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
