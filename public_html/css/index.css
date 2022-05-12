@@ -1,5 +1,22 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Questrial', sans-serif;
+}
+
 body {
+    height: 100vh;
+
     margin: 0;
+    padding: 0;
+
+    /* display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; */
+}
+
+a {
+  text-decoration: none;
 }
 
 h1 {
@@ -10,7 +27,6 @@ h1 {
 #footer {
     background-color: aqua;
     border: 5px solid rgb(0, 128, 128);
-    box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     bottom: 0;
@@ -24,7 +40,6 @@ h1 {
 #header {
     background-color: aqua;
     border: 5px solid rgb(0, 128, 128);
-    box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     top: 0;
@@ -71,4 +86,47 @@ h1 {
     text-align: center;
     padding-top: 1vh;
     width: 20vw;
+}
+
+
+/* Partials Styles */
+
+.menu-bar {
+  background-color: #45807E;
+  display: flex;
+  justify-content: space-around;
+  list-style-type: none;
+  padding: 2em;
+  position: relative;
+  margin: 5% 0 0 0;
+  width: 100%;
+}
+
+.menu-bar__item a {
+  color: #f1f1f1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-bar__btn {
+  font-size: 6rem;
+}
+
+.menu-bar__label {
+  font-size: 1.5rem;
+  padding: 10% 0 0;
+}
+
+.item-centre {
+  transform: translateY(-30%);
+}
+
+.btn-centre {
+  background-color: #45807E;
+  width: 12rem;
+  height: 10rem;
+  border-radius: 50%;
+  position: absolute;
+  top: -20%;
 }
