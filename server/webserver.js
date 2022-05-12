@@ -152,11 +152,27 @@ app.post('/api/admin/promoteAccount', urlencodedParser, function (req, res) {
             if (err) {
                 console.log(err);
             }
-            res.status(200).send({"result": "Account has been promoted."});
+            res.status(200).send({"Result": "Success", "msg": "Account has been promoted."});
         });
     }
     else {
         res.status(400).send({"Result": "Failed", "msg": "User doesn't have the required access level."})
+    }
+});
+
+app.get('/api/admin/getUserList', (req, res) => {
+    if (req.session.accessLevel >= 3) { 
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        let query = "SELECT ID, username, email, accessLevel FROM user";
+        connection.query(query, (err, result) => {
+            res.status(200).send({"result": "Account has been promoted.", "data": result});
+        });
+    }
+    else {
+        res.status(400).send({"Result": "Failed", "data": "User doesn't have the required access level."})
     }
 });
 

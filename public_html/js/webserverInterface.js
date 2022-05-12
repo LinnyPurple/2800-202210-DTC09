@@ -104,3 +104,8 @@ async function promoteAccount(accountID, level) {
     });
     console.log(res);
 }
+
+async function adminGetAccounts() {
+    let res = await getRequest('/api/admin/getUserList');
+    console.log(res);
+}
