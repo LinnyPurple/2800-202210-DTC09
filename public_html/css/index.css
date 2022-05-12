@@ -97,6 +97,9 @@ h1 {
   justify-content: space-around;
   list-style-type: none;
   padding: 2em;
+  position: relative;
+  margin: 5% 0 0 0;
+  width: 100%;
 }
 
 .menu-bar__item a {
@@ -113,4 +116,17 @@ h1 {
 .menu-bar__label {
   font-size: 1.5rem;
   padding: 10% 0 0;
+}
+
+.item-centre {
+  transform: translateY(-30%);
+}
+
+.btn-centre {
+  background-color: #45807E;
+  width: 12rem;
+  height: 10rem;
+  border-radius: 50%;
+  position: absolute;
+  top: -20%;
 }
