@@ -15,6 +15,10 @@
                 <div id="current-email"></div>
                 <button onclick="logoutUser()">Logout</button>
                 <br><br>
+                <div id="admin-button">
+                    <button onclick="gotoAdminPage()">FOR ADMINS ONLY!!!</button>
+                </div>
+                <br>
                 <button onclick="deleteLoggedInUser()">Delete Account</button>
             </main>
         </div>
@@ -25,11 +29,15 @@
         <script>
             async function f() {
                 console.log("On account page");
+
+                // Gets the user info and shows it on the screen
                 var currentUserInfo = JSON.parse(await getUserInfo());
-                var currentUsername = currentUserInfo.name;
-                var currentUserEmail = currentUserInfo.email;
-                document.getElementById("current-username").innerHTML = `Hello,  ${currentUsername}`;
-                document.getElementById("current-email").innerHTML = `Your email is '${currentUserEmail}'`;
+                document.getElementById("current-username").innerHTML = `Hello,  ${currentUserInfo.name}`;
+                document.getElementById("current-email").innerHTML = `Your email is '${currentUserInfo.email}'`;
+
+                // Determine if user is an admin and show admin button if so
+                if (currentUserInfo.accessLevel >= 3) document.getElementById("admin-button").style.display = "block";
+                else document.getElementById("admin-button").style.display = "none";
             }
 
             async function logoutUser() {
@@ -38,9 +46,16 @@
                 window.location.assign('/login');
             }
 
+            async function gotoAdminPage() {
+                window.location.assign('/admin');
+            }
+
             async function deleteLoggedInUser() {
-                // deleteAccount();
-                console.log("NOT WORKING RIGHT NOW.");
+                var currentUserInfo = JSON.parse(await getUserInfo());
+                console.log(currentUserInfo.password);
+                deleteAccountV2(currentUserInfo.name, currentUserInfo.email);
+                // logout();
+                // window.location.assign("/");
             }
         </script>
     </body>

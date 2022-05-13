@@ -53,6 +53,11 @@ app.get('/account', function (req, res) {
     res.send(doc);
 });
 
+app.get('/admin', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/admin.html', "utf8");
+    res.send(doc);
+});
+
 app.get('/websocket', function (req, res) {
     let doc = fs.readFileSync('../public_html/html/websocket.html', "utf8");
     res.send(doc);
@@ -112,7 +117,7 @@ app.post('/api/deleteAccount', urlencodedParser, function (req, res) {
     authenticate(email, password, (results) => {
         connection.query(`DELETE FROM user WHERE ID = '${results.ID}'`, (err, result) => {
             if (err) {
-                res.send({ status: "error", msg: e });
+                res.send({ status: "error", msg: err });
                 return;
             }
             res.send({ status: "success", msg: "Account Deleted." });
