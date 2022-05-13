@@ -25,9 +25,9 @@ async function deleteAccount() {
     console.log(res);
 }
 
-async function deleteAccountV2(username = "testUser", email = "testEmail") {
+async function deleteAccountV2(username = "testuser", email = "testEmail", password = "testPass") {
     let res = await postRequest("/api/deleteAccount", {
-        password: "testPass",
+        password: password,
         username: username,
         email: email
     });

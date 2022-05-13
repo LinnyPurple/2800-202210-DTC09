@@ -115,7 +115,7 @@ app.post('/api/deleteAccount', urlencodedParser, function (req, res) {
     connection.connect();
 
     authenticate(email, password, (results) => {
-        connection.query(`DELETE FROM user WHERE ID = '${results.ID}'`, (err, result) => {
+        connection.query(`DELETE FROM user WHERE ID = '${results.user.ID}'`, (err, result) => {
             if (err) {
                 res.send({ status: "error", msg: err });
                 return;
@@ -520,12 +520,12 @@ async function authenticate(email, password, callback) {
     connection.connect();
     let query = "SELECT * FROM user WHERE email = '" + email + "' or username = '" + email + "'";
     connection.query(query, async function (error, results, fields) {
-        //console.log(results)
+        console.log(results[0])
         const authenticated = await bcrypt.compare(password, results[0].passwordHash);
         if (authenticated) {
             callback({"status": 200, "user": results[0]});
         } else {
-            callback({"status": 200, "user": {}});
+            callback({"status": 400, "user": {}});
         }
     });
 

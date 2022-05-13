@@ -19,6 +19,7 @@
                     <button onclick="gotoAdminPage()">FOR ADMINS ONLY!!!</button>
                 </div>
                 <br>
+                Input password: <input id="password" value=""><br>
                 <button onclick="deleteLoggedInUser()">Delete Account</button>
             </main>
         </div>
@@ -52,10 +53,12 @@
 
             async function deleteLoggedInUser() {
                 var currentUserInfo = JSON.parse(await getUserInfo());
-                console.log(currentUserInfo.password);
-                deleteAccountV2(currentUserInfo.name, currentUserInfo.email);
-                // logout();
-                // window.location.assign("/");
+                console.log(currentUserInfo.name, currentUserInfo.email, currentUserInfo.uid, currentUserInfo.ID);
+                console.log(currentUserInfo);
+                console.log(document.getElementById("password").value);
+                await deleteAccountV2(currentUserInfo.name, currentUserInfo.email, document.getElementById("password").value);
+                logout();
+                window.location.assign("/");
             }
         </script>
     </body>
