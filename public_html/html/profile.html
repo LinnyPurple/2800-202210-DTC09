@@ -29,53 +29,61 @@
             <div class="container">
 
                 <!-- User profile picture -->
-                <i id="profilePic" class="fa-solid fa-circle-user"></i>
+                <div id="profilePicture">
+                    <i id="profilePic" class="fa-solid fa-circle-user"></i>
+                </div>
 
                 <!-- form for user to update their profile -->
-                <form>
-                    <fieldset class="my-3" id="personalInfoFields" disabled>
-                        <!-- Name -->
-                        <div class="form-group my-3">
-                            <label>Name</label>
-                            <input type="text" id="nameInput" class="form-control" placeholder="Enter your name">
-                        </div>
 
-                        <!-- E-mail -->
-                        <div class="form-group my-3">
-                            <label>E-mail</label>
-                            <input type="text" id="emailInput" class="form-control" placeholder="Enter your E-mail">
-                        </div>
+                <fieldset class="my-3" id="personalInfoFields" disabled>
+                    <!-- Name -->
+                    <div class="form-group my-3">
+                        <label>Name</label>
+                        <input type="text" id="nameInput" class="form-control" placeholder="Enter your name">
+                    </div>
 
-                        <!-- Password -->
-                        <div class="form-group my-3">
-                            <label>Password</label>
-                            <input type="password" id="passwordInput" class="form-control search" placeholder="New password" />
-                        </div>
+                    <!-- E-mail -->
+                    <div class="form-group my-3">
+                        <label>E-mail</label>
+                        <input type="text" id="emailInput" class="form-control" placeholder="Enter your E-mail">
+                    </div>
 
+                    <!-- Password -->
+                    <div class="form-group my-3">
+                        <label>Password</label>
+                        <input type="password" id="passwordInput" class="form-control search"
+                            placeholder="New password" />
+                    </div>
+
+                    <form action="/upload" method="post" enctype="multipart/form-data">
                         <!-- place for uploading profile picture -->
                         <div class="form-group my-3">
                             <label>Upload picture:</label>
                             <br>
-                            <input type="file" id="uploadButton" />
+                            <input type="file" name="image" id="uploadButton" accept="image/*"/>
+                            <input type="submit" value="Submit">
                         </div>
-                    </fieldset>
+                    </form>
+                </fieldset>
 
-                    <!-- edit and save buttons -->
-                    <div class="d-flex justify-content-end">
-                        <button type="button" class="btn btn-secondary m-2" onclick="editUserInfo()">Edit</button>
-                        <button type="button" class="btn btn-primary m-2" onclick="saveUserInfo()">Save</button>
-                    </div>
+                <!-- edit and save buttons -->
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-secondary m-2" onclick="editUserInfo()">Edit</button>
+                    <button type="button" class="btn btn-primary m-2" onclick="saveUserInfo()">Save</button>
+                </div>
 
-                </form>
+
             </div>
 
         </div>
 
         <div id="history_buttons">
             <!-- todo: previous button? -->
-            <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My listings</button>
+            <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My
+                listings</button>
 
-            <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My reviews</button>
+            <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My
+                reviews</button>
         </div>
 
 

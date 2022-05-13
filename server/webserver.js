@@ -11,6 +11,9 @@ const {
     resolve
 } = require('path');
 
+const path = require("path");
+const multer = require('multer')
+
 const websocketServer = childProcess.fork('websocketServer.js');
 
 var urlencodedParser = bodyParser.json({
@@ -31,6 +34,7 @@ app.use("/html", express.static("../public_html/html"));
 app.use("/css", express.static("../public_html/css"));
 app.use("/js", express.static("../public_html/js"));
 app.use("/img", express.static("../public_html/img"));
+app.use(express.static('../public_html'));
 
 //#region PUBLIC PAGES
 
@@ -158,6 +162,46 @@ app.post('/api/editAccount', urlencodedParser, function (req, res) {
     }
 });
 
+
+//upload profile photo
+var storage = multer.diskStorage({
+    destination: (req, file, callBack) => {
+        callBack(null, '../public_html/img/') // directory name where save the file
+    },
+    filename: (req, file, callBack) => {
+        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    }
+})
+
+var upload = multer({
+    storage: storage
+});
+
+
+//route for upload data
+app.post("/upload", upload.single('image'), (req, res) => {
+    const mysql = require("mysql2")
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    if (req.file) {
+        console.log(req.file.filename)
+        var imgsrc = '../img/' + req.file.filename
+        let query = `UPDATE user SET image = ? WHERE ID = ${req.session.uid};`
+
+        connection.query(query,
+            [imgsrc ? imgsrc : req.session.image], (err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                req.session.image = imgsrc ? imgsrc : req.session.image;
+
+                res.redirect("profile")
+            });
+    }
+});
+
+
 app.post('/api/editAccount2', urlencodedParser, function (req, res) {
     res.setHeader("Content-Type", "application/json");
     if (req.session.loggedIn) {
@@ -186,19 +230,7 @@ app.post('/api/editAccount2', urlencodedParser, function (req, res) {
                 });
         } else {
             // todo: else -> change password
-            let query = `UPDATE user SET username = ? WHERE ID = ${req.session.uid};`
-
-            connection.query(query,
-                [newUsername ? newUsername : req.session.username, ], (err, result) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                    req.session.name = newUsername ? newUsername : req.session.username;
-
-                    res.status(200).send({
-                        "result": "Account info has been updated."
-                    })
-                });
+            res.end()
         }
     }
 });
@@ -217,6 +249,7 @@ app.post('/api/login', urlencodedParser, function (req, res) {
             req.session.name = result.user.username;
             req.session.uid = result.user.ID;
             req.session.accessLevel = result.user.accessLevel;
+            req.session.image = result.user.image;
 
             req.session.save(function (err) {
                 console.log(err);
@@ -253,12 +286,14 @@ app.get("/api/logout", function (req, res) {
 app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
     if ((req.query.uid == undefined && req.query.username == undefined) || (req.query.uid == null && req.query.username == null)) {
         if (req.session.loggedIn) {
+            console.log(req.session)
             res.send({
                 "loggedIn": true,
                 "name": req.session.name,
                 "email": req.session.email,
                 "uid": req.session.uid,
-                "accessLevel": req.session.accessLevel
+                "accessLevel": req.session.accessLevel,
+                "image": req.session.image
             });
         } else {
             res.send({

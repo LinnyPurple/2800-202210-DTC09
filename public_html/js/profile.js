@@ -2,27 +2,32 @@
 async function getUserInfo() {
     let res = await getRequest("/api/getUserInfo");
     console.log(res);
-    console.log(document.getElementById("passwordInput").value=='')
     var currentUserInfo = JSON.parse(res);
 
     // Check user is logged in
-    // if (currentUserInfo.loggedIn == true) {
+    if (currentUserInfo.loggedIn == true) {
         console.log("User is logged in")
         var currentUsername = currentUserInfo.name;
         var currentUserEmail = currentUserInfo.email;
+        var currentImage = currentUserInfo.image;
+        console.log(currentUserInfo)
 
-        if (currentUsername != null) {
+        if (currentUsername != '') {
             document.getElementById("nameInput").value = currentUsername;
         }
 
-        if (currentUserEmail != null) {
+        if (currentUserEmail != '') {
             document.getElementById("emailInput").value = currentUserEmail;
         }
 
-    // } else {
-    //     console.log("No user is signed in");
-    //     window.location.href = "/login";
-    // }
+        if (currentImage != "") {
+            $("#profilePicture").html(`<img src="${currentImage}" class="rounded-circle border border-dark border-1 mx-auto d-block" style="width: 110px; height: 110px;">`)
+        }
+
+    } else {
+        console.log("No user is signed in");
+        window.location.href = "/login";
+    }
 }
 
 //enable the fields for value change
@@ -46,30 +51,6 @@ async function saveUserInfo() {
     // after
     document.getElementById('personalInfoFields').disabled = true
 }
-
-// Todo: upload picture
-// function upload_profile_picture() {
-
-// }
-
-async function createAccountV2(username = "testuser", email = "testEmail", password = "testPass") {
-    let res = await postRequest("/api/createAccount", {
-        password: password,
-        username: username,
-        email: email,
-        accessLevel: 1
-    });
-    console.log(res);
-}
-
-async function login(username = "testuser") {
-    let res = await postRequest("/api/login", {
-        password: "testPass",
-        username: username
-    });
-    console.log(res);
-}
-
 
 function setup() {
     getUserInfo()
