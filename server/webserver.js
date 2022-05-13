@@ -8,6 +8,10 @@ const res = require('express/lib/response');
 const childProcess = require('child_process');
 const net = require('net');
 const { resolve } = require('path');
+// const { connection } = require('mongoose');
+
+const path = require("path");
+const multer = require('multer')
 
 const websocketServer = childProcess.fork('websocketServer.js');
 
@@ -29,6 +33,7 @@ app.use("/html", express.static("../public_html/html"));
 app.use("/css", express.static("../public_html/css"));
 app.use("/js", express.static("../public_html/js"));
 app.use("/img", express.static("../public_html/img"));
+app.use(express.static('../public_html'));
 
 //#region PUBLIC PAGES
 
@@ -42,6 +47,11 @@ app.get('/login', function (req, res) {
     res.send(doc);
 });
 
+app.get('/account', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/account.html', "utf8");
+    res.send(doc);
+});
+
 app.get('/websocket', function (req, res) {
     let doc = fs.readFileSync('../public_html/html/websocket.html', "utf8");
     res.send(doc);
@@ -52,6 +62,11 @@ app.get('/review', function (req, res) {
     res.send(doc);
 });
 
+
+app.get('/profile', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/profile.html', "utf8");
+    res.send(doc);
+});
 //#endregion
 
 //#region API
@@ -63,7 +78,7 @@ app.post('/api/createAccount', urlencodedParser, function (req, res) {
     const password = req.body.password;
     const username = req.body.username;
     const email = req.body.email;
-    const accessLevel = req.body.accessLevel;
+    const accessLevel = 1;
 
     const mysql = require("mysql2")
     const connection = mysql.createConnection(SQL_DATA);
@@ -72,7 +87,10 @@ app.post('/api/createAccount', urlencodedParser, function (req, res) {
     let checkIfExists = `SELECT * FROM user WHERE username = '${username}'`;
     connection.query(checkIfExists, (err, result, fields) => {
         if (result[0]) {
-            res.send({ status: "error", msg: "username taken" });
+            res.send({
+                status: "error",
+                msg: "username taken"
+            });
             return;
         }
 
@@ -83,10 +101,16 @@ app.post('/api/createAccount', urlencodedParser, function (req, res) {
                     [username, email, hash, salt, accessLevel]
                 ];
                 connection.query(userRecords, [recordValues]);
-                res.send({ status: "success", msg: "Account Created." });
+                res.send({
+                    status: "success",
+                    msg: "Account Created."
+                });
                 return;
             } catch (e) {
-                res.send({ status: "error", msg: e });
+                res.send({
+                    status: "error",
+                    msg: e
+                });
                 return;
             }
         });
@@ -106,21 +130,27 @@ app.post('/api/deleteAccount', urlencodedParser, function (req, res) {
     authenticate(email, password, (results) => {
         connection.query(`DELETE FROM user WHERE ID = '${results.ID}'`, (err, result) => {
             if (err) {
-                res.send({ status: "error", msg: e });
+                res.send({
+                    status: "error",
+                    msg: e
+                });
                 return;
             }
-            res.send({ status: "success", msg: "Account Deleted." });
+            res.send({
+                status: "success",
+                msg: "Account Deleted."
+            });
         });
     });
 });
 
-app.post('/api/editAccount', urlencodedParser, function(req, res) {
+app.post('/api/editAccount', urlencodedParser, function (req, res) {
     res.setHeader("Content-Type", "application/json");
     if (req.session.loggedIn) {
         const newUsername = req.body.newUsername;
         const newPassword = req.body.newPassword;
         const newEmail = req.body.newEmail;
-        const newAccessLevel = req.body.newAccessLevel;
+        const newAccessLevel = req.session.accessLevel;
 
         const mysql = require("mysql2")
         const connection = mysql.createConnection(SQL_DATA);
@@ -134,10 +164,128 @@ app.post('/api/editAccount', urlencodedParser, function(req, res) {
             req.session.name = newUsername ? newUsername : req.session.username;
             req.session.email = newEmail ? newEmail : req.session.email;
             req.session.email = newAccessLevel ? newAccessLevel : req.session.accessLevel;
-            res.status(200).send({"result": "Account info has been updated."})
+            res.status(200).send({
+                "result": "Account info has been updated."
+            })
         });
     }
 });
+
+//upload profile photo
+var storage = multer.diskStorage({
+    destination: (req, file, callBack) => {
+        callBack(null, '../public_html/img/') // directory name where save the file
+    },
+    filename: (req, file, callBack) => {
+        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    }
+})
+
+var upload = multer({
+    storage: storage
+});
+
+
+//route for upload data
+app.post("/upload", upload.single('image'), (req, res) => {
+    const mysql = require("mysql2")
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    if (req.file) {
+        console.log(req.file.filename)
+        var imgsrc = '../img/' + req.file.filename
+        let query = `UPDATE user SET image = ? WHERE ID = ${req.session.uid};`
+
+        connection.query(query,
+            [imgsrc ? imgsrc : req.session.image], (err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                req.session.image = imgsrc ? imgsrc : req.session.image;
+
+                res.redirect("profile")
+            });
+    }
+});
+
+
+app.post('/api/editAccount2', urlencodedParser, function (req, res) {
+    res.setHeader("Content-Type", "application/json");
+    if (req.session.loggedIn) {
+        const newUsername = req.body.newUsername;
+        const newPassword = req.body.newPassword;
+        // const newEmail = req.body.newEmail;
+        // const newAccessLevel = req.body.newAccessLevel;
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        if (newPassword == '') {
+            let query = `UPDATE user SET username = ? WHERE ID = ${req.session.uid};`
+
+            connection.query(query,
+                [newUsername ? newUsername : req.session.username, ], (err, result) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                    req.session.name = newUsername ? newUsername : req.session.username;
+
+                    res.status(200).send({
+                        "result": "Account info has been updated."
+                    })
+                });
+        } else {
+            // todo: else -> change password
+            res.end()
+        }
+    }
+});
+
+
+app.post('/api/admin/promoteAccount', urlencodedParser, function (req, res) {
+    res.setHeader("Content-Type", "application/json");
+
+    if (req.session.accessLevel >= 3) {
+        const toPromote = req.body.toPromote;
+        const newAccessLevel = req.body.newAccessLevel;
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+        let query = "UPDATE user SET accessLevel = ? WHERE ID = ?;"
+        let values = [newAccessLevel, toPromote];
+
+        connection.query(query, values, (err, result) => {
+            if (err) {
+                console.log(err);
+            }
+            res.status(200).send({"Result": "Success", "msg": "Account has been promoted."});
+        });
+    }
+    else {
+        res.status(400).send({"Result": "Failed", "msg": "User doesn't have the required access level."})
+    }
+});
+
+app.get('/api/admin/getUserList', (req, res) => {
+    if (req.session.accessLevel >= 3) { 
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        let query = "SELECT ID, username, email, accessLevel FROM user";
+        connection.query(query, (err, result) => {
+            res.status(200).send({"result": "Account has been promoted.", "data": result});
+        });
+    }
+    else {
+        res.status(400).send({"Result": "Failed", "data": "User doesn't have the required access level."})
+    }
+});
+
+
 
 app.post('/api/login', urlencodedParser, function (req, res) {
     res.setHeader("Content-Type", "application/json");
@@ -152,14 +300,18 @@ app.post('/api/login', urlencodedParser, function (req, res) {
             req.session.name = result.user.username;
             req.session.uid = result.user.ID;
             req.session.accessLevel = result.user.accessLevel;
+            req.session.image = result.user.image;
 
             req.session.save(function (err) {
-                console.log(err);
+                //console.log(err);
             });
-            res.status(200).send({"result": "Successfully logged in."})
-        }
-        else {
-            res.status(400).send({"result": "Failed to log in."})
+            res.status(200).send({
+                "result": "Successfully logged in."
+            })
+        } else {
+            res.status(400).send({
+                "result": "Failed to log in."
+            })
         }
     })
 });
@@ -168,21 +320,36 @@ app.get("/api/logout", function (req, res) {
     if (req.session) {
         req.session.destroy(function (error) {
             if (error) {
-                res.status(400).send({"result": "Failed", "msg": "Could not log out."})
+                res.status(400).send({
+                    "result": "Failed",
+                    "msg": "Could not log out."
+                })
             } else {
-                res.status(200).send({"result": "Succeeded", "msg": "Successfully logged out."})
+                res.status(200).send({
+                    "result": "Succeeded",
+                    "msg": "Successfully logged out."
+                })
             }
         });
     }
 });
 
-app.get('/api/getUserInfo', urlencodedParser, function(req, res) {
+app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
     if ((req.query.uid == undefined && req.query.username == undefined) || (req.query.uid == null && req.query.username == null)) {
         if (req.session.loggedIn) {
-            res.send({"loggedIn": true, "name": req.session.name, "email": req.session.email, "uid": req.session.uid, "accessLevel": req.session.accessLevel});
-        }
-        else {
-            res.send({"loggedIn": false});
+            console.log(req.session)
+            res.send({
+                "loggedIn": true,
+                "name": req.session.name,
+                "email": req.session.email,
+                "uid": req.session.uid,
+                "accessLevel": req.session.accessLevel,
+                "image": req.session.image
+            });
+        } else {
+            res.send({
+                "loggedIn": false
+            });
         }
     } else {
         const mysql = require("mysql2")
@@ -192,9 +359,17 @@ app.get('/api/getUserInfo', urlencodedParser, function(req, res) {
         let checkIfExists = `SELECT * FROM user WHERE username = '${req.query.username}' OR ID = ${parseInt(req.query.uid ? req.query.uid : -1)}`;
         connection.query(checkIfExists, (err, result) => {
             if (result != null) {
-                res.status(200).send({'result': 'Success', 'msg': 'Sucessfully found user.', 'uid': result[0].ID, 'username': result[0].username});
+                res.status(200).send({
+                    'result': 'Success',
+                    'msg': 'Sucessfully found user.',
+                    'uid': result[0].ID,
+                    'username': result[0].username
+                });
             } else {
-                res.status(400).send({'result': 'Failed', 'msg': 'User not found.'})
+                res.status(400).send({
+                    'result': 'Failed',
+                    'msg': 'User not found.'
+                })
             }
         });
     }
@@ -223,15 +398,23 @@ app.post('/api/postListing', urlencodedParser, function (req, res) {
 
         connection.query(query, [values], (result, err) => {
             console.log(err);
-            res.status(200).send({"Result": "Success", "msg": "Successfully posted listing.", "id": err.insertId});
+            res.status(200).send({
+                "Result": "Success",
+                "msg": "Successfully posted listing.",
+                "id": err.insertId
+            });
         })
 
     } else {
-        res.status(400).send({"Result": "Failed", "msg": "Not logged in", "id": null})
+        res.status(400).send({
+            "Result": "Failed",
+            "msg": "Not logged in",
+            "id": null
+        })
     }
 });
 
-app.post('/api/archiveListing', urlencodedParser, function(req, res) {
+app.post('/api/archiveListing', urlencodedParser, function (req, res) {
     res.setHeader("Content-Type", "application/json");
 
     if (req.session.loggedIn) {
@@ -242,28 +425,37 @@ app.post('/api/archiveListing', urlencodedParser, function(req, res) {
         connection.connect();
 
         connection.query(`SELECT posterID FROM listing WHERE ID = ${id}`, (errAuth, resAuth) => {
-            if (resAuth[0] == null) { 
-                res.status(400).send({"Result": "Failed", "msg": "Listing not found."}); 
+            if (resAuth[0] == null) {
+                res.status(400).send({
+                    "Result": "Failed",
+                    "msg": "Listing not found."
+                });
                 return;
             }
             if (resAuth[0].posterID == req.session.uid) {
                 let query = "UPDATE listing SET archived = ? WHERE ID = ?";
                 let values = [1, id];
-    
+
                 connection.query(query, values, (result, err) => {
-                    res.status(200).send({"Result": "Success", "msg": "Successfully archived listing."});
+                    res.status(200).send({
+                        "Result": "Success",
+                        "msg": "Successfully archived listing."
+                    });
                 })
             }
         });
     } else {
-        res.status(400).send({"Result": "Failed", "msg": "Not logged in"})
+        res.status(400).send({
+            "Result": "Failed",
+            "msg": "Not logged in"
+        })
     }
 });
 
-app.get("/api/getListingData", async function(req, res) {
+app.get("/api/getListingData", async function (req, res) {
     let auctionID = req.query.id;
     let result = await getListingData(auctionID);
-    
+
     res.status(result.Result == "Success" ? 200 : 400).send(result.Data);
 });
 
@@ -272,17 +464,139 @@ function getListingData(auctionID) {
         const mysql = require("mysql2")
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
-    
+
         let query = "SELECT * FROM listing WHERE ID = ?";
         connection.query(query, auctionID, (err, result) => {
             if (result != null) {
-                resolve({"Result": "Success", "Data": result[0]});
+                resolve({
+                    "Result": "Success",
+                    "Data": result[0]
+                });
             } else {
-                resolve({"Result": "Failed", "Data": null});
+                resolve({
+                    "Result": "Failed",
+                    "Data": null
+                });
             }
         });
     })
 }
+
+//#endregion
+
+//#region REVIEWS
+
+app.post('/api/postReview', urlencodedParser, function (req, res) { 
+    res.setHeader("Content-Type", "application/json");
+    if (req.session.loggedIn) {
+        const reviewer = req.session.uid;
+        const reviewee = req.body.reviewee;
+        const reviewText = req.body.reviewText;
+        const score = req.body.score;
+    
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+    
+        let query = "INSERT INTO review (reviewerID, revieweeID, reviewText, score) VALUES ?"
+        let recordValues = [
+            [reviewer, reviewee, reviewText, score]
+        ];
+    
+        connection.query(query, [recordValues], (err, result) => {
+            res.send({"result": "Success", "msg": "Review saved."});
+        });
+    } else {
+        res.send({"result": "Failed", "msg": "Not logged in."})
+    }
+});
+
+app.post('/api/deleteReview', urlencodedParser, (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    if (req.session.loggedIn) {
+        const reviewer = req.session.uid;
+        const reviewee = req.body.reviewee;
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        let query = 'DELETE FROM review WHERE reviewerID = ? AND revieweeID = ?';
+        let values = [reviewer, reviewee];
+
+        connection.query(query, values, (err, result) => {
+            res.send({"result": "Success", "msg": "Review deleted."})
+        });
+    }
+    else {
+        res.send({"result": "Failed", "msg": "Not logged in."})
+    }
+});
+
+app.post('/api/editReview', urlencodedParser, (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    if (req.session.loggedIn) {
+        const reviewer = req.session.uid;
+        const reviewee = req.body.reviewee;
+        const reviewText = req.body.reviewText;
+        const score = req.body.score;
+
+        const mysql = require("mysql2");
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        let query = 'UPDATE review SET reviewText = ?, score = ? WHERE reviewerID = ? AND revieweeID = ?';
+        let values = [reviewText, score, reviewer, reviewee];
+
+        connection.query(query, values, (err, result) => {
+            res.send({"result": "Success", "msg": "Review updated."})
+        });
+    }
+    else {
+        res.status(400).send({"result": "Failed", "msg": "Not logged in."})
+    }
+});
+
+app.get('/api/getReview', urlencodedParser, (req, res) => {
+    const reviewer = req.query.reviewer;
+    const reviewee = req.query.reviewee;
+
+    const mysql = require("mysql2");
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    let query = 'SELECT * FROM review WHERE reviewerID = ? AND revieweeID = ?';
+    let values = [reviewer, reviewee];
+
+    connection.query(query, values, (err, result) => {
+        if (result[0] != null) {
+            res.send({"result": "Success", "data": result[0]})
+        }
+        else {
+            res.status(400).send({"result": "Failed", "data": null});
+        }
+    });
+});
+
+app.get('/api/getReviews', (req, res) => {
+    const reviewee = req.query.reviewee;
+
+    const mysql = require("mysql2");
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    let query = 'SELECT * FROM review WHERE revieweeID = ?';
+    let values = [reviewee];
+
+    connection.query(query, values, (err, result) => {
+        if (result[0] != null) {
+            res.send({"result": "Success", "data": result})
+        }
+        else {
+            res.status(400).send({"result": "Failed", "data": null});
+        }
+    });
+});
 
 //#endregion
 
@@ -299,10 +613,19 @@ websocketServer.on('message', (msg) => {
 
 app.get('/getWSID', (req, res) => {
     let id = Object.keys(ids).length;
-    websocketServer.send({'type': 'wsid', 'id': id, 'u1': req.query.requestor, 'u2': req.query.target});
-    ids[id] = {'callback': (wsid) => {
-        res.status(200).send({'wsid': wsid});
-    }};
+    websocketServer.send({
+        'type': 'wsid',
+        'id': id,
+        'u1': req.query.requestor,
+        'u2': req.query.target
+    });
+    ids[id] = {
+        'callback': (wsid) => {
+            res.status(200).send({
+                'wsid': wsid
+            });
+        }
+    };
 });
 
 app.get('/getMessageLogs', (req, res) => {
@@ -318,7 +641,9 @@ app.get('/getMessageLogs', (req, res) => {
             res.send(result);
         });
     } else {
-        res.send({'result': 'Error, not logged in.'})
+        res.send({
+            'result': 'Error, not logged in.'
+        })
     }
 });
 
@@ -355,9 +680,15 @@ async function authenticate(email, password, callback) {
         //console.log(results)
         const authenticated = await bcrypt.compare(password, results[0].passwordHash);
         if (authenticated) {
-            callback({"status": 200, "user": results[0]});
+            callback({
+                "status": 200,
+                "user": results[0]
+            });
         } else {
-            callback({"status": 200, "user": {}});
+            callback({
+                "status": 200,
+                "user": {}
+            });
         }
     });
 
