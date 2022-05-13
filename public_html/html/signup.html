@@ -8,7 +8,7 @@
     <body>
         <div id="outer">
             <header>
-                <h1>SwapOmen - Login</h1>
+                <h1>SwapOmen - SignUp</h1>
             </header>
 
             <main>
@@ -26,10 +26,10 @@
                             <label for="p">Password:</label>
                             <input id="password" value=""><br>
                         </div>
-                        <button onclick="f()">Login</button><br>
+                        <button onclick="f()">Signup</button><br>
                     </div>
                 </div>
-                
+                <div id="unfilled"></div>
             </main>
         </div>
 
@@ -37,13 +37,26 @@
         <script src="/js/httpRequests.js"></script>
         <script src="/js/webserverInterface.js"></script>
         <script>
-            function f() {
+            /**
+             * Returns a boolean whether a string has whitespace in it.
+             */
+            function containsWhitespace(string) {
+                let re = /\s/;
+                return re.test(string);
+            }
+
+            async function f() {
                 var username_ = document.getElementById("username").value;
                 var email_ = document.getElementById("email").value;
                 var password_ = document.getElementById("password").value;
                 console.log(username_, email_, password_);
-                loginV2(username_, password_);
-                window.location.assign('/account');
+                if (!username_ || !email_ || !password_ || containsWhitespace(username_) || containsWhitespace(email_) || containsWhitespace(password_)) {
+                    document.getElementById("unfilled").innerHTML = "INVALID ARGUMENTS.";
+                } else {
+                    createAccountV2(username_, email_, password_);
+                    window.location.assign('/');
+                }
+                
             }
         </script>
     </body>

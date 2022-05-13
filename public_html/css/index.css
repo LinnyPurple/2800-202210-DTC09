@@ -1,5 +1,22 @@
+* {
+  box-sizing: border-box;
+  font-family: 'Questrial', sans-serif;
+}
+
 body {
+    height: 100vh;
+
     margin: 0;
+    padding: 0;
+
+    /* display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; */
+}
+
+a {
+  text-decoration: none;
 }
 
 h1 {
@@ -10,7 +27,6 @@ h1 {
 #footer {
     background-color: aqua;
     border: 5px solid rgb(0, 128, 128);
-    box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     bottom: 0;
@@ -24,7 +40,6 @@ h1 {
 #header {
     background-color: aqua;
     border: 5px solid rgb(0, 128, 128);
-    box-sizing: border-box;
     -moz-box-sizing: border-box;
     -webkit-box-sizing: border-box;
     top: 0;
@@ -41,9 +56,19 @@ h1 {
 }
 
 #login button {
+    background-color: rgb(0, 128, 128);
+    border: none;
+    border-radius: 5px;
     display: inline-block;
+    font-size: 20px;
     margin-bottom: 10%;
-    padding: 5% 20%;
+    padding: 2% 10%;
+    transition-duration: 0.3s;
+}
+
+#login button:hover {
+    background-color: rgb(0, 64, 64);
+    color: white;
 }
 
 #outer {
@@ -61,4 +86,82 @@ h1 {
     text-align: center;
     padding-top: 1vh;
     width: 20vw;
+}
+
+
+/* Partials Styles */
+
+/* top-nav */
+.top-nav {
+  background-color: #45807E;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 3rem 1.5rem;
+}
+
+.top-nav__logo h1 {
+    color: #fff;
+    font-family: 'Monoton', cursive;
+    font-size: 3.5rem;
+    font-weight: lighter;
+    margin: 0 1%;
+    /* -webkit-text-stroke: 1px #EE8572;  <- not for mobile screen */
+}
+
+.top-nav__hamburger {
+  display: flex;
+  justify-content: space-between;
+  font-size: 2rem;
+  width: 40%;
+}
+
+.top-nav__hamburger a {
+  color: #f1f1f1;
+  font-weight: 500;
+}
+
+.top-nav__hamburger a:hover {
+  color: #EE8572;
+}
+
+/* menu-bar */
+.menu-bar {
+  background-color: #45807E;
+  display: flex;
+  justify-content: space-around;
+  list-style-type: none;
+  padding: 2em;
+  position: relative;
+  margin: 5% 0 0 0;
+  width: 100%;
+}
+
+.menu-bar__item a {
+  color: #f1f1f1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-bar__btn {
+  font-size: 6rem;
+}
+
+.menu-bar__label {
+  font-size: 1.5rem;
+  padding: 10% 0 0;
+}
+
+.item-centre {
+  transform: translateY(-30%);
+}
+
+.btn-centre {
+  background-color: #45807E;
+  width: 12rem;
+  height: 10rem;
+  border-radius: 50%;
+  position: absolute;
+  top: -20%;
 }
