@@ -464,7 +464,30 @@ app.post('/api/archiveListing', urlencodedParser, function (req, res) {
     }
 });
 
-app.get("/api/getListingData", async function (req, res) {
+app.get('/api/searchListings', (req, res) => {
+    const mysql = require("mysql2")
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    let s = req.query.s;
+    const regex = new RegExp(`.*${s}.*`, 'i');
+
+    let matches = [];
+
+    let query = "SELECT * FROM listing WHERE archived = 0";
+    connection.query(query, (err, result) => {
+        for (let row in result) {
+            let listing = result[row];
+            if (listing["title"].match(regex) || listing["description"].match(regex)) {
+                matches.push(listing);
+            }
+        }
+
+        res.send(matches);
+    });
+});
+
+app.get("/api/getListingData", async function(req, res) {
     let auctionID = req.query.id;
     let result = await getListingData(auctionID);
 
