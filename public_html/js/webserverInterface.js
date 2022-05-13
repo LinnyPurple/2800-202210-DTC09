@@ -24,6 +24,16 @@ async function deleteAccount() {
     });
     console.log(res);
 }
+
+async function deleteAccountV2(username = "testuser", email = "testEmail", password = "testPass") {
+    let res = await postRequest("/api/deleteAccount", {
+        password: password,
+        username: username,
+        email: email
+    });
+    console.log(res);
+}
+
 async function login(username = "testuser") {
     let res = await postRequest("/api/login", {
         password: "testPass",
@@ -109,6 +119,7 @@ async function promoteAccount(accountID, level) {
 async function adminGetAccounts() {
     let res = await getRequest('/api/admin/getUserList');
     console.log(res);
+    return res;
 }
 
 async function searchListings(query) {
