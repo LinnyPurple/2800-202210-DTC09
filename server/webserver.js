@@ -49,8 +49,18 @@ app.get('/login', function (req, res) {
     res.send(doc);
 });
 
+app.get('/signup', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/signup.html', "utf8");
+    res.send(doc);
+});
+
 app.get('/account', function (req, res) {
     let doc = fs.readFileSync('../public_html/html/account.html', "utf8");
+    res.send(doc);
+});
+
+app.get('/admin', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/admin.html', "utf8");
     res.send(doc);
 });
 
@@ -130,12 +140,9 @@ app.post('/api/deleteAccount', urlencodedParser, function (req, res) {
     connection.connect();
 
     authenticate(email, password, (results) => {
-        connection.query(`DELETE FROM user WHERE ID = '${results.ID}'`, (err, result) => {
+        connection.query(`DELETE FROM user WHERE ID = '${results.user.ID}'`, (err, result) => {
             if (err) {
-                res.send({
-                    status: "error",
-                    msg: e
-                });
+                res.send({ status: "error", msg: err });
                 return;
             }
             res.send({
@@ -716,7 +723,7 @@ async function authenticate(email, password, callback) {
     connection.connect();
     let query = "SELECT * FROM user WHERE email = '" + email + "' or username = '" + email + "'";
     connection.query(query, async function (error, results, fields) {
-        //console.log(results)
+        console.log(results[0])
         const authenticated = await bcrypt.compare(password, results[0].passwordHash);
         if (authenticated) {
             callback({
@@ -724,10 +731,7 @@ async function authenticate(email, password, callback) {
                 "user": results[0]
             });
         } else {
-            callback({
-                "status": 200,
-                "user": {}
-            });
+            callback({"status": 400, "user": {}});
         }
     });
 
