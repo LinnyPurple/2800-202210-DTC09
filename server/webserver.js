@@ -43,6 +43,11 @@ app.get('/login', function (req, res) {
     res.send(doc);
 });
 
+app.get('/signup', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/signup.html', "utf8");
+    res.send(doc);
+});
+
 app.get('/account', function (req, res) {
     let doc = fs.readFileSync('../public_html/html/account.html', "utf8");
     res.send(doc);

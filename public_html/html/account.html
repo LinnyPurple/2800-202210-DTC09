@@ -13,7 +13,9 @@
             <main>
                 <div id="current-username"></div>
                 <div id="current-email"></div>
-                <button onclick="g()">GET NAME!!!</button>
+                <button onclick="logoutUser()">Logout</button>
+                <br><br>
+                <button onclick="deleteLoggedInUser()">Delete Account</button>
             </main>
         </div>
 
@@ -28,6 +30,17 @@
                 var currentUserEmail = currentUserInfo.email;
                 document.getElementById("current-username").innerHTML = `Hello,  ${currentUsername}`;
                 document.getElementById("current-email").innerHTML = `Your email is '${currentUserEmail}'`;
+            }
+
+            async function logoutUser() {
+                logout();
+                getUserInfo();
+                window.location.assign('/login');
+            }
+
+            async function deleteLoggedInUser() {
+                // deleteAccount();
+                console.log("NOT WORKING RIGHT NOW.");
             }
         </script>
     </body>
