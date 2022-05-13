@@ -7,7 +7,9 @@ const session = require("express-session");
 const res = require('express/lib/response');
 const childProcess = require('child_process');
 const net = require('net');
-const { resolve } = require('path');
+const {
+    resolve
+} = require('path');
 // const { connection } = require('mongoose');
 
 const path = require("path");
@@ -261,27 +263,37 @@ app.post('/api/admin/promoteAccount', urlencodedParser, function (req, res) {
             if (err) {
                 console.log(err);
             }
-            res.status(200).send({"Result": "Success", "msg": "Account has been promoted."});
+            res.status(200).send({
+                "Result": "Success",
+                "msg": "Account has been promoted."
+            });
         });
-    }
-    else {
-        res.status(400).send({"Result": "Failed", "msg": "User doesn't have the required access level."})
+    } else {
+        res.status(400).send({
+            "Result": "Failed",
+            "msg": "User doesn't have the required access level."
+        })
     }
 });
 
 app.get('/api/admin/getUserList', (req, res) => {
-    if (req.session.accessLevel >= 3) { 
+    if (req.session.accessLevel >= 3) {
         const mysql = require("mysql2")
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
         let query = "SELECT ID, username, email, accessLevel FROM user";
         connection.query(query, (err, result) => {
-            res.status(200).send({"result": "Account has been promoted.", "data": result});
+            res.status(200).send({
+                "result": "Account has been promoted.",
+                "data": result
+            });
         });
-    }
-    else {
-        res.status(400).send({"Result": "Failed", "data": "User doesn't have the required access level."})
+    } else {
+        res.status(400).send({
+            "Result": "Failed",
+            "data": "User doesn't have the required access level."
+        })
     }
 });
 
@@ -486,28 +498,35 @@ function getListingData(auctionID) {
 
 //#region REVIEWS
 
-app.post('/api/postReview', urlencodedParser, function (req, res) { 
+app.post('/api/postReview', urlencodedParser, function (req, res) {
     res.setHeader("Content-Type", "application/json");
     if (req.session.loggedIn) {
         const reviewer = req.session.uid;
         const reviewee = req.body.reviewee;
         const reviewText = req.body.reviewText;
         const score = req.body.score;
-    
+        const itemID = req.body.itemID;
+
         const mysql = require("mysql2")
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
-    
-        let query = "INSERT INTO review (reviewerID, revieweeID, reviewText, score) VALUES ?"
+
+        console.log(reviewText, reviewee, reviewer, score, itemID)
+        let query = "INSERT INTO review (reviewerID, revieweeID, reviewText, score, itemID) values ?"
         let recordValues = [
-            [reviewer, reviewee, reviewText, score]
+            [reviewer, reviewee, reviewText, score, itemID]
         ];
-    
-        connection.query(query, [recordValues], (err, result) => {
-            res.send({"result": "Success", "msg": "Review saved."});
+
+        connection.query(query, [recordValues]);
+        res.send({
+            "result": "Success",
+            "msg": "Review saved."
         });
     } else {
-        res.send({"result": "Failed", "msg": "Not logged in."})
+        res.send({
+            "result": "Failed",
+            "msg": "Not logged in."
+        })
     }
 });
 
@@ -525,11 +544,16 @@ app.post('/api/deleteReview', urlencodedParser, (req, res) => {
         let values = [reviewer, reviewee];
 
         connection.query(query, values, (err, result) => {
-            res.send({"result": "Success", "msg": "Review deleted."})
+            res.send({
+                "result": "Success",
+                "msg": "Review deleted."
+            })
         });
-    }
-    else {
-        res.send({"result": "Failed", "msg": "Not logged in."})
+    } else {
+        res.send({
+            "result": "Failed",
+            "msg": "Not logged in."
+        })
     }
 });
 
@@ -549,11 +573,16 @@ app.post('/api/editReview', urlencodedParser, (req, res) => {
         let values = [reviewText, score, reviewer, reviewee];
 
         connection.query(query, values, (err, result) => {
-            res.send({"result": "Success", "msg": "Review updated."})
+            res.send({
+                "result": "Success",
+                "msg": "Review updated."
+            })
         });
-    }
-    else {
-        res.status(400).send({"result": "Failed", "msg": "Not logged in."})
+    } else {
+        res.status(400).send({
+            "result": "Failed",
+            "msg": "Not logged in."
+        })
     }
 });
 
@@ -570,10 +599,15 @@ app.get('/api/getReview', urlencodedParser, (req, res) => {
 
     connection.query(query, values, (err, result) => {
         if (result[0] != null) {
-            res.send({"result": "Success", "data": result[0]})
-        }
-        else {
-            res.status(400).send({"result": "Failed", "data": null});
+            res.send({
+                "result": "Success",
+                "data": result[0]
+            })
+        } else {
+            res.status(400).send({
+                "result": "Failed",
+                "data": null
+            });
         }
     });
 });
@@ -590,10 +624,15 @@ app.get('/api/getReviews', (req, res) => {
 
     connection.query(query, values, (err, result) => {
         if (result[0] != null) {
-            res.send({"result": "Success", "data": result})
-        }
-        else {
-            res.status(400).send({"result": "Failed", "data": null});
+            res.send({
+                "result": "Success",
+                "data": result
+            })
+        } else {
+            res.status(400).send({
+                "result": "Failed",
+                "data": null
+            });
         }
     });
 });
@@ -735,12 +774,13 @@ async function initializeDB() {
         );
 
         CREATE TABLE IF NOT EXISTS review (
+            itemID int NOT NULL,
             reviewerID int NOT NULL,
             revieweeID int NOT NULL,
             reviewText TEXT NOT NULL,
             score int NOT NULL,
             timestamp DATETIME default CURRENT_TIMESTAMP NOT NULL,
-            PRIMARY KEY (reviewerID, revieweeID)
+            PRIMARY KEY (itemID)
         );
         `;
     await connection.query(createDBAndTables);
