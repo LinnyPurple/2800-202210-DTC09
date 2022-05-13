@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SwapOmen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link type="text/css" rel="stylesheet" href="/css/profile.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+
+<body>
+    <!-- top nav -->
+    <!-- <header>
+        <div id="header">
+            <i class="fa-solid fa-rotate"></i>
+            <p>SwapOmen</p>
+        </div>
+    </header> -->
+
+    <!-- contents -->
+    <main>
+        <div id="userinfo">
+            <div class="container">
+
+                <!-- User profile picture -->
+                <div id="profilePicture">
+                    <i id="profilePic" class="fa-solid fa-circle-user"></i>
+                </div>
+
+                <!-- form for user to update their profile -->
+
+                <fieldset class="my-3" id="personalInfoFields" disabled>
+                    <!-- Name -->
+                    <div class="form-group my-3">
+                        <label>Name</label>
+                        <input type="text" id="nameInput" class="form-control" placeholder="Enter your name">
+                    </div>
+
+                    <!-- E-mail -->
+                    <div class="form-group my-3">
+                        <label>E-mail</label>
+                        <input type="text" id="emailInput" class="form-control" placeholder="Enter your E-mail">
+                    </div>
+
+                    <!-- Password -->
+                    <div class="form-group my-3">
+                        <label>Password</label>
+                        <input type="password" id="passwordInput" class="form-control search"
+                            placeholder="New password" />
+                    </div>
+
+                    <form action="/upload" method="post" enctype="multipart/form-data">
+                        <!-- place for uploading profile picture -->
+                        <div class="form-group my-3">
+                            <label>Upload picture:</label>
+                            <br>
+                            <input type="file" name="image" id="uploadButton" accept="image/*"/>
+                            <input type="submit" value="Submit">
+                        </div>
+                    </form>
+                </fieldset>
+
+                <!-- edit and save buttons -->
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-secondary m-2" onclick="editUserInfo()">Edit</button>
+                    <button type="button" class="btn btn-primary m-2" onclick="saveUserInfo()">Save</button>
+                </div>
+
+
+            </div>
+
+        </div>
+
+        <div id="history_buttons">
+            <!-- todo: previous button? -->
+            <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My
+                listings</button>
+
+            <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My
+                reviews</button>
+        </div>
+
+
+    </main>
+
+
+    <!-- botton nav -->
+    <!-- <footer>
+        <div id="footer">
+            <i class="footeritme fa-solid fa-house"></i>
+            <i class="footeritme fa-solid fa-magnifying-glass"></i>
+            <i class="footeritme fa-solid fa-circle-plus"></i>
+            <i class="footeritme fa-solid fa-comment-dots"></i>
+            <i class="footeritme fa-solid fa-circle-user"></i>
+        </div>
+    </footer> -->
+
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- bootstrap -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script>
+    <!-- SCRIPTS -->
+    <script src="../js/httpRequests.js"></script>
+    <script src="../js/profile.js"></script>
+    <script>
+
+    </script>
+</body>
+
+</html>
