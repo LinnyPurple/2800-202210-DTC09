@@ -180,6 +180,31 @@ app.post('/api/editAccount', urlencodedParser, function (req, res) {
     }
 });
 
+app.post('/api/resetPassword', urlencodedParser, (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    const newPassword = req.body.newPassword;
+    const userID = req.body.userId;
+
+    hashPassword(newPassword, (hash, salt) => {
+        try {
+            let userRecords = "UPDATE user SET passwordHash = ?, passwordSalt = ?, WHERE ID = ?;";
+            let recordValues = [hash, salt, userID];
+            connection.query(userRecords, [recordValues]);
+            res.send({
+                status: "success",
+                msg: "Password Updated."
+            });
+            return;
+        } catch (e) {
+            res.send({
+                status: "error",
+                msg: e
+            });
+            return;
+        }
+    });
+});
+
 //upload profile photo
 var storage = multer.diskStorage({
     destination: (req, file, callBack) => {
