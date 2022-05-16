@@ -839,5 +839,5 @@ async function initializeDB() {
     console.log('Listening on port ' + port);
 }
 
-let port = 8000;
+let port = 8002;
 app.listen(port, initializeDB);
