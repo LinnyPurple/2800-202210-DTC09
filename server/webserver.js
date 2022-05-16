@@ -186,22 +186,19 @@ app.post('/api/resetPassword', urlencodedParser, (req, res) => {
     const userID = req.body.userId;
 
     hashPassword(newPassword, (hash, salt) => {
-        try {
-            let userRecords = "UPDATE user SET passwordHash = ?, passwordSalt = ?, WHERE ID = ?;";
-            let recordValues = [hash, salt, userID];
-            connection.query(userRecords, [recordValues]);
+        let userRecords = "UPDATE user SET passwordHash = ?, passwordSalt = ? WHERE ID = ?;";
+        let recordValues = [hash, salt, userID];
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        connection.query(userRecords, recordValues, (err, result) => {
             res.send({
                 status: "success",
                 msg: "Password Updated."
             });
-            return;
-        } catch (e) {
-            res.send({
-                status: "error",
-                msg: e
-            });
-            return;
-        }
+        });
     });
 });
 
@@ -260,7 +257,7 @@ app.post('/api/editAccount2', urlencodedParser, function (req, res) {
             let query = `UPDATE user SET username = ? WHERE ID = ${req.session.uid};`
 
             connection.query(query,
-                [newUsername ? newUsername : req.session.username, ], (err, result) => {
+                [newUsername ? newUsername : req.session.username,], (err, result) => {
                     if (err) {
                         console.log(err);
                     }
@@ -519,7 +516,7 @@ app.get('/api/searchListings', (req, res) => {
     });
 });
 
-app.get("/api/getListingData", async function(req, res) {
+app.get("/api/getListingData", async function (req, res) {
     let auctionID = req.query.id;
     let result = await getListingData(auctionID);
 
@@ -779,7 +776,7 @@ async function authenticate(email, password, callback) {
                 "user": results[0]
             });
         } else {
-            callback({"status": 400, "user": {}});
+            callback({ "status": 400, "user": {} });
         }
     });
 
