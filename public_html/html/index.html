@@ -1,47 +1,45 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
   <title>SwapOmen</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
 
-  <link type="text/css" rel="stylesheet" href="/css/index.css">
-
-  <!-- icons/fonts -->
+  <!-- css -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <link type="text/css" rel="stylesheet" href="/css/index.css">
 </head>
 
 <body>
   <header>
-    <div id="header">
-      <i class="fa-solid fa-rotate"></i>
-      <p>SwapOmen</p>
+    <div class="top-nav">
     </div>
   </header>
-  <div id="outer">
-    <main>
-      <h1>SwapOmen</h1>
-      <div id="login">
-        <button onclick="window.location.assign('/login')">Login</button><br>
-        <button onclick="window.location.assign('/signup')">Sign Up</button>
-      </div>
-    </main>
-  </div>
+
+  <main>
+    <h2>SWAP ITEMS.<br>
+      SAVE MONEY.<br>
+      REDUCE WASTE.</h2>
+    <div id="login">
+      <button class="login" onclick="window.location.assign('/login')">Login</button>
+      <button class="sign-up">Sign-Up</button>
+    </div>
+  </main>
+
   <footer>
-    <div id="footer">
-      <i class="fa-solid fa-house"></i>
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <i class="fa-solid fa-circle-plus"></i>
-      <i class="fa-solid fa-comment-dots"></i>
-      <i class="fa-solid fa-circle-user"></i>
+    <div class="bottom-nav">
     </div>
   </footer>
 
+
   <!-- SCRIPTS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
   <script src="/js/httpRequests.js"></script>
   <script src="/js/webserverInterface.js"></script>
+  <script src="/js/global.js"></script>
+
 </body>
 
 </html>
