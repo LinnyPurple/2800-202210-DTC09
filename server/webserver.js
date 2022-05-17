@@ -740,6 +740,68 @@ app.get('/getMessageLogs', (req, res) => {
 
 //#endregion
 
+//#region TRADE OFFERS
+
+app.post('/api/sendTradeOffer', urlencodedParser, (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    if (req.session.loggedIn) {
+        const offererID = req.session.uid;
+        const offereeID = req.body.offereeID;
+        const offererData = req.body.offererData;
+        const offereeData = req.body.offereeData;
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        let query = "INSERT INTO offer (offererID, offereeID, offererData, offereeData) values ?"
+        let recordValues = [
+            [offererID, offereeID, offererData, offereeData]
+        ];
+
+        connection.query(query, [recordValues]);
+        res.send({
+            "result": "Success",
+            "msg": "Offer Sent."
+        });
+    } else {
+        res.send({
+            "result": "Failed",
+            "msg": "Not logged in."
+        })
+    }
+});
+
+app.get('/api/getTradeOffersToMe', (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    if (req.session.loggedIn) {
+        const uid = req.session.uid;
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        let query = "SELECT * FROM offers WHERE offereeID = ?"
+        let recordValues = uid;
+
+        connection.query(query, [recordValues], (err, result) => {
+            res.send({
+                "result": "Success",
+                "msg": "Offer Sent.",
+                "data": result
+            });
+        });
+    } else {
+        res.send({
+            "result": "Failed",
+            "msg": "Not logged in.",
+            "data": {}
+        })
+    }
+});
+
+//#endregion
+
 //#endregion
 
 app.use(function (req, res, next) {
@@ -830,6 +892,16 @@ async function initializeDB() {
             score int NOT NULL,
             timestamp DATETIME default CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY (itemID)
+        );
+
+        CREATE TABLE IF NOT EXISTS offers (
+            offererID int NOT NULL,
+            offereeID int NOT NULL,
+            offererData TEXT NOT NULL,
+            offereeData TEXT NOT NULL,
+            status int default -1,
+            timestamp DATETIME default CURRENT_TIMESTAMP NOT NULL,
+            PRIMARY KEY (offererID, offereeID)
         );
         `;
     await connection.query(createDBAndTables);
