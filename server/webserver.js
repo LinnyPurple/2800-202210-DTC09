@@ -378,7 +378,7 @@ app.get("/api/logout", function (req, res) {
 app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
     if ((req.query.uid == undefined && req.query.username == undefined) || (req.query.uid == null && req.query.username == null)) {
         if (req.session.loggedIn) {
-            console.log(req.session)
+            // console.log(req.session)
             res.send({
                 "loggedIn": true,
                 "name": req.session.name,
@@ -768,7 +768,7 @@ async function authenticate(email, password, callback) {
     connection.connect();
     let query = "SELECT * FROM user WHERE email = '" + email + "' or username = '" + email + "'";
     connection.query(query, async function (error, results, fields) {
-        console.log(results[0])
+        // console.log(results[0])
         const authenticated = await bcrypt.compare(password, results[0].passwordHash);
         if (authenticated) {
             callback({
