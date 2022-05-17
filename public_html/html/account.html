@@ -45,16 +45,20 @@
 
             async function printSpecialMessage() {
                 var specialMessage = "";
-                var currentUsername = JSON.parse(await getUserInfo()).name.toLowerCase();
-                console.log(currentUsername);
+                var currentUserInfo = JSON.parse(await getUserInfo());
+                var currentUsername = currentUserInfo.name.toLowerCase();
+                // console.log(currentUsername);
 
                 if (currentUsername === "george") specialMessage = "You're the coolest man on Earth!";
                 else if (currentUsername === "chris" || currentUsername === "christopher" || currentUsername === "cthompson" || currentUsername === "christhompson") {
                     specialMessage = "Thanks for joining us, Chris! Please give us full marks for COMP 2800.";
                 } else if (currentUsername === "lachlan" || currentUsername === "yurtle") specialMessage = "bruh";
-                else if (currentUsername === "toco") specialMessage = "";
+                else if (currentUsername === "toco") specialMessage = "Cool message!";
+
+                if (currentUserInfo.accessLevel >= 3) var adminMessage = `<br>Oh look, you're an admin!`;
 
                 document.getElementById("special-message").innerHTML = specialMessage;
+                document.getElementById("admin-button").innerHTML += adminMessage;
             }
 
             async function logoutUser() {
