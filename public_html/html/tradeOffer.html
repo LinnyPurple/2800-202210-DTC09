@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>COMP2800 Project</title>
+    <meta name="comp2800 team 9" content="My 2800 App">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/css/tradeOffer.css">
+
+    <!-- Bootstrap Library CSS JS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+    <!-- Other libraries and styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+</head>
+
+<body>
+    <!-- HTML Layout -->
+
+    <!-- top navbar -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-info">
+
+        <!-- display the app logo, and direct to main.html when pressed -->
+        <button type="button" class="btn nav-btn" onclick="logo_button()">
+            SWAPOMEN
+        </button>
+    </nav>
+
+    <!-- the body of the page -->
+    <div id="content">
+        <div id="OfferContainer">
+            <template id="OfferTemplate">
+                <div class="TradeOffer">
+                    <div class="TradeOfferer">
+                        <img class="OffererPicture" />
+                        <h3 class="OffererName"></h3>
+                    </div>
+                    <hr>
+                    <div class="OfferDetails">
+                        <div class="OfferItem">
+                            <p class="OfferName"></p>
+                            <img class="OfferImg" />
+                        </div>
+                        <hr>
+                        <div class="ForItem">
+                            <p class="ForName"></p>
+                            <img class="ForImg" />
+                        </div>
+                    </div>
+                    <form class="TradeActions">
+                        <input type="button" value="Accept" />
+                        <input type="button" value="Decline" />
+                    </form>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- bottom navbar -->
+    <nav class="navbar fixed-bottom navbar-expand-lg navbar-light bg-info">
+
+        <!-- home button -->
+        <button type="button" formaction="./index.html" class="btn nav-btn" id="homeButton">
+            <i class="bi bi-house" style="font-size: 1.7rem;"></i>
+        </button>
+
+        <!-- search button -->
+        <button type="button" class="btn nav-btn" id="searchButton">
+            <i class="bi bi-search " style="font-size: 1.7rem;"></i>
+        </button>
+
+        <!-- upload button -->
+        <button type="button" class="btn nav-btn" id="uploadButton">
+            <i class="bi bi-plus-circle" style="font-size: 1.7rem;"></i>
+        </button>
+
+        <!-- upload button -->
+        <button type="button" class="btn nav-btn" id="chatButton">
+            <i class="bi bi-chat-left-text" style="font-size: 1.7rem;"></i>
+        </button>
+
+        <!-- profile button -->
+        <button type="button" class="btn nav-btn" id="profileButton">
+            <i class="bi bi-person-circle" style="font-size: 1.7rem;"></i>
+        </button>
+    </nav>
+
+    <!-- JavaScript functions -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/js/template.js"></script>
+    <script src="/js/httpRequests.js"></script>
+    <script src="/js/webserverInterface.js"></script>
+    <script>
+        async function populateOffers() {
+            let res = JSON.parse(await getRequest('/api/getTradeOffersToMe'));
+            const parent = document.querySelector("#OfferContainer");
+
+            for (let offerInd in res.data) {
+                let template = document.querySelector("#OfferTemplate").content.cloneNode(true);
+                let offer = res.data[offerInd];
+                console.log(offer);
+
+                let offerer = JSON.parse(await getOtherUserInfo(offer.offererID));
+
+                template.querySelector(".OffererName").innerHTML = "From: " + offerer.username;
+
+                let offererData = JSON.parse(offer.offererData);
+                let offereeData = JSON.parse(offer.offereeData);
+
+                template.querySelector(".OfferName").innerHTML = "Their: " + offererData.name;
+                template.querySelector(".OfferImg").setAttribute('src', offererData.img);
+
+                template.querySelector(".ForName").innerHTML = "Your: " + offereeData.name;
+                template.querySelector(".ForImg").setAttribute('src', offererData.img);
+
+                parent.appendChild(template);
+            }
+            // console.log(res);
+        }
+
+        populateOffers();
+    </script>
+</body>
+
+</html>

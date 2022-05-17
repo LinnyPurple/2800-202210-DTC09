@@ -42,7 +42,7 @@
                 var email_ = document.getElementById("email").value;
                 var password_ = document.getElementById("password").value;
                 console.log(username_, email_, password_);
-                loginV2(username_, password_);
+                loginV2(username_ ? username_ : email_, password_);
                 window.location.assign('/account');
             }
         </script>

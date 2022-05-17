@@ -62,7 +62,7 @@ async function getUserInfo() {
 }
 async function getOtherUserInfo(id) {
     let res = await getRequest(`/api/getUserInfo?uid=${id}`);
-    console.log(res);
+    return res;
 }
 async function postListing() {
     let res = await postRequest("/api/postListing", {

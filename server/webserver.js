@@ -31,6 +31,19 @@ app.use(session({
     saveUninitialized: false
 }));
 
+function reqLogin(req, res, next) {
+    if (req.session.loggedIn) {
+        next();
+    } else {
+        res.redirect('/login');
+        // res.send({
+        //     "Result": "Failed",
+        //     "msg": "Not logged in."
+        // });
+        return;
+    }
+}
+
 app.use("/html", express.static("../public_html/html"));
 app.use("/css", express.static("../public_html/css"));
 app.use("/js", express.static("../public_html/js"));
@@ -77,6 +90,11 @@ app.get('/review', function (req, res) {
 
 app.get('/profile', function (req, res) {
     let doc = fs.readFileSync('../public_html/html/profile.html', "utf8");
+    res.send(doc);
+});
+
+app.get('/tradeOffers', reqLogin, function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/tradeOffer.html', "utf8");
     res.send(doc);
 });
 //#endregion
@@ -754,7 +772,7 @@ app.post('/api/sendTradeOffer', urlencodedParser, (req, res) => {
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let query = "INSERT INTO offer (offererID, offereeID, offererData, offereeData) values ?"
+        let query = "INSERT INTO offers (offererID, offereeID, offererData, offereeData) values ?"
         let recordValues = [
             [offererID, offereeID, offererData, offereeData]
         ];
@@ -787,7 +805,7 @@ app.get('/api/getTradeOffersToMe', (req, res) => {
         connection.query(query, [recordValues], (err, result) => {
             res.send({
                 "result": "Success",
-                "msg": "Offer Sent.",
+                "msg": "Retrieved offers.",
                 "data": result
             });
         });
@@ -828,9 +846,9 @@ async function authenticate(email, password, callback) {
     const mysql = require("mysql2")
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
-    let query = "SELECT * FROM user WHERE email = '" + email + "' or username = '" + email + "'";
+    let query = "SELECT * FROM user WHERE email = '" + email + "' OR username = '" + email + "'";
     connection.query(query, async function (error, results, fields) {
-        console.log(results[0])
+        console.log(error, results[0])
         const authenticated = await bcrypt.compare(password, results[0].passwordHash);
         if (authenticated) {
             callback({
@@ -895,18 +913,19 @@ async function initializeDB() {
         );
 
         CREATE TABLE IF NOT EXISTS offers (
+            ID int NOT NULL AUTO_INCREMENT,
             offererID int NOT NULL,
             offereeID int NOT NULL,
             offererData TEXT NOT NULL,
             offereeData TEXT NOT NULL,
             status int default -1,
             timestamp DATETIME default CURRENT_TIMESTAMP NOT NULL,
-            PRIMARY KEY (offererID, offereeID)
+            PRIMARY KEY (ID)
         );
         `;
     await connection.query(createDBAndTables);
     console.log('Listening on port ' + port);
 }
 
-let port = 8002;
+let port = 8000;
 app.listen(port, initializeDB);
