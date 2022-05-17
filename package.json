@@ -1,0 +1,27 @@
+{
+  "name": "2800-202210-dtc09",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LinnyPurple/2800-202210-DTC09.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LinnyPurple/2800-202210-DTC09/issues"
+  },
+  "homepage": "https://github.com/LinnyPurple/2800-202210-DTC09#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "express": "^4.18.1",
+    "express-session": "^1.17.2",
+    "multer": "^1.4.4",
+    "mysql2": "^2.3.3",
+    "ws": "^8.6.0"
+  }
+}

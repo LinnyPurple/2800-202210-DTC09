@@ -1,6 +1,6 @@
 // The function to load navbars and footer
 function loadSkeleton() {
-    console.log($('#topnavbarPlaceholder').load('./partials/top-nav.html'));
+    console.log($('#topnavbarPlaceholder').load('../html/partials/top-nav.html'));
     console.log($('#bottomnavbarPlaceholder').load('../html/partials/menu-bar.html'));
 }
 
