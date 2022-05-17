@@ -79,6 +79,11 @@ app.get('/profile', function (req, res) {
     let doc = fs.readFileSync('../public_html/html/profile.html', "utf8");
     res.send(doc);
 });
+
+app.get('/posting', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/posting.html', "utf8");
+    res.send(doc);
+});
 //#endregion
 
 //#region API
@@ -800,6 +805,7 @@ async function initializeDB() {
             passwordHash varchar(100) NOT NULL,
             passwordSalt varchar(100) NOT NULL,
             accessLevel int NOT NULL,
+            image TEXT,
             PRIMARY KEY (ID)
         );
         
