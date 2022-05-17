@@ -180,6 +180,28 @@ app.post('/api/editAccount', urlencodedParser, function (req, res) {
     }
 });
 
+app.post('/api/resetPassword', urlencodedParser, (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    const newPassword = req.body.newPassword;
+    const userID = req.body.userId;
+
+    hashPassword(newPassword, (hash, salt) => {
+        let userRecords = "UPDATE user SET passwordHash = ?, passwordSalt = ? WHERE ID = ?;";
+        let recordValues = [hash, salt, userID];
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        connection.query(userRecords, recordValues, (err, result) => {
+            res.send({
+                status: "success",
+                msg: "Password Updated."
+            });
+        });
+    });
+});
+
 //upload profile photo
 var storage = multer.diskStorage({
     destination: (req, file, callBack) => {
@@ -235,7 +257,7 @@ app.post('/api/editAccount2', urlencodedParser, function (req, res) {
             let query = `UPDATE user SET username = ? WHERE ID = ${req.session.uid};`
 
             connection.query(query,
-                [newUsername ? newUsername : req.session.username, ], (err, result) => {
+                [newUsername ? newUsername : req.session.username,], (err, result) => {
                     if (err) {
                         console.log(err);
                     }
@@ -469,6 +491,29 @@ app.post('/api/archiveListing', urlencodedParser, function (req, res) {
             "msg": "Not logged in"
         })
     }
+});
+
+app.get('/api/searchListings', (req, res) => {
+    const mysql = require("mysql2")
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    let s = req.query.s;
+    const regex = new RegExp(`.*${s}.*`, 'i');
+
+    let matches = [];
+
+    let query = "SELECT * FROM listing WHERE archived = 0";
+    connection.query(query, (err, result) => {
+        for (let row in result) {
+            let listing = result[row];
+            if (listing["title"].match(regex) || listing["description"].match(regex)) {
+                matches.push(listing);
+            }
+        }
+
+        res.send(matches);
+    });
 });
 
 app.get("/api/getListingData", async function (req, res) {
@@ -731,7 +776,7 @@ async function authenticate(email, password, callback) {
                 "user": results[0]
             });
         } else {
-            callback({"status": 400, "user": {}});
+            callback({ "status": 400, "user": {} });
         }
     });
 
@@ -791,5 +836,5 @@ async function initializeDB() {
     console.log('Listening on port ' + port);
 }
 
-let port = 8000;
+let port = 8002;
 app.listen(port, initializeDB);

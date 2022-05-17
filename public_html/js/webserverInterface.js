@@ -118,5 +118,19 @@ async function promoteAccount(accountID, level) {
 
 async function adminGetAccounts() {
     let res = await getRequest('/api/admin/getUserList');
+    console.log(res);
     return res;
+}
+
+async function searchListings(query) {
+    let res = await getRequest(`/api/searchListings?s=${encodeURIComponent(query)}`);
+    console.log(res);
+}
+
+async function resetPassword(uid, newPassword) {
+    let res = await postRequest('/api/resetPassword', {
+        userId: uid,
+        newPassword: newPassword
+    });
+    console.log(res);
 }
