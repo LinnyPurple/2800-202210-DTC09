@@ -171,6 +171,35 @@ main h2 {
   transform: rotate(-45deg) translate(0.7rem, -0.4rem);
 }
 
+.top-nav__hamburger__nav {
+  background-color: #005555;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  /* left: 100%; */
+  width: 90%;
+  height: 100vh;
+  z-index: 2;
+  transition: 0.5s;
+  padding: 20% 5% 0 10%;
+}
+
+.top-nav__hamburger__nav i {
+  font-size: 2.5rem;
+  padding: 0 7%;
+}
+
+.top-nav__hamburger__nav a {
+  color: #f1f1f1;
+  font-size: 2em;
+  margin: 0 0 15%;
+}
+
+.top-nav__hamburger__nav a:hover {
+  color: #EE8572;
+}
+
 /* #footer {
 background-color: aqua;
 border: 5px solid rgb(0, 128, 128);
