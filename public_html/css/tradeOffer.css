@@ -1,0 +1,40 @@
+#OfferContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    row-gap: 10px;
+}
+
+.TradeOffer {
+    width: 80%;
+    margin: auto;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+
+.TradeOfferer {
+    margin: auto;
+    width: 100%;
+}
+
+.OfferDetails, .OfferItem, .ForItem {
+    width: 100%;
+    margin: auto;
+    padding: 10px;
+}
+
+.ForItem img, .OfferItem img {
+    max-width: 90%;
+    max-height: 50%;
+    margin: auto;
+}
+
+.TradeActions {
+    padding: 10px;
+}

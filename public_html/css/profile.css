@@ -1,53 +1,6 @@
-/* Template, Can be changed */
-
-body {
-    margin: 0;
-}
-
-h2 {
-    padding-top: 20%;
-    text-align: center;
-}
-
-#footer {
-    background-color: aqua;
-    border: 5px solid rgb(0, 128, 128);
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    bottom: 0;
-    display: flex;
-    flex-direction: row;
-    height: 60px;
-    position: absolute;
-    width: 100%;
-}
-
-#header {
-    background-color: aqua;
-    border: 5px solid rgb(0, 128, 128);
-    box-sizing: border-box;
-    -moz-box-sizing: border-box;
-    -webkit-box-sizing: border-box;
-    top: 0;
-    display: flex;
-    flex-direction: row;
-    height: 60px;
-    position: absolute;
-    width: 100%;
-}
-
-
-.footeritme {
-    font-size: 10vw;
-    text-align: center;
-    padding-top: 1vh;
-    width: 20vw;
-}
-
 /* main */
 main {
-    margin: 80px 40px;
+    margin: 30px 20px;
 }
 
 /* user info section */
@@ -56,7 +9,7 @@ main {
     flex-direction: column;
     align-content: space-around;
     padding: 20px;
-    background-color: rgb(199, 197, 197);
+    background-color: rgba(95, 128, 127, 0.478);
     border-radius: 10px;
 }
 
@@ -69,17 +22,32 @@ main {
     text-align: center;
 }
 
-/* search location */
+#edit_btn {
+    width: 65px;
+    color: #45807E;
+    border: 3px solid #45807E;
+    background-color: #D4F3EF;
+}
 
-
-/* search end */
+#save_btn {
+    width: 65px;
+    border: none;
+    color: #f1f1f1;
+    background-color: #EE8572;
+}
 
 
 /* buttons */
 #history_buttons {
     margin-top: 10px;
-    height: 120px;
+    margin-bottom: 10px;
     display: flex;
     flex-direction: column;
     align-content: space-around
+}
+
+#history_buttons button {
+    background-color: rgba(95, 128, 127, 0.478);
+    margin-top: 7px;
+    height: 40px;
 }
