@@ -890,7 +890,7 @@ async function authenticate(email, password, callback) {
     connection.connect();
     let query = "SELECT * FROM user WHERE email = '" + email + "' OR username = '" + email + "'";
     connection.query(query, async function (error, results, fields) {
-        //console.log(error, results[0])
+        // console.log(results[0])
         const authenticated = await bcrypt.compare(password, results[0].passwordHash);
         if (authenticated) {
             callback({
