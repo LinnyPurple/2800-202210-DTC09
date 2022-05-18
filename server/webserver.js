@@ -78,7 +78,7 @@ app.get('/admin', function (req, res) {
     res.send(doc);
 });
 
-app.get('/websocket', function (req, res) {
+app.get('/websocket', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/websocket.html', "utf8");
     res.send(doc);
 });

@@ -24,7 +24,7 @@
           <input id="username" value=""><br>
         </div> -->
         <div class="login-form__table__row">
-          <label for="e">Email:</label>
+          <label for="e">Email/Username:</label>
           <input id="email" value="">
         </div>
         <div class="login-form__table__row">
@@ -49,11 +49,10 @@
   <script src="/js/webserverInterface.js"></script>
   <script>
     function f() {
-      var username_ = document.getElementById("username").value;
       var email_ = document.getElementById("email").value;
       var password_ = document.getElementById("password").value;
-      console.log(username_, email_, password_);
-      loginV2(username_, password_);
+      console.log(email_, password_);
+      loginV2(email_, password_);
       window.location.assign('/account');
     }
   </script>
