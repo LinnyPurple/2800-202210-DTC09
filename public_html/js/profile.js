@@ -5,7 +5,7 @@ async function getUserInfo() {
     var currentUserInfo = JSON.parse(res);
 
     // Check user is logged in
-    if (currentUserInfo.loggedIn == true) {
+    // if (currentUserInfo.loggedIn == true) {
         console.log("User is logged in")
         var currentUsername = currentUserInfo.name;
         var currentUserEmail = currentUserInfo.email;
@@ -24,10 +24,10 @@ async function getUserInfo() {
             $("#profilePicture").html(`<img src="${currentImage}" class="rounded-circle border border-dark border-1 mx-auto d-block" style="width: 110px; height: 110px;">`)
         }
 
-    } else {
-        console.log("No user is signed in");
-        window.location.href = "/login";
-    }
+    // } else {
+    //     console.log("No user is signed in");
+    //     window.location.href = "/login";
+    // }
 }
 
 //enable the fields for value change
@@ -50,6 +50,14 @@ async function saveUserInfo() {
 
     // after
     document.getElementById('personalInfoFields').disabled = true
+}
+
+async function login(username) {
+    let res = await postRequest("/api/login", {
+        password: "a",
+        username: username
+    });
+    console.log(res);
 }
 
 function setup() {
