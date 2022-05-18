@@ -430,16 +430,20 @@ app.post('/api/postListing', urlencodedParser, function (req, res) {
 
     if (req.session.loggedIn) {
         const title = req.body.title;
+        const myItem = req.body.myItem;
+        const tradingItem = req.body.tradingItem;
+        const condition = req.body.condition;
+        const tradingMethod = req.body.tradingMethod;
         const description = req.body.description;
-        const images = req.body.images;
+        // const images = req.body.images;
 
         const mysql = require("mysql2")
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let query = "INSERT INTO listing (posterID, title, description, images) values ?";
+        let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description) values ?";
         let values = [
-            [req.session.uid, title, description, images]
+            [req.session.uid, title, myItem, tradingItem, condition, tradingMethod, description]
         ]
 
         connection.query(query, [values], (result, err) => {
@@ -813,6 +817,10 @@ async function initializeDB() {
             ID int NOT NULL AUTO_INCREMENT,
             posterID int NOT NULL,
             title varchar(50) NOT NULL,
+            myItemCategory TEXT NOT NULL, 
+            tradingItemCategory TEXT NOT NULL, 
+            itemCondition TEXT NOT NULL, 
+            tradingMethod TEXT NOT NULL,
             description TEXT NOT NULL,
             posted DATETIME default CURRENT_TIMESTAMP NOT NULL,
             images TEXT,
@@ -829,7 +837,7 @@ async function initializeDB() {
         );
 
         CREATE TABLE IF NOT EXISTS review (
-            itemID int NOT NULL,
+            itemID int NOT NULL AUTO_INCREMENT,
             reviewerID int NOT NULL,
             revieweeID int NOT NULL,
             reviewText TEXT NOT NULL,

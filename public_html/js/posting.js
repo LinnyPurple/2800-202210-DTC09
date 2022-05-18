@@ -28,15 +28,44 @@ function readURL(input) {
     }
 }
 
-var input = document.getElementById( 'upload' );
-var infoArea = document.getElementById( 'upload-label' );
+var input = document.getElementById('upload');
+var infoArea = document.getElementById('upload-label');
 
-input.addEventListener( 'change', showFileName );
-function showFileName( event ) {
-  var input = event.srcElement;
-  var fileName = input.files[0].name;
-  infoArea.textContent = 'File name: ' + fileName;
+input.addEventListener('change', showFileName);
+
+function showFileName(event) {
+    var input = event.srcElement;
+    var fileName = input.files[0].name;
+    infoArea.textContent = 'File name: ' + fileName;
 }
+
+// submit posting
+async function postListing() {
+    var thisTitle = $('#titleInput').val();
+    var myItemCategory = $('#myCategory :selected').val();
+    var TradingItemCategory = $('#wantedCategory :selected').val();
+    var condition = $('#condition :selected').val();
+    var tradingMethod = $('#tradingMethod :selected').val();
+    var description = $('#description').val();
+
+    console.log(thisTitle)
+    console.log(myItemCategory)
+    console.log(TradingItemCategory)
+    console.log(condition)
+    console.log(tradingMethod)
+    console.log(description)
+
+    let res = await postRequest("/api/postListing", {
+        title: thisTitle,
+        myItem: myItemCategory,
+        tradingItem: TradingItemCategory,
+        condition: condition,
+        tradingMethod: tradingMethod,
+        description: description
+    });
+    console.log(res);
+}
+
 
 function setup() {
     getUserInfo()
