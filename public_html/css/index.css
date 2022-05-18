@@ -159,6 +159,18 @@ main h2 {
   transition: 0.5s;
 }
 
+.top-nav__hamburger.active .top-nav__hamburger__bar {
+  opacity: 0;
+}
+
+.top-nav__hamburger.active:before {
+  transform: rotate(45deg) translate(0.75rem, 0.4rem);
+}
+
+.top-nav__hamburger.active:after {
+  transform: rotate(-45deg) translate(0.7rem, -0.4rem);
+}
+
 /* #footer {
 background-color: aqua;
 border: 5px solid rgb(0, 128, 128);

@@ -4,3 +4,11 @@
   $(".bottom-nav").load('/html/partials/menu-bar.html');
 })
 ();
+
+$(document).ready(() => {
+  const hamburger = $(".top-nav__hamburger");
+
+  hamburger.on("click", () => {
+    hamburger.toggleClass("active");
+  })
+})
