@@ -553,8 +553,6 @@ app.get('/api/getListingsFromUser/:uid', (req, res) => {
     connection.connect();
     let uid = req.params.uid;
 
-    console.log(uid);
-
     let query = "SELECT * FROM listing WHERE posterID = ?";
     connection.query(query, uid, (err, result) => {
         res.send(result);

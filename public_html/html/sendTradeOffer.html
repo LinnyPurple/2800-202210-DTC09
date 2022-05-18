@@ -36,6 +36,7 @@
     <!-- the body of the page -->
     <div id="content">
         <div id="TradeItem">
+            <p class="TraderName"></p>
             <p class="TradeItemName"></p>
             <img class="TradeItemImg" />
         </div>
@@ -44,6 +45,7 @@
                 <div class="offerCard">
                     <p class="OfferName"></p>
                     <img class="OfferImg" />
+                    <button class="SendOffer">Send Offer</button>
                 </div>
             </template>
         </div>
@@ -84,10 +86,44 @@
     <script src="/js/webserverInterface.js"></script>
     <script src="/js/httpRequests.js"></script>
     <script>
+        let listings;
+        let userInfo;
         async function getPotentialOffers() {
-            let userInfo = await getUserInfo();
-            console.log(userInfo);
-            let res = await getRequest('/api/getListingsFromUser/' + userInfo.ID);
+            userInfo = JSON.parse(await getUserInfo());
+            listings = JSON.parse(await getRequest('/api/getListingsFromUser/' + userInfo.uid));
+            console.log(listings);
+
+            const parent = document.querySelector("#potentialOffers");
+
+            for (let offerInd in listings) { 
+                let template = document.querySelector("#offerTemplate").content.cloneNode(true);
+                let offer = listings[offerInd];
+
+                template.querySelector(".OfferName").innerHTML = "Your: " + offer.title;
+                let imgs = JSON.parse(offer.images);
+                template.querySelector(".OfferImg").setAttribute('src', (imgs && imgs.length) > 0 ? imgs[0] : 'https://dummyimage.com/200x200/000/fff');
+                template.querySelector(".SendOffer").setAttribute('onclick', `sendOffer(${offer.ID})`);
+
+                parent.appendChild(template);
+            }
+        }
+
+        async function sendOffer(id) {
+            let offerListing = listings.find(e => e.ID == id);
+            let listing = JSON.parse(await getRequest(`/api/getListingData?id=${window.location.href.split('/')[window.location.href.split('/').length - 1]}`))
+            console.log(listing);
+            console.log(offerListing);
+            let res = await postRequest('/api/sendTradeOffer', {
+                offereeID: listing.posterID,
+                offererData: JSON.stringify({
+                    name: offerListing.title,
+                    img: (offerListing.images && JSON.parse(offerListing.images).length) > 0 ? JSON.parse(offerListing.images)[0] : 'https://dummyimage.com/200x200/000/fff'
+                }),
+                offereeData: JSON.stringify({
+                    name: listing.title,
+                    img: (listing.images && JSON.parse(listing.images).length) > 0 ? JSON.parse(listing.images)[0] : 'https://dummyimage.com/200x200/000/fff'
+                })
+            });
             console.log(res);
         }
 
