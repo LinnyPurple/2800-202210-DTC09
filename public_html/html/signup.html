@@ -1,63 +1,77 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>SwapOmen</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="/css/login.css">
-    </head>
-    <body>
-        <div id="outer">
-            <header>
-                <h1>SwapOmen - SignUp</h1>
-            </header>
 
-            <main>
-                <div id="login-form">
-                    <div id="login-table">
-                        <div class="t-row">
-                            <label for="u">Username:</label>
-                            <input id="username" value=""><br>
-                        </div>
-                        <div class="t-row">
-                            <label for="e">Email:</label>
-                            <input id="email" value=""><br>
-                        </div>
-                        <div class="t-row">
-                            <label for="p">Password:</label>
-                            <input id="password" value=""><br>
-                        </div>
-                        <button onclick="f()">Signup</button><br>
-                    </div>
-                </div>
-                <div id="unfilled"></div>
-            </main>
+<head>
+  <title>SwapOmen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- css -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+  <link type="text/css" rel="stylesheet" href="/css/index.css">
+  <link rel="stylesheet" href="/css/login.css">
+</head>
+
+<body>
+
+  <header></header>
+
+  <main>
+    <div id="login-form">
+      <div id="login-table">
+        <div class="t-row">
+          <label for="u">Username:</label>
+          <input id="username" value=""><br>
         </div>
+        <div class="t-row">
+          <label for="e">Email:</label>
+          <input id="email" value=""><br>
+        </div>
+        <div class="t-row">
+          <label for="p">Password:</label>
+          <input id="password" value=""><br>
+        </div>
+        <div id="login">
+          <button class="primary-btn" onclick="f()">Sign-up</button>
+          <span>OR</span>
+          <button class="secondary-btn" onclick="window.location.assign('/signup')">Log in</button>
+        </div>
+      </div>
+    </div>
+    <div id="unfilled"></div>
+  </main>
 
-        <!-- SCRIPTS -->
-        <script src="/js/httpRequests.js"></script>
-        <script src="/js/webserverInterface.js"></script>
-        <script>
-            /**
-             * Returns a boolean whether a string has whitespace in it.
-             */
-            function containsWhitespace(string) {
-                let re = /\s/;
-                return re.test(string);
-            }
+  <footer></footer>
 
-            async function f() {
-                var username_ = document.getElementById("username").value;
-                var email_ = document.getElementById("email").value;
-                var password_ = document.getElementById("password").value;
-                console.log(username_, email_, password_);
-                if (!username_ || !email_ || !password_ || containsWhitespace(username_) || containsWhitespace(email_) || containsWhitespace(password_)) {
-                    document.getElementById("unfilled").innerHTML = "INVALID ARGUMENTS.";
-                } else {
-                    createAccountV2(username_, email_, password_);
-                    window.location.assign('/');
-                }
-                
-            }
-        </script>
-    </body>
+  <!-- SCRIPTS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="/js/httpRequests.js"></script>
+  <script src="/js/webserverInterface.js"></script>
+  <script src="/js/global.js"></script>
+  <script>
+    /**
+     * Returns a boolean whether a string has whitespace in it.
+     */
+    function containsWhitespace(string) {
+      let re = /\s/;
+      return re.test(string);
+    }
+
+    async function f() {
+      var username_ = document.getElementById("username").value;
+      var email_ = document.getElementById("email").value;
+      var password_ = document.getElementById("password").value;
+      console.log(username_, email_, password_);
+      if (!username_ || !email_ || !password_ || containsWhitespace(username_) || containsWhitespace(email_) || containsWhitespace(password_)) {
+        document.getElementById("unfilled").innerHTML = "INVALID ARGUMENTS.";
+      } else {
+        createAccountV2(username_, email_, password_);
+        window.location.assign('/');
+      }
+
+    }
+  </script>
+</body>
+
 </html>

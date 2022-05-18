@@ -64,14 +64,14 @@ main h2 {
   margin: 5%;
 }
 
-.sign-up {
+.secondary-btn {
   color: #45807E;
   border: 5px solid #45807E;
   background-color: #D4F3EF;
   /* background-color: #fff; */
 }
 
-.login {
+.primary-btn {
   border: none;
   color: #f1f1f1;
   background-color: #EE8572;
