@@ -149,6 +149,16 @@ main h2 {
   z-index: 3;
 }
 
+.top-nav__hamburger__bar, .top-nav__hamburger::before, .top-nav__hamburger::after {
+  background-color: #f1f1f1;
+  content: '';
+  display: block;
+  height: 0.3rem;
+  width: 100%;
+  margin: 20%;
+  transition: 0.5s;
+}
+
 /* #footer {
 background-color: aqua;
 border: 5px solid rgb(0, 128, 128);
