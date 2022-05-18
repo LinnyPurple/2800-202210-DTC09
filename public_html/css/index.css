@@ -177,7 +177,7 @@ main h2 {
   flex-direction: column;
   position: fixed;
   top: 0;
-  /* left: 100%; */
+  left: 100%;
   width: 90%;
   height: 100vh;
   z-index: 2;
@@ -198,6 +198,10 @@ main h2 {
 
 .top-nav__hamburger__nav a:hover {
   color: #EE8572;
+}
+
+.top-nav__hamburger__nav.active {
+  left: 30%;
 }
 
 /* #footer {
