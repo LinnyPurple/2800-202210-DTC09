@@ -57,8 +57,8 @@
                         </div>
                     </div>
                     <form class="TradeActions">
-                        <input type="button" value="Accept" />
-                        <input type="button" value="Decline" />
+                        <input type="button" value="Accept" class="aButton" />
+                        <input type="button" value="Decline" class="dButton" />
                     </form>
                 </div>
             </template>
@@ -120,11 +120,22 @@
                 template.querySelector(".OfferImg").setAttribute('src', offererData.img);
 
                 template.querySelector(".ForName").innerHTML = "Your: " + offereeData.name;
-                template.querySelector(".ForImg").setAttribute('src', offererData.img);
+                template.querySelector(".ForImg").setAttribute('src', offereeData.img);
+
+                template.querySelector('.aButton').setAttribute('onclick', `tradeReply(${offer.ID}, true)`)
+                template.querySelector('.dButton').setAttribute('onclick', `tradeReply(${offer.ID}, false)`)
 
                 parent.appendChild(template);
             }
             // console.log(res);
+        }
+
+        async function tradeReply(offerID, accept) {
+            let res = JSON.parse(await postRequest('/api/replyTradeOffer', {
+                'offerID': offerID,
+                'accepted': (accept ? 1 : 0)
+            }));
+            console.log(res);
         }
 
         populateOffers();

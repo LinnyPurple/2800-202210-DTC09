@@ -11,6 +11,7 @@ const {
     resolve
 } = require('path');
 // const { connection } = require('mongoose');
+const jsdom = require("jsdom");
 
 const path = require("path");
 const multer = require('multer')
@@ -97,6 +98,16 @@ app.get('/tradeOffers', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/tradeOffer.html', "utf8");
     res.send(doc);
 });
+
+app.get('/sendTradeOffer/:listingID', async (req, res) => {
+    let doc = new jsdom.JSDOM(fs.readFileSync('../public_html/html/sendTradeOffer.html', "utf8"));
+    let listing = (await getListingData(req.params.listingID)).Data;
+    console.log(listing);
+    doc.window.document.querySelector('.TradeItemName').textContent = listing.title;
+    doc.window.document.querySelector('.TradeItemImg').src = JSON.parse(listing.images) ? JSON.parse(listing.images)[0] : 'https://dummyimage.com/200x200/000/fff';
+    res.send(doc.serialize());
+});
+
 //#endregion
 
 //#region API
@@ -396,7 +407,7 @@ app.get("/api/logout", function (req, res) {
 app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
     if ((req.query.uid == undefined && req.query.username == undefined) || (req.query.uid == null && req.query.username == null)) {
         if (req.session.loggedIn) {
-            console.log(req.session)
+            //console.log(req.session)
             res.send({
                 "loggedIn": true,
                 "name": req.session.name,
@@ -790,6 +801,23 @@ app.post('/api/sendTradeOffer', urlencodedParser, (req, res) => {
     }
 });
 
+app.post('/api/replyTradeOffer', urlencodedParser, reqLogin, (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    const accepted = req.body.accepted;
+    const offerID = req.body.offerID;
+    console.log(accepted);
+
+    const mysql = require("mysql2")
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    let query = "UPDATE offers SET status = ? WHERE ID = ?";
+    let values = [accepted, offerID];
+    connection.query(query, values, (err, result) => {
+        res.send({"result": "success", "msg": `${accepted ? 'Accepted' : 'Declined'} trade offer.`});
+    });
+});
+
 app.get('/api/getTradeOffersToMe', (req, res) => {
     res.setHeader("Content-Type", "application/json");
     if (req.session.loggedIn) {
@@ -848,7 +876,7 @@ async function authenticate(email, password, callback) {
     connection.connect();
     let query = "SELECT * FROM user WHERE email = '" + email + "' OR username = '" + email + "'";
     connection.query(query, async function (error, results, fields) {
-        console.log(error, results[0])
+        //console.log(error, results[0])
         const authenticated = await bcrypt.compare(password, results[0].passwordHash);
         if (authenticated) {
             callback({

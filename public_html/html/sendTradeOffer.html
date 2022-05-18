@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>COMP2800 Project</title>
+    <meta name="comp2800 team 9" content="My 2800 App">
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- Bootstrap Library CSS JS CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous">
+    </script>
+
+    <!-- Other libraries and styles -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
+</head>
+
+<body>
+    <!-- HTML Layout -->
+
+    <!-- top navbar -->
+    <nav class="navbar sticky-top navbar-expand-lg navbar-light bg-info">
+
+        <!-- display the app logo, and direct to main.html when pressed -->
+        <button type="button" class="btn nav-btn" onclick="logo_button()">
+            SWAPOMEN
+        </button>
+    </nav>
+
+    <!-- the body of the page -->
+    <div id="content">
+        <div id="TradeItem">
+            <p class="TradeItemName"></p>
+            <img class="TradeItemImg" />
+        </div>
+        <div id="potentialOffers">
+            <template id="offerTemplate">
+                <div class="offerCard">
+                    <p class="OfferName"></p>
+                    <img class="OfferImg" />
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- bottom navbar -->
+    <nav class="navbar fixed-bottom navbar-expand-lg navbar-light bg-info">
+
+        <!-- home button -->
+        <button type="button" formaction="./index.html" class="btn nav-btn" id="homeButton">
+            <i class="bi bi-house" style="font-size: 1.7rem;"></i>
+        </button>
+
+        <!-- search button -->
+        <button type="button" class="btn nav-btn" id="searchButton">
+            <i class="bi bi-search " style="font-size: 1.7rem;"></i>
+        </button>
+
+        <!-- upload button -->
+        <button type="button" class="btn nav-btn" id="uploadButton">
+            <i class="bi bi-plus-circle" style="font-size: 1.7rem;"></i>
+        </button>
+
+        <!-- upload button -->
+        <button type="button" class="btn nav-btn" id="chatButton">
+            <i class="bi bi-chat-left-text" style="font-size: 1.7rem;"></i>
+        </button>
+
+        <!-- profile button -->
+        <button type="button" class="btn nav-btn" id="profileButton">
+            <i class="bi bi-person-circle" style="font-size: 1.7rem;"></i>
+        </button>
+    </nav>
+
+    <!-- JavaScript functions -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="../js/template.js"></script>
+</body>
+
+</html>
