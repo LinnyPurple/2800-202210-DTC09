@@ -99,12 +99,14 @@ app.get('/tradeOffers', reqLogin, function (req, res) {
     res.send(doc);
 });
 
-app.get('/sendTradeOffer/:listingID', async (req, res) => {
+app.get('/sendTradeOffer/:listingID', reqLogin, async (req, res) => {
     let doc = new jsdom.JSDOM(fs.readFileSync('../public_html/html/sendTradeOffer.html', "utf8"));
     let listing = (await getListingData(req.params.listingID)).Data;
-    console.log(listing);
     doc.window.document.querySelector('.TradeItemName').textContent = listing.title;
-    doc.window.document.querySelector('.TradeItemImg').src = JSON.parse(listing.images) ? JSON.parse(listing.images)[0] : 'https://dummyimage.com/200x200/000/fff';
+
+    let imgs = JSON.parse(listing.images);
+
+    doc.window.document.querySelector('.TradeItemImg').src = imgs ? imgs[0] : 'https://dummyimage.com/200x200/000/fff';
     res.send(doc.serialize());
 });
 
@@ -542,6 +544,20 @@ app.get('/api/searchListings', (req, res) => {
         }
 
         res.send(matches);
+    });
+});
+
+app.get('/api/getListingsFromUser/:uid', (req, res) => {
+    const mysql = require("mysql2")
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+    let uid = req.params.uid;
+
+    console.log(uid);
+
+    let query = "SELECT * FROM listing WHERE posterID = ?";
+    connection.query(query, uid, (err, result) => {
+        res.send(result);
     });
 });
 

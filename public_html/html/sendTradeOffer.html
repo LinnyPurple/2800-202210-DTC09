@@ -81,6 +81,18 @@
     <!-- JavaScript functions -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="../js/template.js"></script>
+    <script src="/js/webserverInterface.js"></script>
+    <script src="/js/httpRequests.js"></script>
+    <script>
+        async function getPotentialOffers() {
+            let userInfo = await getUserInfo();
+            console.log(userInfo);
+            let res = await getRequest('/api/getListingsFromUser/' + userInfo.ID);
+            console.log(res);
+        }
+
+        getPotentialOffers();
+    </script>
 </body>
 
 </html>
