@@ -77,9 +77,8 @@ main h2 {
   background-color: #EE8572;
 }
 
-
 /* Partials */
-
+/* top-nav */
 .top-nav {
   background-color: #45807E;
   display: flex;
@@ -89,12 +88,12 @@ main h2 {
 }
 
 .top-nav__logo h1 {
-    color: #fff;
-    font-family: 'Monoton', cursive;
-    font-size: 3rem;
-    font-weight: lighter;
-    margin: 0 1%;
-    /* -webkit-text-stroke: 1px #EE8572; */
+  color: #fff;
+  font-family: 'Monoton', cursive;
+  font-size: 3rem;
+  font-weight: lighter;
+  margin: 0 1%;
+  /* -webkit-text-stroke: 1px #EE8572; */
 }
 
 .top-nav__links {
@@ -114,6 +113,7 @@ main h2 {
   color: #EE8572;
 }
 
+/* menu-bar */
 .menu-bar {
   background-color: #45807E;
   display: flex;
@@ -139,6 +139,15 @@ main h2 {
   padding: 10% 0 0;
 }
 
+/* hamburger */
+.top-nav__hamburger {
+  width: 3rem;
+  cursor: pointer;
+  appearance: none;
+  background: none;
+  border: none;
+  z-index: 3;
+}
 
 /* #footer {
 background-color: aqua;
