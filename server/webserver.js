@@ -110,6 +110,11 @@ app.get('/sendTradeOffer/:listingID', reqLogin, async (req, res) => {
     res.send(doc.serialize());
 });
 
+app.get('/template', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/template.html', "utf8");
+    res.send(doc);
+});
+
 //#endregion
 
 //#region API
@@ -173,7 +178,10 @@ app.post('/api/deleteAccount', urlencodedParser, function (req, res) {
     authenticate(email, password, (results) => {
         connection.query(`DELETE FROM user WHERE ID = '${results.user.ID}'`, (err, result) => {
             if (err) {
-                res.send({ status: "error", msg: err });
+                res.send({
+                    status: "error",
+                    msg: err
+                });
                 return;
             }
             res.send({
@@ -214,7 +222,7 @@ app.post('/api/editAccount', urlencodedParser, function (req, res) {
 app.post('/api/resetPassword', urlencodedParser, (req, res) => {
     res.setHeader("Content-Type", "application/json");
     const newPassword = req.body.newPassword;
-    const userID = req.body.userId;
+    const userID = req.session.uid;
 
     hashPassword(newPassword, (hash, salt) => {
         let userRecords = "UPDATE user SET passwordHash = ?, passwordSalt = ? WHERE ID = ?;";
@@ -276,32 +284,26 @@ app.post('/api/editAccount2', urlencodedParser, function (req, res) {
     res.setHeader("Content-Type", "application/json");
     if (req.session.loggedIn) {
         const newUsername = req.body.newUsername;
-        const newPassword = req.body.newPassword;
-        // const newEmail = req.body.newEmail;
+        // const newPassword = req.body.newPassword;
         // const newAccessLevel = req.body.newAccessLevel;
 
         const mysql = require("mysql2")
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        if (newPassword == '') {
-            let query = `UPDATE user SET username = ? WHERE ID = ${req.session.uid};`
+        let query = `UPDATE user SET username = ? WHERE ID = ${req.session.uid};`
 
-            connection.query(query,
-                [newUsername ? newUsername : req.session.username,], (err, result) => {
-                    if (err) {
-                        console.log(err);
-                    }
-                    req.session.name = newUsername ? newUsername : req.session.username;
+        connection.query(query,
+            [newUsername ? newUsername : req.session.username, ], (err, result) => {
+                if (err) {
+                    console.log(err);
+                }
+                req.session.name = newUsername ? newUsername : req.session.username;
 
-                    res.status(200).send({
-                        "result": "Account info has been updated."
-                    })
-                });
-        } else {
-            // todo: else -> change password
-            res.end()
-        }
+                res.status(200).send({
+                    "result": "Account info has been updated."
+                })
+            });
     }
 });
 
@@ -828,7 +830,10 @@ app.post('/api/replyTradeOffer', urlencodedParser, reqLogin, (req, res) => {
     let query = "UPDATE offers SET status = ? WHERE ID = ?";
     let values = [accepted, offerID];
     connection.query(query, values, (err, result) => {
-        res.send({"result": "success", "msg": `${accepted ? 'Accepted' : 'Declined'} trade offer.`});
+        res.send({
+            "result": "success",
+            "msg": `${accepted ? 'Accepted' : 'Declined'} trade offer.`
+        });
     });
 });
 
@@ -898,7 +903,10 @@ async function authenticate(email, password, callback) {
                 "user": results[0]
             });
         } else {
-            callback({ "status": 400, "user": {} });
+            callback({
+                "status": 400,
+                "user": {}
+            });
         }
     });
 

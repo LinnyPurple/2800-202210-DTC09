@@ -1,0 +1,142 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 62.5%;
+}
+
+header, footer {
+  width: 100%;
+}
+
+/* Partials */
+/* top-nav */
+.top-nav {
+  background-color: #45807E;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5% 5% 5% 3%;
+}
+
+.top-nav__logo h1 {
+  color: #fff;
+  font-family: 'Monoton', cursive;
+  font-size: 3rem;
+  font-weight: lighter;
+  margin: 0 1%;
+  /* -webkit-text-stroke: 1px #EE8572; */
+}
+
+.top-nav__links {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1rem;
+  width: 40%;
+  visibility: hidden;
+}
+
+.top-nav__links a {
+  color: #f1f1f1;
+  font-weight: 500;
+}
+
+.top-nav__links a:hover {
+  color: #EE8572;
+}
+
+/* menu-bar */
+.menu-bar {
+  background-color: #45807E;
+  display: flex;
+  justify-content: space-around;
+  list-style-type: none;
+  padding: 4% 3% 3%;
+  position: relative;
+}
+
+.menu-bar__item a {
+  color: #f1f1f1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.menu-bar__btn {
+  font-size: 4.5rem;
+}
+
+.menu-bar__label {
+  font-size: 1.5rem;
+  padding: 10% 0 0;
+}
+
+/* hamburger */
+.top-nav__hamburger {
+  width: 3rem;
+  cursor: pointer;
+  appearance: none;
+  background: none;
+  border: none;
+  z-index: 3;
+}
+
+.top-nav__hamburger__bar, .top-nav__hamburger::before, .top-nav__hamburger::after {
+  background-color: #f1f1f1;
+  content: '';
+  display: block;
+  height: 0.3rem;
+  width: 100%;
+  margin: 20%;
+  transition: 0.5s;
+}
+
+.top-nav__hamburger.active .top-nav__hamburger__bar {
+  opacity: 0;
+}
+
+.top-nav__hamburger.active:before {
+  transform: rotate(45deg) translate(0.75rem, 0.4rem);
+}
+
+.top-nav__hamburger.active:after {
+  transform: rotate(-45deg) translate(0.7rem, -0.4rem);
+}
+
+.top-nav__hamburger__nav {
+  background-color: #005555;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 100%;
+  width: 90%;
+  height: 100vh;
+  z-index: 2;
+  transition: 0.5s;
+  padding: 20% 5% 0 10%;
+}
+
+.top-nav__hamburger__nav i {
+  font-size: 2.5rem;
+  padding: 0 7%;
+}
+
+.top-nav__hamburger__nav a {
+  color: #f1f1f1;
+  font-size: 2em;
+  margin: 0 0 15%;
+}
+
+.top-nav__hamburger__nav a:hover {
+  color: #EE8572;
+}
+
+.top-nav__hamburger__nav.active {
+  left: 30%;
+}
+
+

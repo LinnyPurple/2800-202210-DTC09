@@ -37,6 +37,15 @@ function editUserInfo() {
 }
 
 
+// reset password
+async function resetPassword(newPassword) {
+
+    let res = await postRequest('/api/resetPassword', {
+        newPassword: newPassword
+    });
+    console.log(res);
+}
+
 // save -> update data
 async function saveUserInfo() {
     userName = document.getElementById("nameInput").value;
@@ -44,13 +53,17 @@ async function saveUserInfo() {
 
     let res = await postRequest("/api/editAccount2", {
         newUsername: userName,
-        newPassword: userPassword
     });
     console.log(res);
+
+    if (userPassword != "") {
+        resetPassword(userPassword)
+    }
 
     // after
     document.getElementById('personalInfoFields').disabled = true
 }
+
 
 function setup() {
     getUserInfo()
