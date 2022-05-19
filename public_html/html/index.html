@@ -44,6 +44,7 @@
             else if (month == 10 && day == 31) return "Halloween";
             else if (month == 12 && day == 25) return "Christmas";
             else if (month == 12 && day == 27) return "George's Birthday";
+            else if (month == 5 && day == 19 || day == 20 || day == 21) return "Client Meeting";
             else return "";
         }
 
@@ -57,17 +58,18 @@
             else if (specialDay === "Canada Day") return ["OH CANADA,", "OUR HOME AND", "NATIVE LAND."];
             else if (specialDay === "Christmas") return ["SWAP PRESENTS.", "SAVE SANTA.", "MERRY CHRISTMAS!"];
             else if (specialDay === "George's Birthday") return ["TODAY GEORGE", "ROZITIS TURNS", `${year - 98}.`];
-            else return ["SWAP ITEMS.", "SAVE MONEY.", "REDUCE WASTE."];
+            else if (specialDay === "Client Meeting") return ["CHRIS PLEASE", "GIVE US", "HIGH MARKS."];
+            else return ["SAVE MONEY.", "REDUCE WASTE.", "SWAP ITEMS."];
         }
 
         function initialMotto() {
             const motto = getMotto();
-            document.getElementById("logo-index").innerHTML = `${motto[0]}<br>${motto[1]}<br>${motto[2]}`;
+            document.getElementById("logo-index").innerHTML = `SWAP ITEMS.<br>SAVE MONEY.<br>REDUCE WASTE.`;
         }
 
         function f() {
             const motto = getMotto();
-            document.getElementById("logo-index").innerHTML = `${motto[1]}<br>${motto[2]}<br>${motto[0]}`;
+            document.getElementById("logo-index").innerHTML = `${motto[0]}<br>${motto[1]}<br>${motto[2]}`;
         }
     </script>
 </body>
