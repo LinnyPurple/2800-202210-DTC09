@@ -30,36 +30,46 @@
         <div>
             <div id="titleNDate">
                 <h2 id="title_" style="width: 70%;"> title </h2>
-                <h6 style="width: 30%;"> Posting date </h6>
+                <h6 id="date" style="width: 30%;"> Posting date </h6>
             </div>
             <div id="item_img">
-                <img src="../etc/camera.svg">
+                <img id="item_image" src="../etc/camera.svg">
             </div>
 
             <div id="userNcategory">
                 <div id="user_info">
                     <span style="font-size: large;">Trader: </span>
-                    <a href="#" id="userName"> UserName </a>
+                    <a href="#" id="traderName"> UserName </a>
                 </div>
 
                 <div id="category">
-                    <h5> mycategory </h5>
+                    <h5 id="myItem"> mycategory </h5>
                     <h5>↔</h5>
-                    <h5> tradingcategory</h5>
+                    <h5 id="itemLookfor"> tradingcategory</h5>
                 </div>
             </div>
 
             <div id="detail">
                 <div id="description"> Description</div>
-                <div> <span class="details">Condition: </span> <span> ... </span></div>
-                <div> <span class="details">Trading Method: </span> <span> ... </span></div>
+                <div>
+                    <span class="details">Condition: </span>
+                    <span id="condition"> ... </span>
+                </div>
+                <div>
+                    <span class="details">Trading Method: </span>
+                    <span id="trading_method"> ... </span>
+                </div>
             </div>
         </div>
         <div id="buttons">
+            <div>
             <button id="back_btn" type="button" class="btn btn-secondary btn-lg" onclick="history.back()">Go
                 Back</button>
+            </div>
 
-            <button id="chat_btn" type="button" class="btn btn-secondary btn-lg" onclick="">Chat</button>
+            <div id="chatOrEdit">
+                <button id="chat_btn" type="button" class="btn btn-secondary btn-lg" onclick="">Chat</button>
+            </div>
         </div>
 
     </main>
