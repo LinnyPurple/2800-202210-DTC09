@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 10% 80% 10%;
+    font-family: 'Roboto', sans-serif;
+}
+
+header {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    height: 100%;
+}
+
+#chat {
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+}
+
+footer {
+    grid-column: 1;
+    grid-row: 3;
+    width: 100%;
+    height: 100%;
+}
+
+.msg {
+    display: flex;
+    flex-direction: row;
+    min-height: 10%;
+    max-width: 60%;
+    font-size: xxx-large;
+    color: white;
+    padding: 20px;
+}
+
+.sentChat {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.reciChat {
+    margin-right: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.msg .cImg {
+    width: 20%;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+.msg .cP {
+    padding: 10px;
+    border-radius: 30px;
+    height: fit-content;
+}
+
+.reciP {
+    background-color: cadetblue;
+}
+
+.sentP {
+    background-color: cornflowerblue;
+    text-align: end;
+}
+
+.reciImg {
+    padding-right: 15px;
+}
+
+.sentImg {
+    padding-left: 15px;
+}
+
+header {
+    background-color: #45807e;
+    width: 100%;
+    height: 100%;
+}
+
+footer {
+    background-color: #45807e;
+    width: 100%;
+    height: 100%;
+}
+
+footer form {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: center;
+}
+
+footer form #sendMessage {
+    height: 70%;
+    width: 70%;
+    font-size: 500%;
+    border-radius: 20px;
+}
+
+footer form #sendButton {
+    height: 70%;
+    width: 20%;
+    border-radius: 20px;
+    font-size: 400%;
+}

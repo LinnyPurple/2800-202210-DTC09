@@ -45,6 +45,12 @@ function reqLogin(req, res, next) {
     }
 }
 
+try {
+    fs.readdirSync('../public_html/img');
+} catch (err) {
+    fs.mkdirSync('../public_html/img');
+}
+
 app.use("/html", express.static("../public_html/html"));
 app.use("/css", express.static("../public_html/css"));
 app.use("/js", express.static("../public_html/js"));
@@ -88,7 +94,6 @@ app.get('/review', function (req, res) {
     res.send(doc);
 });
 
-
 app.get('/profile', function (req, res) {
     let doc = fs.readFileSync('../public_html/html/profile.html', "utf8");
     res.send(doc);
@@ -112,6 +117,11 @@ app.get('/sendTradeOffer/:listingID', reqLogin, async (req, res) => {
 
     doc.window.document.querySelector('.TradeItemImg').src = imgs ? imgs[0] : 'https://dummyimage.com/200x200/000/fff';
     res.send(doc.serialize());
+});
+
+app.get('/chat/:uid', reqLogin, function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/chat.html', "utf8");
+    res.send(doc);
 });
 
 app.get('/item', function (req, res) {
@@ -247,14 +257,14 @@ app.post('/api/resetPassword', urlencodedParser, (req, res) => {
 
 //upload profile photo
 try {
-    fs.readdirSync('../public_html/img'); // check folder
+    fs.readdirSync('../public_html/img/profiles'); // check folder
 } catch (err) {
-    fs.mkdirSync('../public_html/img'); // Create folder
+    fs.mkdirSync('../public_html/img/profiles'); // Create folder
 }
 
 var storage = multer.diskStorage({
     destination: (req, file, callBack) => {
-        callBack(null, '../public_html/img/') // directory name where save the file
+        callBack(null, '../public_html/img/profiles/') // directory name where save the file
     },
     filename: (req, file, callBack) => {
         callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
@@ -274,7 +284,7 @@ app.post("/upload", upload.single('image'), (req, res) => {
 
     if (req.file) {
         console.log(req.file.filename)
-        var imgsrc = '../img/' + req.file.filename
+        var imgsrc = '/img/profiles/' + req.file.filename
         let query = `UPDATE user SET image = ? WHERE ID = ${req.session.uid};`
 
         connection.query(query,
@@ -447,7 +457,8 @@ app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
                     'result': 'Success',
                     'msg': 'Sucessfully found user.',
                     'uid': result[0].ID,
-                    'username': result[0].username
+                    'username': result[0].username,
+                    'image': result[0].image
                 });
             } else {
                 res.status(400).send({
@@ -465,14 +476,14 @@ app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
 
 //upload posting image
 try {
-    fs.readdirSync('../public_html/img_post'); // Check folder
+    fs.readdirSync('../public_html/img/post'); // Check folder
 } catch (err) {
-    fs.mkdirSync('../public_html/img_post'); // Create folder
+    fs.mkdirSync('../public_html/img/post'); // Create folder
 }
 
 var storagePost = multer.diskStorage({
     destination: (req, file, callBack) => {
-        callBack(null, '../public_html/img_post/') // directory name where save the file
+        callBack(null, '../public_html/img/post/') // directory name where save the file
     },
     filename: (req, file, callBack) => {
         callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
@@ -492,9 +503,9 @@ app.post("/uploadposting", uploadPost.single('image'), (req, res) => {
     const condition = req.body.condition;
     const tradingMethod = req.body.tradingMethod;
     const description = req.body.description;
-    const images = null;
+    let images = null;
     if (req.file) {
-        const images = req.file.filename;
+        images = req.file.filename;
     }
 
     const mysql = require("mysql2")
@@ -857,14 +868,14 @@ app.get('/getWSID', (req, res) => {
     };
 });
 
-app.get('/getMessageLogs', (req, res) => {
-    console.log(req.query.target);
+app.get('/getMessageLogs/:target', reqLogin, (req, res) => {
+    console.log(req.params.target);
     if (req.session.loggedIn) {
         const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
 
-        let query = `SELECT * FROM message WHERE ((senderID = ${req.session.uid} AND recieverID = ${parseInt(req.query.target)}) OR (senderID = ${parseInt(req.query.target)} AND recieverID = ${req.session.uid}))`;
-        let values = [req.session.uid, parseInt(req.query.target), parseInt(req.query.target), req.session.uid]
+        let query = `SELECT * FROM message WHERE ((senderID = ${req.session.uid} AND recieverID = ${parseInt(req.params.target)}) OR (senderID = ${parseInt(req.params.target)} AND recieverID = ${req.session.uid}))`;
+        let values = [req.session.uid, parseInt(req.params.target), parseInt(req.params.target), req.session.uid]
 
         connection.query(query, (err, result) => {
             res.send(result);

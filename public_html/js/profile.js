@@ -9,7 +9,7 @@ async function getUserInfo() {
         console.log("User is logged in")
         var currentUsername = currentUserInfo.name;
         var currentUserEmail = currentUserInfo.email;
-        var currentImage = currentUserInfo.image;
+        var currentImage = currentUserInfo.image ? currentUserInfo.image : '/img/Default_pfp.jpg';
         console.log(currentUserInfo)
 
         if (currentUsername != '') {
@@ -20,9 +20,7 @@ async function getUserInfo() {
             document.getElementById("emailInput").value = currentUserEmail;
         }
 
-        if (currentImage != "") {
-            $("#profilePicture").html(`<img src="${currentImage}" class="rounded-circle border border-dark border-1 mx-auto d-block" style="width: 110px; height: 110px;">`)
-        }
+        $("#profilePicture").html(`<img src="${currentImage}" class="rounded-circle border border-dark border-1 mx-auto d-block" style="width: 110px; height: 110px;">`)
 
     } else {
         console.log("No user is signed in");
