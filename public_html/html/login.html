@@ -51,9 +51,14 @@
     function f() {
       var email_ = document.getElementById("email").value;
       var password_ = document.getElementById("password").value;
-      console.log(email_, password_);
-      loginV2(email_, password_);
-      window.location.assign('/account');
+      // console.log(email_, password_);
+      try {
+        loginV2(email_, password_);
+      } catch (e) {
+          console.log(e);
+          console.log("COULD NOT LOG IN");
+      }
+      // window.location.assign('/account');
     }
   </script>
 </body>
