@@ -59,7 +59,6 @@
     <script>
         async function populateChats() {
             let allChats = JSON.parse(await getRequest('/openChats'));
-            console.log("g")
 
             const parent = document.querySelector('#openChats');
             for (chatI in allChats) {
