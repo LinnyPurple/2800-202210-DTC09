@@ -74,7 +74,7 @@ app.get('/signup', function (req, res) {
     res.send(doc);
 });
 
-app.get('/account', function (req, res) {
+app.get('/account', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/account.html', "utf8");
     res.send(doc);
 });
@@ -121,6 +121,11 @@ app.get('/sendTradeOffer/:listingID', reqLogin, async (req, res) => {
 
 app.get('/chat/:uid', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/chat.html', "utf8");
+    res.send(doc);
+});
+
+app.get('/chat/', reqLogin, function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/viewChats.html', "utf8");
     res.send(doc);
 });
 
@@ -452,7 +457,7 @@ app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
 
         let checkIfExists = `SELECT * FROM user WHERE username = '${req.query.username}' OR ID = ${parseInt(req.query.uid ? req.query.uid : -1)}`;
         connection.query(checkIfExists, (err, result) => {
-            if (result != null) {
+            if (result != null && result.length > 0) {
                 res.status(200).send({
                     'result': 'Success',
                     'msg': 'Sucessfully found user.',
@@ -877,7 +882,7 @@ app.get('/getMessageLogs/:target', reqLogin, (req, res) => {
         let query = `SELECT * FROM message WHERE ((senderID = ${req.session.uid} AND recieverID = ${parseInt(req.params.target)}) OR (senderID = ${parseInt(req.params.target)} AND recieverID = ${req.session.uid}))`;
         let values = [req.session.uid, parseInt(req.params.target), parseInt(req.params.target), req.session.uid]
 
-        connection.query(query, (err, result) => {
+        connection.query(query, values, (err, result) => {
             res.send(result);
         });
     } else {
@@ -885,6 +890,27 @@ app.get('/getMessageLogs/:target', reqLogin, (req, res) => {
             'result': 'Error, not logged in.'
         })
     }
+});
+
+app.get('/openChats', reqLogin, (req, res) => {
+    let uid = req.session.uid;
+    const mysql = require("mysql2");
+    const connection = mysql.createConnection(SQL_DATA);
+
+    let query = `SELECT senderID, recieverID FROM message WHERE senderID = ${uid} OR recieverID = ${uid}`;
+    let values = [req.session.uid, req.session.uid]
+    let set = new Set();
+
+    connection.query(query, values, (err, result) => {
+        for (msgI in result) {
+            let msg = result[msgI];
+            set.add(msg.senderID);
+            set.add(msg.recieverID);
+        }
+        set.delete(uid);
+        let tmp = JSON.stringify([...set]);
+        res.send(tmp);
+    });
 });
 
 //#endregion

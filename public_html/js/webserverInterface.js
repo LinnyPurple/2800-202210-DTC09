@@ -65,6 +65,10 @@ async function getOtherUserInfo(id) {
     let res = await getRequest(`/api/getUserInfo?uid=${id}`);
     return res;
 }
+async function getOtherUserInfoByName(username) {
+    let res = await getRequest(`/api/getUserInfo?username=${username}`);
+    return res;
+}
 async function postListing() {
     let res = await postRequest("/api/postListing", {
         title: "Test Title",
