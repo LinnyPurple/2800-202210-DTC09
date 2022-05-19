@@ -16,7 +16,7 @@
   <header></header>
 
   <main>
-    <h2>SWAP ITEMS.<br>
+    <h2 id="logo-index" onclick="f()">SWAP ITEMS.<br>
       SAVE MONEY.<br>
       REDUCE WASTE.</h2>
     <div id="login">
@@ -32,6 +32,11 @@
   <script src="js/global.js"></script>
   <script src="/js/httpRequests.js"></script>
   <script src="/js/webserverInterface.js"></script>
+  <script>
+      function f() {
+          document.getElementById("logo-index").innerHTML = "SAVE MONEY.<br>REDUCE WASTE.<br>SWAP ITEMS.";
+      }
+  </script>
 
 </body>
 
