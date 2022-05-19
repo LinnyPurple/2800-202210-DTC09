@@ -246,6 +246,12 @@ app.post('/api/resetPassword', urlencodedParser, (req, res) => {
 });
 
 //upload profile photo
+try {
+    fs.readdirSync('../public_html/img'); // check folder
+} catch (err) {
+    fs.mkdirSync('../public_html/img'); // Create folder
+}
+
 var storage = multer.diskStorage({
     destination: (req, file, callBack) => {
         callBack(null, '../public_html/img/') // directory name where save the file
@@ -457,6 +463,56 @@ app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
 
 //#region LISTINGS
 
+//upload posting image
+try {
+    fs.readdirSync('../public_html/img_post'); // Check folder
+} catch (err) {
+    fs.mkdirSync('../public_html/img_post'); // Create folder
+}
+
+var storagePost = multer.diskStorage({
+    destination: (req, file, callBack) => {
+        callBack(null, '../public_html/img_post/') // directory name where save the file
+    },
+    filename: (req, file, callBack) => {
+        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+    }
+})
+
+var uploadPost = multer({
+    storage: storagePost
+});
+
+
+// Upload posting
+app.post("/uploadposting", uploadPost.single('image'), (req, res) => {
+        const title = req.body.title;
+        const myItem = req.body.myItem;
+        const tradingItem = req.body.tradingItem;
+        const condition = req.body.condition;
+        const tradingMethod = req.body.tradingMethod;
+        const description = req.body.description;
+        const images = null;
+        if (req.file) {
+            const images = req.file.filename;
+        }
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description, images) values ?";
+        let values = [
+            [req.session.uid, title, myItem, tradingItem, condition, tradingMethod, description, images]
+        ]
+
+        connection.query(query, [values], (result, err) => {
+            console.log(err);
+            res.redirect('/posting');
+        })
+    
+});
+
 app.post('/api/postListing', urlencodedParser, function (req, res) {
     res.setHeader("Content-Type", "application/json");
 
@@ -467,7 +523,7 @@ app.post('/api/postListing', urlencodedParser, function (req, res) {
         const condition = req.body.condition;
         const tradingMethod = req.body.tradingMethod;
         const description = req.body.description;
-        // const images = req.body.images;
+        const images = req.body.images;
 
         const mysql = require("mysql2")
         const connection = mysql.createConnection(SQL_DATA);

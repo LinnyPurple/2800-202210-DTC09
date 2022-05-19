@@ -23,20 +23,21 @@
     <!-- contents -->
 
     <main>
-        <div id="contents">
+        <form action="/uploadposting" method="post" enctype="multipart/form-data">
+            <div id="contents">
 
-            <div id="picture">
-                <!-- display image -->
-                <div class="image-area mt-1">
-                    <img id="imageResult" src="../img/camera.svg" alt=""
-                        class="img-fluid rounded shadow-sm mx-auto d-block" style="width: 100px;">
-                </div>
+                <div id="picture">
+                    <!-- display image -->
+                    <div class="image-area mt-1">
+                        <img id="imageResult" src="../etc/camera.svg" alt=""
+                            class="img-fluid rounded shadow-sm mx-auto d-block" style="width: 100px;">
+                    </div>
 
-                <!-- Input image -->
-                <form action="" method="post" enctype="multipart/form-data">
+                    <!-- Input image -->
                     <div style="display: flex;">
                         <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
-                            <input id="upload" type="file" onchange="readURL(this);" class="form-control border-0">
+                            <input id="upload" type="file" onchange="readURL(this);" class="form-control border-0"
+                                name="image">
                             <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose
                                 file</label>
                             <div class="input-group-append">
@@ -45,92 +46,80 @@
                                         class="text-uppercase font-weight-bold text-muted">Choose file</small></label>
                             </div>
                         </div>
-                        <input type="submit" value="Upload" id="upload_btn">
                     </div>
-                </form>
 
-                <!-- <form action="" method="post" enctype="multipart/form-data">
+                </div>
                 <div class="form-group my-3">
-                    <label>Upload picture:</label>
-                    <br>
-                    <input type="file" name="itemImage" id="uploadButton" accept="itemImage/*" />
-                    <input type="submit" value="Submit">
+                    <label>Title</label>
+                    <input type="text" id="titleInput" class="form-control" placeholder="Title" name="title">
                 </div>
-            </form> -->
-            </div>
-            <div class="form-group my-3">
-                <label>Title</label>
-                <input type="text" id="titleInput" class="form-control" placeholder="Title">
-            </div>
 
-            <div id="category" class="form-group" style="margin-bottom: 0;">
-                <div>
-                    <label>Category</label>
+                <div id="category" class="form-group" style="margin-bottom: 0;">
+                    <div>
+                        <label>Category</label>
+                    </div>
+                    <div style="display:flex;">
+                        <select id="myCategory" class="form-select form-select-lg mb-3"
+                            aria-label=".form-select-lg example" name="myItem">
+                            <option selected> My Item </option>
+                            <option value="home_stuff">Home stuff</option>
+                            <option value="clothes">Clothes</option>
+                            <option value="accessaries">Accessaries</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="etc">ETC</option>
+                        </select>
+                        <select id="wantedCategory" class="form-select form-select-lg mb-3"
+                            aria-label=".form-select-lg example" name="tradingItem">
+                            <option selected>Looking For</option>
+                            <option value="home_stuff">Home stuff</option>
+                            <option value="clothes">Clothes</option>
+                            <option value="accessaries">Accessaries</option>
+                            <option value="electronics">Electronics</option>
+                            <option value="etc">ETC</option>
+                        </select>
+                    </div>
                 </div>
-                <div style="display:flex;">
-                    <select id="myCategory" class="form-select form-select-lg mb-3"
-                        aria-label=".form-select-lg example">
-                        <option selected> My Item </option>
-                        <option value="home_stuff">Home stuff</option>
-                        <option value="clothes">Clothes</option>
-                        <option value="accessaries">Accessaries</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="etc">ETC</option>
+
+                <div class="form-group">
+                    <div>
+                        <label>Item Condition</label>
+                    </div>
+                    <select id="condition" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
+                        name="condition">
+                        <option selected>Select Condition</option>
+                        <option value="new">New</option>
+                        <option value="almost_new">Almost New</option>
+                        <option value="good">Good</option>
+                        <option value="fair">Fair</option>
+                        <option value="not_bad">Not Bad</option>
                     </select>
-                    <select id="wantedCategory" class="form-select form-select-lg mb-3"
-                        aria-label=".form-select-lg example">
-                        <option selected>Looking For</option>
-                        <option value="home_stuff">Home stuff</option>
-                        <option value="clothes">Clothes</option>
-                        <option value="accessaries">Accessaries</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="etc">ETC</option>
+                </div>
+
+                <div class="form-group">
+                    <div>
+                        <label>Trading Method</label>
+                    </div>
+                    <select id="tradingMethod" class="form-select form-select-lg mb-3"
+                        aria-label=".form-select-lg example" name="tradingMethod">
+                        <option selected>Select Method</option>
+                        <option value="any">Any</option>
+                        <option value="inperson">In-Person</option>
+                        <option value="delievery">Delivery</option>
                     </select>
                 </div>
-            </div>
-
-            <div class="form-group">
-                <div>
-                    <label>Item Condition</label>
-                </div>
-                <select id="condition" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                    <option selected>Select Condition</option>
-                    <option value="new">New</option>
-                    <option value="almost_new">Almost New</option>
-                    <option value="good">Good</option>
-                    <option value="fair">Fair</option>
-                    <option value="not_bad">Not Bad</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <div>
-                    <label>Trading Method</label>
-                </div>
-                <select id="tradingMethod" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example">
-                    <option selected>Select Method</option>
-                    <option value="any">Any</option>
-                    <option value="inperson">In-Person</option>
-                    <option value="delievery">Delivery</option>
-                </select>
-            </div>
-
-            <form class="form-group">
                 <label>Description</label>
 
-                <textarea class="form-control input-lg" rows="5" id="description"
-                    placeholder="Enter Description"></textarea>
-            </form>
-        </div>
+                <textarea class="form-control input-lg" rows="5" id="description" placeholder="Enter Description"
+                    name="description"></textarea>
+            </div>
 
-        <div id="buttons">
-            <!-- todo: previous button? -->
-            <button type="button" id="goback_btn" class="btn btn-secondary btn-lg" onclick="history.back()">Go
-                Back</button>
+            <div id="buttons">
+                <button type="button" id="goback_btn" class="btn btn-secondary btn-lg" onclick="history.back()">Go
+                    Back</button>
 
-            <button type="button" id="submit_btn" class="btn btn-secondary btn-lg"
-                onclick="postListing()">Submit</button>
-        </div>
+                <button type="submit" id="submit_btn" class="btn btn-secondary btn-lg">Submit</button>
+            </div>
+        </form>
 
 
     </main>
