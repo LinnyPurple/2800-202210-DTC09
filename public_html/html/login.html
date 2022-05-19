@@ -31,6 +31,7 @@
           <label for="p">Password:</label>
           <input id="password" value="">
         </div>
+        <div id="invalid-login"></div>
         <div id="login">
           <button class="primary-btn" onclick="f()">Log In</button>
           <span>OR</span>
@@ -48,17 +49,16 @@
   <script src="/js/httpRequests.js"></script>
   <script src="/js/webserverInterface.js"></script>
   <script>
-    function f() {
+    async function f() {
       var email_ = document.getElementById("email").value;
       var password_ = document.getElementById("password").value;
       // console.log(email_, password_);
-      try {
-        loginV2(email_, password_);
-      } catch (e) {
-          console.log(e);
+      const loginSuccess = JSON.parse(await loginV2(email_, password_));
+      console.log(`loginSuccess: ${loginSuccess.result}`);
+      if (loginSuccess.result === "Failed to log in.") {
           console.log("COULD NOT LOG IN");
-      }
-      // window.location.assign('/account');
+          document.getElementById("invalid-login").innerHTML = "Username/password does not exist.";
+      } else window.location.assign('/account');
     }
   </script>
 </body>

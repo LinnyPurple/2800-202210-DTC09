@@ -52,7 +52,8 @@ async function loginV2(username = "testuser", password = "testPass") {
         password: password,
         username: username
     });
-    console.log(res);
+    // console.log(res);
+    return res;
 }
 
 async function getUserInfo() {
