@@ -66,6 +66,7 @@ footer {
     width: 20%;
     margin-bottom: auto;
     margin-top: auto;
+    border-radius: 50%;
 }
 
 .msg .cP {
@@ -89,12 +90,6 @@ footer {
 
 .sentImg {
     padding-left: 15px;
-}
-
-header {
-    background-color: #45807e;
-    width: 100%;
-    height: 100%;
 }
 
 footer {
@@ -125,4 +120,48 @@ footer form #sendButton {
     width: 20%;
     border-radius: 20px;
     font-size: 400%;
+}
+
+header {
+    background-color: #45807e;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-content: center;
+}
+
+#profile {
+    height: 80%;
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-content: center;
+    margin: auto;
+}
+
+.profilePhoto {
+    height: 100%;
+    border-radius: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.profileName {
+    text-align: center;
+    color: white;
+    font-size: 400%;
+    padding-left: 20px;
+}
+
+#backButton {
+    height: 80%;
+    width: 15%;
+    font-size: 500%;
+    color: white;
+    background: transparent;
+    border-color: transparent;
 }

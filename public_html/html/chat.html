@@ -6,7 +6,11 @@
     </head>
     <body>
         <header>
-
+            <button id="backButton" onclick="window.location.assign('/')">&lt</button>
+            <div id="profile">
+                <img class="profilePhoto" src="/img/Default_pfp.jpg" />
+                <h2 class="profileName">Name</h2>
+            </div>
         </header>
         <div id="chat">
             <template id="reciChatT">
@@ -25,7 +29,7 @@
         <footer>
             <form>
                 <input type="text" id="sendMessage" />
-                <input type="button" id="sendButton" value="Send" />
+                <input type="button" id="sendButton" value="Send" onclick="sendNewMessage();" />
             </form>
         </footer>
         <script src="/js/httpRequests.js"></script>
@@ -46,6 +50,9 @@
                 console.log(currentUser);
                 console.log(logs);
 
+                document.querySelector('.profilePhoto').setAttribute('src', (otherUser.image ? otherUser.image : '/img/Default_pfp.jpg'));
+                document.querySelector('.profileName').innerHTML = otherUser.username;
+
                 const parent = document.querySelector('#chat');
                 for (let logI in logs) {
                     let log = logs[logI];
@@ -56,17 +63,26 @@
 
                     parent.appendChild(template);
                 }
+                parent.scrollTo(0, parent.scrollHeight);
 
                 initWebsocket();
             }
 
-            async function sendMessage(target, msg) {
-                if (currentUser.loggedIn) {
-                    socket.send(JSON.stringify({'sender': userInfo.uid, 'target': target, 'msg': msg}));
-                }
-                else {
-                    console.log("User is not logged in.");
-                }
+            async function newMessage(sent, msg) {
+                const parent = document.querySelector('#chat');
+
+                let template = document.querySelector((sent) ? '#sentChatT' : '#reciChatT').content.cloneNode(true);
+                template.querySelector('.cImg').setAttribute('src', (sent) ? (currentUser.image ? currentUser.image : '/img/Default_pfp.jpg') : (otherUser.image ? otherUser.image : '/img/Default_pfp.jpg'));
+                template.querySelector('.cP').innerHTML = msg;
+                parent.appendChild(template);
+                parent.scrollTo(0, parent.scrollHeight);
+            }
+
+            function sendNewMessage() {
+                let msg = document.querySelector('#sendMessage');
+                socket.send(JSON.stringify({'sender': currentUser.uid, 'target': otherUser.uid, 'msg': msg.value}));
+                newMessage(true, msg.value);
+                msg.value = '';
             }
 
             async function initWebsocket() { 
@@ -79,6 +95,10 @@
                 socket.addEventListener('message', function (event) {
                     let message = JSON.parse(event.data);
                     console.log(`From ${message.sender}: `, message.msg);
+
+                    if (message.sender == otherUser.uid) {
+                        newMessage(false, message.msg);
+                    }
                 });
             }
 
