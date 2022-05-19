@@ -114,8 +114,8 @@ app.get('/sendTradeOffer/:listingID', reqLogin, async (req, res) => {
     res.send(doc.serialize());
 });
 
-app.get('/template', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/template.html', "utf8");
+app.get('/item', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/item.html', "utf8");
     res.send(doc);
 });
 
@@ -486,31 +486,35 @@ var uploadPost = multer({
 
 // Upload posting
 app.post("/uploadposting", uploadPost.single('image'), (req, res) => {
-        const title = req.body.title;
-        const myItem = req.body.myItem;
-        const tradingItem = req.body.tradingItem;
-        const condition = req.body.condition;
-        const tradingMethod = req.body.tradingMethod;
-        const description = req.body.description;
-        const images = null;
-        if (req.file) {
-            const images = req.file.filename;
+    const title = req.body.title;
+    const myItem = req.body.myItem;
+    const tradingItem = req.body.tradingItem;
+    const condition = req.body.condition;
+    const tradingMethod = req.body.tradingMethod;
+    const description = req.body.description;
+    const images = null;
+    if (req.file) {
+        const images = req.file.filename;
+    }
+
+    const mysql = require("mysql2")
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description, images) values ?";
+    let values = [
+        [req.session.uid, title, myItem, tradingItem, condition, tradingMethod, description, images]
+    ]
+
+    connection.query(query, [values], (err, result) => {
+        if (result) {
+            console.log(result.insertId)
+            res.redirect('/item?post_id=' + result.insertId);
+        }else {
+            console.log(err)
         }
+    })
 
-        const mysql = require("mysql2")
-        const connection = mysql.createConnection(SQL_DATA);
-        connection.connect();
-
-        let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description, images) values ?";
-        let values = [
-            [req.session.uid, title, myItem, tradingItem, condition, tradingMethod, description, images]
-        ]
-
-        connection.query(query, [values], (result, err) => {
-            console.log(err);
-            res.redirect('/posting');
-        })
-    
 });
 
 app.post('/api/postListing', urlencodedParser, function (req, res) {
@@ -654,6 +658,31 @@ function getListingData(auctionID) {
         });
     })
 }
+
+app.get('/api/getTraderInfo', urlencodedParser, (req, res) => {
+    let traderID = req.query.id;
+
+    const mysql = require("mysql2");
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    let query = 'SELECT * FROM user WHERE ID = ?';
+    let values = [traderID];
+
+    connection.query(query, values, (err, result) => {
+        if (result[0] != null) {
+            res.send({
+                "result": "Success",
+                "data": result[0]
+            })
+        } else {
+            res.status(400).send({
+                "result": "Failed",
+                "data": null
+            });
+        }
+    });
+});
 
 //#endregion
 

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>SwapOmen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- css -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <link rel="stylesheet" href="../css/item.css">
+    <link rel="stylesheet" href="../css/template.css">
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+
+<body>
+    <!-- top nav -->
+    <header class="sticky-top"></header>
+
+    <!-- contents -->
+    <main>
+        <div>
+            <div id="titleNDate">
+                <h2 id="title_" style="width: 70%;"> title </h2>
+                <h6 id="date" style="width: 30%;"> Posting date </h6>
+            </div>
+            <div id="item_img">
+                <img id="item_image" src="../etc/camera.svg">
+            </div>
+
+            <div id="userNcategory">
+                <div id="user_info">
+                    <span style="font-size: large;">Trader: </span>
+                    <a href="#" id="traderName"> UserName </a>
+                </div>
+
+                <div id="category">
+                    <h5 id="myItem"> mycategory </h5>
+                    <h5>↔</h5>
+                    <h5 id="itemLookfor"> tradingcategory</h5>
+                </div>
+            </div>
+
+            <div id="detail">
+                <div id="description"> Description</div>
+                <div>
+                    <span class="details">Condition: </span>
+                    <span id="condition"> ... </span>
+                </div>
+                <div>
+                    <span class="details">Trading Method: </span>
+                    <span id="trading_method"> ... </span>
+                </div>
+            </div>
+        </div>
+        <div id="buttons">
+            <div>
+            <button id="back_btn" type="button" class="btn btn-secondary btn-lg" onclick="history.back()">Go
+                Back</button>
+            </div>
+
+            <div id="chatOrEdit">
+                <button id="chat_btn" type="button" class="btn btn-secondary btn-lg" onclick="">Chat</button>
+            </div>
+        </div>
+
+    </main>
+
+
+    <!-- botton nav -->
+    <footer class="fixed-bottom"></footer>
+
+
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <!-- SCRIPTS -->
+    <script src="js/global.js"></script>
+    <script src="../js/item.js"></script>
+    <script src="/js/httpRequests.js"></script>
+
+
+</body>
+
+</html>
