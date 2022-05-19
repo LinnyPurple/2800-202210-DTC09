@@ -63,13 +63,14 @@
         }
 
         function initialMotto() {
-            const motto = getMotto();
             document.getElementById("logo-index").innerHTML = `SWAP ITEMS.<br>SAVE MONEY.<br>REDUCE WASTE.`;
         }
 
         function f() {
+            const currentMotto = document.getElementById("logo-index").innerHTML.split('<br>');
             const motto = getMotto();
-            document.getElementById("logo-index").innerHTML = `${motto[0]}<br>${motto[1]}<br>${motto[2]}`;
+            if (currentMotto[0] === "SWAP ITEMS.") document.getElementById("logo-index").innerHTML = `${motto[0]}<br>${motto[1]}<br>${motto[2]}`;
+            else document.getElementById("logo-index").innerHTML = `SWAP ITEMS.<br>SAVE MONEY.<br>REDUCE WASTE.`;
         }
     </script>
 </body>
