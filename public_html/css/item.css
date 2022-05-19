@@ -1,0 +1,76 @@
+/* main */
+main {
+    margin: 5px 40px;
+}
+
+/* image */
+#item_img {
+    text-align: center;
+}
+
+#item_img img {
+    width: 87%;
+}
+
+/* info */
+
+#user_info a {
+    color: #45807E;
+    font-size: x-large;
+}
+
+#title_ {
+    text-decoration: underline;
+}
+
+#titleNDate, #category {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+#userNcategory {
+    margin:0px 10px
+}
+#category {
+    color: #8b8f8f;
+}
+#detail {
+    border: #b2b2b2 solid 2px;
+    border-radius: 20px;
+    padding: 15px;
+}
+
+.details {
+    font-size: 16px;
+    padding: 15px 0;
+}
+
+#description {
+    height: 90px;
+    font-size: 20px;
+}
+
+
+/* buttons */
+#buttons {
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+#buttons button {
+    width: 110px;
+}
+
+#back_btn {
+    color: #45807E;
+    border: 3px solid #45807E;
+    background-color: #D4F3EF;
+}
+
+#chat_btn {
+    border: none;
+    color: #f1f1f1;
+    background-color: #EE8572;
+}

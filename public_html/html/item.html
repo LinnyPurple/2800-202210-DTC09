@@ -11,7 +11,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-    <link rel="stylesheet" href="../css/review.css">
+    <link rel="stylesheet" href="../css/item.css">
     <link rel="stylesheet" href="../css/template.css">
 
     <!-- bootstrap -->
@@ -27,34 +27,41 @@
 
     <!-- contents -->
     <main>
-        <div id="title">
-            <h2>How was the trade?</h2>
-        </div>
+        <div>
+            <div id="titleNDate">
+                <h2 id="title_" style="width: 70%;"> title </h2>
+                <h6 style="width: 30%;"> Posting date </h6>
+            </div>
+            <div id="item_img">
+                <img src="../etc/camera.svg">
+            </div>
 
-        <div class="rate py-3 text-white mt-3">
-            <div class="rating">
-                <input type="radio" name="rating" value="5" id="5" onclick="rating(this)"><label for="5">☆</label>
-                <input type="radio" name="rating" value="4" id="4" onclick="rating(this)"><label for="4">☆</label>
-                <input type="radio" name="rating" value="3" id="3" onclick="rating(this)"><label for="3">☆</label>
-                <input type="radio" name="rating" value="2" id="2" onclick="rating(this)"><label for="2">☆</label>
-                <input type="radio" name="rating" value="1" id="1" onclick="rating(this)"><label for="1">☆</label>
+            <div id="userNcategory">
+                <div id="user_info">
+                    <span style="font-size: large;">Trader: </span>
+                    <a href="#" id="userName"> UserName </a>
+                </div>
+
+                <div id="category">
+                    <h5> mycategory </h5>
+                    <h5>↔</h5>
+                    <h5> tradingcategory</h5>
+                </div>
+            </div>
+
+            <div id="detail">
+                <div id="description"> Description</div>
+                <div> <span class="details">Condition: </span> <span> ... </span></div>
+                <div> <span class="details">Trading Method: </span> <span> ... </span></div>
             </div>
         </div>
-
-        <div id="feedback">
-            <form>
-                <div class="form-group">
-                    <label for="comment">Feedback:</label>
-                    <textarea class="form-control input-lg" rows="7" id="comment"></textarea>
-                </div>
-            </form>
-        </div>
-
         <div id="buttons">
-            <button id="back_btn" type="button" class="btn btn-secondary btn-lg" onclick="history.back()">Go Back</button>
+            <button id="back_btn" type="button" class="btn btn-secondary btn-lg" onclick="history.back()">Go
+                Back</button>
 
-            <button id="submit_btn" type="button" class="btn btn-secondary btn-lg" onclick="sendReview()">Submit</button>
+            <button id="chat_btn" type="button" class="btn btn-secondary btn-lg" onclick="">Chat</button>
         </div>
+
     </main>
 
 
@@ -67,7 +74,7 @@
 
     <!-- SCRIPTS -->
     <script src="js/global.js"></script>
-    <script src="../js/review.js"></script>
+    <script src="../js/item.js"></script>
     <script src="/js/httpRequests.js"></script>
 
 

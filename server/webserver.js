@@ -114,8 +114,8 @@ app.get('/sendTradeOffer/:listingID', reqLogin, async (req, res) => {
     res.send(doc.serialize());
 });
 
-app.get('/template', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/template.html', "utf8");
+app.get('/item', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/item.html', "utf8");
     res.send(doc);
 });
 
