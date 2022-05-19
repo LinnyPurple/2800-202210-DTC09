@@ -61,17 +61,20 @@
                         <!-- place for uploading profile picture -->
                         <div class="form-group my-3">
                             <label>Upload picture:</label>
-                            <br>
-                            <input type="file" name="image" id="uploadButton" accept="image/*" />
-                            <input type="submit" value="Submit">
+                            <div style="display: flex;"> 
+                                <input type="file" name="image" id="uploadButton" accept="image/*" />
+                                <input type="submit" value="Submit">
+                            </div>
                         </div>
                     </form>
                 </fieldset>
 
                 <!-- edit and save buttons -->
                 <div class="d-flex justify-content-end">
-                    <button type="button" id="edit_btn" class="btn btn-secondary m-2" onclick="editUserInfo()">Edit</button>
-                    <button type="button" id="save_btn" class="btn btn-primary m-2" onclick="saveUserInfo()">Save</button>
+                    <button type="button" id="edit_btn" class="btn btn-secondary m-2"
+                        onclick="editUserInfo()">Edit</button>
+                    <button type="button" id="save_btn" class="btn btn-primary m-2"
+                        onclick="saveUserInfo()">Save</button>
                 </div>
 
 

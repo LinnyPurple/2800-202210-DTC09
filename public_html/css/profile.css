@@ -9,7 +9,7 @@ main {
     flex-direction: column;
     align-content: space-around;
     padding: 20px;
-    background-color: rgba(95, 128, 127, 0.478);
+    border: 3px solid rgba(95, 128, 127, 0.478);
     border-radius: 10px;
 }
 

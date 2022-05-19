@@ -10,9 +10,6 @@ main {
 
 /* rating */
 .rate {
-
-    /* border-bottom-right-radius: 12px;
-    border-bottom-left-radius: 12px; */
     margin: 40px 0;
     padding-top: 20px;
 }
@@ -33,7 +30,7 @@ main {
     width: 1.2em;
     font-size: 40px;
     font-weight: 300;
-    color: #D4F3EF;
+    color: #EE8572;
     cursor: pointer;
 }
 

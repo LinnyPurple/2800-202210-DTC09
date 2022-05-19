@@ -4,6 +4,16 @@
   box-sizing: border-box;
 }
 
+body {
+  font-family: 'Questrial', sans-serif !important;
+  background-color: #D4F3EF !important;
+}
+
+
+a {
+  text-decoration: none !important;
+}
+
 html {
   font-size: 62.5%;
 }
