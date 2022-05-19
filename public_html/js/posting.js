@@ -14,14 +14,6 @@ async function getUserInfo() {
     }
 }
 
-async function login(username) {
-    let res = await postRequest("/api/login", {
-        password: "a",
-        username: username
-    });
-    console.log(res);
-}
-
 // upload picture
 function readURL(input) {
     if (input.files && input.files[0]) {
