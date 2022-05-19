@@ -4,3 +4,9 @@
   align-items: center;
   width: 100%;
 }
+
+.confirmation__message {
+  font-family: 'Lato', sans-serif;
+  color: #005555;
+  font-size: 5.5rem;
+}
