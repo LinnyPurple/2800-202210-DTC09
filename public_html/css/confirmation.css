@@ -10,3 +10,10 @@
   color: #005555;
   font-size: 5.5rem;
 }
+
+.confirmation__img {
+  font-size: 30rem;
+  background: -webkit-linear-gradient(#f19c8e, #e33a1c);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
