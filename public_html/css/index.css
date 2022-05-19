@@ -188,6 +188,7 @@ main h2 {
   padding: 20% 5% 0 10%;
 }
 
+<<<<<<< HEAD
 .top-nav__hamburger__nav i {
   font-size: 2.5rem;
   padding: 0 7%;
@@ -205,6 +206,23 @@ main h2 {
 
 .top-nav__hamburger__nav.active {
   left: 30%;
+}
+
+/* Code grabbed from https://www.geeksforgeeks.org/how-to-rotate-a-text-360-degrees-on-hover-using-html-and-css/ */
+h2:hover {
+  animation: rotate 1s linear;
+}
+
+@keyframes rotate {
+  0% {
+      transform: rotate(0deg);
+  }
+  50% {
+      transform: rotate(180deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
 }
 
 /* #footer {
