@@ -1,0 +1,11 @@
+* {
+  box-sizing: border-box;
+}
+
+.carousel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 60vh;
+  width: 80%;
+}
