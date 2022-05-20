@@ -124,6 +124,11 @@ app.get('/listings', function (req, res) {
     res.send(doc);
 });
 
+app.get('/main', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/main.html', "utf8");
+    res.send(doc);
+});
+
 app.get('/sendTradeOffer/:listingID', reqLogin, async (req, res) => {
     let doc = new jsdom.JSDOM(fs.readFileSync('../public_html/html/sendTradeOffer.html', "utf8"));
     let listing = (await getListingData(req.params.listingID)).Data;
