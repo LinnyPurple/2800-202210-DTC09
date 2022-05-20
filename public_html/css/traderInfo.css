@@ -42,7 +42,7 @@ main {
 }
 
 
-.each_history {
+.each_history .each_review {
     margin: 5px 0;
     height: 40px;
 }
@@ -52,11 +52,27 @@ main {
     height:10vw;
     border-radius: 15vw;
 }
-.each_history a{
+.each_history a {
     margin-left: 10px;
     font-size: 23px;
     color: rgb(95, 94, 94);
 }
+
+.each_review a {
+    font-size: 23px;
+    color: rgb(95, 94, 94);
+}
+
+.stars {
+    font-size: 23px;
+    padding-left: 10px;
+}
+
+.reviewText {
+    font-size: 18px;
+    padding-left: 10px;
+}
+
 
 /* buttons */
 #buttons {
