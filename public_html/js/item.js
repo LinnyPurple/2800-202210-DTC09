@@ -2,7 +2,7 @@
 var listingID = 2;
 var traderID = '';
 
-// get group ID from URL
+// get post ID from URL
 function getPostID() {
     // create a URL object
     let params = new URL(window.location.href);
@@ -39,8 +39,10 @@ async function getTraderInfo() {
     // console.log(res);
     var currentTraderInfo = JSON.parse(res);
     var traderName = currentTraderInfo.data.username;
+    var tradersID = currentTraderInfo.data.ID
 
     $('#traderName').html(traderName);
+    $('#traderName').attr("href", `/traderinfo?trader_id=${tradersID}`);
 
     checkTwoUsers();
 }
