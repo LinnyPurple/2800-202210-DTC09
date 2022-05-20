@@ -17,7 +17,7 @@
     <header></header>
 
     <main>
-        <h2 id="logo-index" onclick="f()"></h2>
+        <h2 id="logo-index" onclick="swapMotto()"></h2>
         <div id="login">
             <button class="primary-btn" onclick="window.location.assign('/login')">Log In</button>
             <button class="secondary-btn" onclick="window.location.assign('/signup')">Sign-Up</button>
@@ -66,7 +66,7 @@
             document.getElementById("logo-index").innerHTML = `SWAP ITEMS.<br>SAVE MONEY.<br>REDUCE WASTE.`;
         }
 
-        function f() {
+        function swapMotto() {
             const currentMotto = document.getElementById("logo-index").innerHTML.split('<br>');
             const motto = getMotto();
             if (currentMotto[0] === "SWAP ITEMS.") document.getElementById("logo-index").innerHTML = `${motto[0]}<br>${motto[1]}<br>${motto[2]}`;
