@@ -34,6 +34,7 @@
         </footer>
         <script src="/js/httpRequests.js"></script>
         <script src="/js/webserverInterface.js"></script>
+        <script src="/js/miscData.js"></script>
         <script>
             let otherUser;
             let currentUser;
@@ -82,19 +83,23 @@
             }
 
             async function initWebsocket() { 
-                socket = new WebSocket(`ws://localhost:8001?uid=${encodeURIComponent(currentUser.uid)}`);
-
+                socket = new WebSocket(`ws://${getVariable('webSocketAddress')}?uid=${encodeURIComponent(currentUser.uid)}`);
+                
                 socket.addEventListener('open', function (event) {
-                    //console.log("Successfully connected to websocket.");
+                    console.log("Successfully connected to websocket.");
                 });
 
                 socket.addEventListener('message', function (event) {
                     let message = JSON.parse(event.data);
-                    //console.log(`From ${message.sender}: `, message.msg);
+                    console.log(`From ${message.sender}: `, message.msg);
 
                     if (message.sender == otherUser.uid) {
                         newMessage(false, message.msg);
                     }
+                });
+
+                socket.addEventListener('close', function (e) {
+                    console.log('WebSocket closed: ', e.code);
                 });
             }
 
