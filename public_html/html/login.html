@@ -25,11 +25,11 @@
         </div> -->
         <div class="login-form__table__row">
           <label for="e">Email / Username:</label>
-          <input id="email" value="">
+          <input id="email" value="grozitis@my.bcit.ca">
         </div>
         <div class="login-form__table__row">
           <label for="p">Password:</label>
-          <input id="password" value="">
+          <input id="password" value="123456">
         </div>
         <div id="invalid-login"></div>
         <div id="login">
@@ -58,7 +58,7 @@
       if (loginSuccess.result === "Failed to log in.") {
           console.log("COULD NOT LOG IN");
           document.getElementById("invalid-login").innerHTML = "Username/password does not exist.";
-      } else window.location.assign('/account');
+      } else window.location.assign('/profile');
     }
   </script>
 </body>

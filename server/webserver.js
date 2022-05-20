@@ -131,12 +131,12 @@ app.get('/main', function (req, res) {
 
 app.get('/sendTradeOffer/:listingID', reqLogin, async (req, res) => {
     let doc = new jsdom.JSDOM(fs.readFileSync('../public_html/html/sendTradeOffer.html', "utf8"));
-    let listing = (await getListingData(req.params.listingID)).Data;
+    const listing = (await getListingData(req.params.listingID));
     doc.window.document.querySelector('.TradeItemName').textContent = listing.title;
 
-    let imgs = JSON.parse(listing.images);
+    let imgs = listing.images;
 
-    doc.window.document.querySelector('.TradeItemImg').src = imgs ? imgs[0] : 'https://dummyimage.com/200x200/000/fff';
+    // doc.window.document.querySelector('.TradeItemImg').src = imgs ? imgs : 'https://dummyimage.com/200x200/000/fff';
     res.send(doc.serialize());
 });
 
