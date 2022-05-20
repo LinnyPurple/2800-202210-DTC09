@@ -28,6 +28,7 @@
 .listings__item__img img {
   width: 260px;
   height: 260px;
+  object-fit: cover;
 }
 
 .listings__item__trader {
