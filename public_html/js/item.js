@@ -2,7 +2,7 @@
 var listingID = 2;
 var traderID = '';
 
-// get group ID from URL
+// get post ID from URL
 function getPostID() {
     // create a URL object
     let params = new URL(window.location.href);

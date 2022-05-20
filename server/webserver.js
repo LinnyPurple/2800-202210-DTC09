@@ -150,6 +150,11 @@ app.get('/item', function (req, res) {
     res.send(doc);
 });
 
+app.get('/traderinfo', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/traderInfo.html', "utf8");
+    res.send(doc);
+});
+
 //#endregion
 
 //#region API
