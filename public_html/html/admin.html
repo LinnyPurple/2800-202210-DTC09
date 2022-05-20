@@ -3,13 +3,33 @@
     <head>
         <title>SwapOmen</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <style>
+            table {
+                border-collapse: collapse;
+            }
+            td {
+                border-style: solid;
+                border-width: 2px;
+            }
+        </style>
     </head>
     <body onload="showAllUsers()">
         <header>
             <h1>SwapOmen - ADMIN PAGE</h1>
         </header>
         <main>
-            <div id="all-users"></div>
+            <table id="user-table">
+                <template id="userNode">
+                    <tr>
+                        <td class="id"></td>
+                        <td class="name"></td>
+                        <td class="email"></td>
+                    </tr>
+                </template>
+            </table>
+            <div id="all-users">
+                
+            </div>
         </main>
 
         <!-- SCRIPTS -->
@@ -21,7 +41,13 @@
                 var users = JSON.parse(await adminGetAccounts()).data;
                 for (var i = 0; i < users.length; i++) {
                     // console.log(users[i]);
-                    document.getElementById("all-users").innerHTML += `${users[i].ID}, ${users[i].username}, ${users[i].email}<br>`;
+                    let template = document.querySelector("#userNode").content.cloneNode(true);
+
+                    template.querySelector('.id').innerHTML = users[i].ID;
+                    template.querySelector('.name').innerHTML = users[i].username;
+                    template.querySelector('.email').innerHTML = users[i].email;
+                    document.querySelector('#user-table').appendChild(template);
+                    // document.getElementById("all-users").innerHTML += `${users[i].ID}, ${users[i].username}, ${users[i].email}<br>`;
                 }
             }
         </script>

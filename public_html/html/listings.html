@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>SwapOmen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <!-- css -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap" rel="stylesheet">
+  <link type="text/css" rel="stylesheet" href="/css/index.css">
+  <link type="text/css" rel="stylesheet" href="/css/listings.css">
+</head>
+
+<body onload="populateItems('')">
+  <header></header>
+
+  <main>
+    <div id="listings-id">
+      <div id="listings">
+        <h2 class="listings__title">Up for Trade</h2>
+        <div class="divisor"></div>
+      </div>
+    </div>
+    
+  </main>
+
+  <footer></footer>
+
+  <!-- SCRIPTS -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="/js/global.js"></script>
+  <script src="/js/httpRequests.js"></script>
+  <script src="/js/webserverInterface.js"></script>
+  <script>
+    async function populateItems(query) {
+      var userInfo = JSON.parse(await getUserInfo());
+      var listings = JSON.parse(await searchListings(query));
+      console.log(listings);
+
+      for (var listing in listings) {
+        if (listings[listing].posterID != userInfo.uid) {
+          document.getElementById("listings").innerHTML +=
+            `
+              <div class="listings__item">
+                <!-- <template id="listings__template"> -->
+                  <a href="/item?post_id=${listings[listing].ID}">
+                    <div class="listings__item__img">
+                      <img id="item__img" src="../img/post/${listings[listing].images}" alt="dummy">
+                    </div>
+                    <div class="listings__item__trader">
+                      <p id="item__trader">${userInfo.name}</p>
+                    </div>
+                    <div class="listings__item__date">
+                      <p id="item__date">${listings[listing].posted}</p>
+                    </div>
+                    <div class="divisor"></div>
+                    <div class="listings__item__name">
+                      <h3>${listings[listing].title}</h3>
+                    </div>
+                    <div class="listings__item__description">
+                      <p id="item__description">${listings[listing].description}</p>
+                    </div>
+                  </a>
+                  <div class="listings__item__btn">
+                    <button id="item__btn" type="button" onclick="window.location.assign(/sendTradeOffer/${listings[listing].ID})">Trade!</button>
+                  </div>
+                <!-- </template> -->
+              </div>
+            `;
+        }
+        
+      }
+    }
+  </script>
+</body>
+
+</html>

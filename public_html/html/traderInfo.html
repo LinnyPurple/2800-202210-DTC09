@@ -11,7 +11,7 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-    <link rel="stylesheet" href="../css/review.css">
+    <link rel="stylesheet" href="../css/traderInfo.css">
     <link rel="stylesheet" href="../css/template.css">
 
     <!-- bootstrap -->
@@ -27,34 +27,41 @@
 
     <!-- contents -->
     <main>
-        <div id="title">
-            <h2>How was the trade?</h2>
-        </div>
+        <div id="container">
+            <div class="traderinfo">
+                <h2><span class="traderName">...</span>' profile</h2>
+                <div id="pictureAndId">
+                    <div id="profilePicture">
+                        <i id="profilePic" class="fa-solid fa-circle-user"></i>
+                    </div>
+                    <div>
+                        <div class="infoContainer">Name: <span class="traderName">...</span></div>
+                        <div class="infoContainer">ID: <span id="traderEmail">...</span></div>
+                    </div>
+                </div>
 
-        <div class="rate py-3 text-white mt-3">
-            <div class="rating">
-                <input type="radio" name="rating" value="5" id="5" onclick="rating(this)"><label for="5">☆</label>
-                <input type="radio" name="rating" value="4" id="4" onclick="rating(this)"><label for="4">☆</label>
-                <input type="radio" name="rating" value="3" id="3" onclick="rating(this)"><label for="3">☆</label>
-                <input type="radio" name="rating" value="2" id="2" onclick="rating(this)"><label for="2">☆</label>
-                <input type="radio" name="rating" value="1" id="1" onclick="rating(this)"><label for="1">☆</label>
+
+            </div>
+
+        </div>
+        <div id="trader_histroy">
+            <h3>Trading history</h3>
+            <div id="histroy_section">
+                history list!
             </div>
         </div>
-
-        <div id="feedback">
-            <form>
-                <div class="form-group">
-                    <label for="comment">Feedback:</label>
-                    <textarea class="form-control input-lg" rows="7" id="comment"></textarea>
-                </div>
-            </form>
+        <div id="trader_review">
+            <h3>Reviews</h3>
+            <ul id="reviews_section">
+                reviews here!
+            </ul>
         </div>
 
         <div id="buttons">
-            <button id="back_btn" type="button" class="btn btn-secondary btn-lg" onclick="history.back()">Go Back</button>
-
-            <button id="submit_btn" type="button" class="btn btn-secondary btn-lg" onclick="sendReview()">Submit</button>
+            <button type="button" class="btn btn-secondary btn-block" onclick="history.back()">Go back</button>
         </div>
+
+
     </main>
 
 
@@ -67,7 +74,7 @@
 
     <!-- SCRIPTS -->
     <script src="js/global.js"></script>
-    <script src="../js/review.js"></script>
+    <script src="../js/traderInfo.js"></script>
     <script src="/js/httpRequests.js"></script>
 
 

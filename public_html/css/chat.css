@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+html {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    margin: 0px;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 10% 80% 10%;
+    font-family: 'Roboto', sans-serif;
+}
+
+header {
+    grid-column: 1;
+    grid-row: 1;
+    width: 100%;
+    height: 100%;
+}
+
+#chat {
+    grid-column: 1;
+    grid-row: 2;
+    width: 100%;
+    height: 100%;
+    overflow: scroll;
+    background-color: #D4F3EF;
+}
+
+footer {
+    grid-column: 1;
+    grid-row: 3;
+    width: 100%;
+    height: 100%;
+}
+
+.msg {
+    display: flex;
+    flex-direction: row;
+    min-height: 10%;
+    max-width: 60%;
+    font-size: 300%;
+    color: white;
+    padding: 20px;
+}
+
+.sentChat {
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+}
+
+.reciChat {
+    margin-right: auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+}
+
+.msg .cImg {
+    width: 20%;
+    margin-bottom: auto;
+    margin-top: auto;
+    border-radius: 50%;
+}
+
+.msg .cP {
+    padding: 10px;
+    border-radius: 30px;
+    height: fit-content;
+}
+
+.reciP {
+    background-color: cadetblue;
+}
+
+.sentP {
+    background-color: cornflowerblue;
+    text-align: end;
+}
+
+.reciImg {
+    padding-right: 15px;
+}
+
+.sentImg {
+    padding-left: 15px;
+}
+
+footer {
+    background-color: #45807e;
+    width: 100%;
+    height: 100%;
+}
+
+footer form {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-content: center;
+}
+
+footer form #sendMessage {
+    height: 70%;
+    width: 60%;
+    font-size: 500%;
+    border-radius: 20px;
+}
+
+footer form #sendButton {
+    height: 100%;
+    width: 30%;
+    border-radius: 20px;
+    font-size: 400%;
+    color: black;
+}
+
+header {
+    background-color: #45807e;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: start;
+    align-content: center;
+}
+
+#profile {
+    height: 80%;
+    width: fit-content;
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    margin: auto;
+}
+
+.profilePhoto {
+    height: 100%;
+    border-radius: 50%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.profileName {
+    text-align: center;
+    color: white;
+    font-size: 400%;
+    padding-left: 20px;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+
+#backButton {
+    height: 80%;
+    width: 15%;
+    font-size: 500%;
+    color: white;
+    background: transparent;
+    border-color: transparent;
+}

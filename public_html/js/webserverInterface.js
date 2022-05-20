@@ -52,7 +52,8 @@ async function loginV2(username = "testuser", password = "testPass") {
         password: password,
         username: username
     });
-    console.log(res);
+    // console.log(res);
+    return res;
 }
 
 async function getUserInfo() {
@@ -62,7 +63,11 @@ async function getUserInfo() {
 }
 async function getOtherUserInfo(id) {
     let res = await getRequest(`/api/getUserInfo?uid=${id}`);
-    console.log(res);
+    return res;
+}
+async function getOtherUserInfoByName(username) {
+    let res = await getRequest(`/api/getUserInfo?username=${username}`);
+    return res;
 }
 async function postListing() {
     let res = await postRequest("/api/postListing", {
@@ -124,5 +129,13 @@ async function adminGetAccounts() {
 
 async function searchListings(query) {
     let res = await getRequest(`/api/searchListings?s=${encodeURIComponent(query)}`);
+    return res;
+}
+
+async function resetPassword(uid, newPassword) {
+    let res = await postRequest('/api/resetPassword', {
+        userId: uid,
+        newPassword: newPassword
+    });
     console.log(res);
 }

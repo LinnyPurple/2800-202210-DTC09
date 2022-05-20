@@ -1,0 +1,80 @@
+#listings-id {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100vw;
+}
+
+#listings {
+  width: 90vw;
+}
+
+.listings__title {
+  font-family: 'Lato', sans-serif;
+  font-size: 3.2rem;
+  color: #005555;
+  text-align: left;
+}
+
+.listings__item {
+  font-family: 'Lato', sans-serif;
+  background-color: #fff;
+  border: 0.2rem solid #005555;
+  border-radius: 5px;
+  display: flex;
+  padding: 5%;
+  margin: 5% 2%;
+  flex-direction: column;
+}
+
+.listings__item__img {
+  display: flex;
+  justify-content: center;
+  margin: 0 0 4%;
+}
+
+.listings__item__img img {
+  width: 90%;
+}
+
+.listings__item a {
+  width: 100%;
+}
+
+.listings__item__trader {
+  color: #333;
+  display: inline-block;
+  margin: 0 0 2%;
+}
+
+.listings__item__date {
+  color: #333;
+  float: right;
+  margin: 0 0 2%;
+}
+
+.listings__item__name {
+  color: #333;
+  font-size: 1.6rem;
+  margin: 0 0 2%;
+}
+
+.listings__item__description {
+  color: #333;
+  font-size: 1.4rem;
+}
+
+.listings__item__btn {
+  float: right;
+  margin: 5% 0 0;
+}
+
+.listings__item__btn button {
+  font-family: 'Lato', sans-serif;
+  font-size: 1.6rem;
+  background-color: #005555;
+  border: none;
+  border-radius: 3px;
+  color: #f1f1f1;
+  padding: 1rem 1.5rem;
+}

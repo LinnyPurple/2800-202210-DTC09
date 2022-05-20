@@ -1,0 +1,24 @@
+.offerCard {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: 0.2rem solid #005555;
+    border-radius: 5px;
+    padding: 5%;
+    margin: 5%;
+}
+
+.OfferName {
+    font-size: 1.6rem;
+}
+
+.SendOffer {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.6rem;
+    background-color: #005555;
+    border: none;
+    border-radius: 3px;
+    color: #f1f1f1;
+    padding: 1rem 1.5rem;
+  }
+  

@@ -1,5 +1,5 @@
 // Populate userinfo
-async function getUserInfo() {
+async function getProfileInfo() {
     let res = await getRequest("/api/getUserInfo");
     console.log(res);
     var currentUserInfo = JSON.parse(res);
@@ -9,7 +9,7 @@ async function getUserInfo() {
         console.log("User is logged in")
         var currentUsername = currentUserInfo.name;
         var currentUserEmail = currentUserInfo.email;
-        var currentImage = currentUserInfo.image;
+        var currentImage = currentUserInfo.image ? currentUserInfo.image : '/img/Default_pfp.jpg';
         console.log(currentUserInfo)
 
         if (currentUsername != '') {
@@ -20,9 +20,7 @@ async function getUserInfo() {
             document.getElementById("emailInput").value = currentUserEmail;
         }
 
-        if (currentImage != "") {
-            $("#profilePicture").html(`<img src="${currentImage}" class="rounded-circle border border-dark border-1 mx-auto d-block" style="width: 110px; height: 110px;">`)
-        }
+        $("#profilePicture").html(`<img src="${currentImage}" class="rounded-circle border border-dark border-1 mx-auto d-block" style="width: 110px; height: 110px;">`)
 
     } else {
         console.log("No user is signed in");
@@ -37,6 +35,15 @@ function editUserInfo() {
 }
 
 
+// reset password
+async function resetPassword(newPassword) {
+
+    let res = await postRequest('/api/resetPassword', {
+        newPassword: newPassword
+    });
+    console.log(res);
+}
+
 // save -> update data
 async function saveUserInfo() {
     userName = document.getElementById("nameInput").value;
@@ -44,16 +51,20 @@ async function saveUserInfo() {
 
     let res = await postRequest("/api/editAccount2", {
         newUsername: userName,
-        newPassword: userPassword
     });
     console.log(res);
+
+    if (userPassword != "") {
+        resetPassword(userPassword)
+    }
 
     // after
     document.getElementById('personalInfoFields').disabled = true
 }
 
+
 function setup() {
-    getUserInfo()
+    getProfileInfo()
 }
 
 $(document).ready(setup)

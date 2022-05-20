@@ -13,11 +13,14 @@
             <main>
                 <div id="current-username"></div>
                 <div id="current-email"></div>
-                <button onclick="logoutUser()">Logout</button>
+                <div id="special-message"></div>
+                <button onclick="logoutUser()">Logout</button><br>
+                <button onclick="tradeOffer1()">Trade Offer 1</button>
                 <br><br>
                 <div id="admin-button">
                     <button onclick="gotoAdminPage()">FOR ADMINS ONLY!!!</button>
                 </div>
+                <button onclick="window.location.assign('/tradeOffers');">Trade Offers</button>
                 <br>
                 Input password: <input id="password" value=""><br>
                 <button onclick="deleteLoggedInUser()">Delete Account</button>
@@ -39,6 +42,25 @@
                 // Determine if user is an admin and show admin button if so
                 if (currentUserInfo.accessLevel >= 3) document.getElementById("admin-button").style.display = "block";
                 else document.getElementById("admin-button").style.display = "none";
+                printSpecialMessage();
+            }
+
+            async function printSpecialMessage() {
+                var specialMessage = "";
+                var currentUserInfo = JSON.parse(await getUserInfo());
+                var currentUsername = currentUserInfo.name.toLowerCase();
+                // console.log(currentUsername);
+
+                if (currentUsername === "george") specialMessage = "You're the coolest man on Earth!";
+                else if (currentUsername === "chris" || currentUsername === "christopher" || currentUsername === "cthompson" || currentUsername === "christhompson") {
+                    specialMessage = "Thanks for joining us, Chris! Please give us full marks for COMP 2800.";
+                } else if (currentUsername === "lachlan" || currentUsername === "yurtle") specialMessage = "bruh";
+                else if (currentUsername === "toco") specialMessage = "Cool message!";
+
+                if (currentUserInfo.accessLevel >= 3) var adminMessage = `<br>Oh look, you're an admin!`;
+
+                document.getElementById("special-message").innerHTML = specialMessage;
+                document.getElementById("admin-button").innerHTML += adminMessage;
             }
 
             async function logoutUser() {
@@ -49,6 +71,10 @@
 
             async function gotoAdminPage() {
                 window.location.assign('/admin');
+            }
+
+            async function tradeOffer1() {
+                window.location.assign('/sendTradeOffer/1');
             }
 
             async function deleteLoggedInUser() {

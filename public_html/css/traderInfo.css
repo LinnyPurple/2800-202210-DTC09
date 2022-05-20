@@ -1,0 +1,88 @@
+/* main */
+main {
+    margin: 0px 20px;
+}
+
+/* user info section */
+#container {
+    display: flex;
+    flex-direction: column;
+    align-content: space-around;
+    padding: 20px;
+}
+
+#pictureAndId {
+    padding: 20px 0;
+    display: flex;
+}
+
+#profilePic {
+    font-size: 25vw;
+    width: 40%;
+}
+
+.infoContainer {
+    padding: 10px 30px;
+    font-size: 20px;
+}
+
+
+/* history and review section */
+#trader_histroy, #trader_review {
+    padding: 10px 20px;
+    border: 3px solid rgba(95, 128, 127, 0.478);
+    border-radius: 10px;
+    height: 170px;
+    margin-bottom: 10px;
+    overflow:auto;
+}
+
+#trader_histroy h3, #trader_review h3 {
+    margin-top: 0;
+}
+
+
+.each_history .each_review {
+    margin: 5px 0;
+    height: 40px;
+}
+
+.each_history img{
+    width: 10vw;
+    height:10vw;
+    border-radius: 15vw;
+}
+.each_history a {
+    margin-left: 10px;
+    font-size: 23px;
+    color: rgb(95, 94, 94);
+}
+
+.each_review a {
+    font-size: 23px;
+    color: rgb(95, 94, 94);
+}
+
+.stars {
+    font-size: 23px;
+    padding-left: 10px;
+}
+
+.reviewText {
+    font-size: 18px;
+    padding-left: 10px;
+}
+
+
+/* buttons */
+#buttons {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    align-content: space-around
+}
+
+#buttons button {
+    background-color: rgba(95, 128, 127, 0.478);
+    margin-top: 7px;
+    height: 40px;
+}

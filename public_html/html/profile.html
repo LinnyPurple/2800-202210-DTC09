@@ -4,8 +4,15 @@
 <head>
     <title>SwapOmen</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link type="text/css" rel="stylesheet" href="/css/profile.css">
+
+    <!-- css -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/template.css">
 
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -14,14 +21,9 @@
 
 </head>
 
-<body>
+<body onload="f()">
     <!-- top nav -->
-    <!-- <header>
-        <div id="header">
-            <i class="fa-solid fa-rotate"></i>
-            <p>SwapOmen</p>
-        </div>
-    </header> -->
+    <header class="sticky-top"></header>
 
     <!-- contents -->
     <main>
@@ -59,17 +61,21 @@
                         <!-- place for uploading profile picture -->
                         <div class="form-group my-3">
                             <label>Upload picture:</label>
-                            <br>
-                            <input type="file" name="image" id="uploadButton" accept="image/*"/>
-                            <input type="submit" value="Submit">
+                            <div style="display: flex;"> 
+                                <input type="file" name="image" id="uploadButton" accept="image/*" />
+                                <input type="submit" value="Submit">
+                            </div>
                         </div>
                     </form>
                 </fieldset>
 
                 <!-- edit and save buttons -->
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-secondary m-2" onclick="editUserInfo()">Edit</button>
-                    <button type="button" class="btn btn-primary m-2" onclick="saveUserInfo()">Save</button>
+                    <button type="button" class="btn btn-danger my-2" onclick="logoutUser()">Logout</button>
+                    <button type="button" id="edit_btn" class="btn btn-secondary m-2"
+                        onclick="editUserInfo()">Edit</button>
+                    <button type="button" id="save_btn" class="btn btn-primary m-2"
+                        onclick="saveUserInfo()">Save</button>
                 </div>
 
 
@@ -79,11 +85,22 @@
 
         <div id="history_buttons">
             <!-- todo: previous button? -->
-            <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My
-                listings</button>
+            <!-- <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My listings</button>
 
-            <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My
-                reviews</button>
+            <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My reviews</button> -->
+
+            <!-- TODO: GET THIS WORKING!!! -->
+            <div id="admin-button">
+                <button type="button" class="btn btn-secondary btn-block" onclick="gotoAdminPage()">Go to admin page</button>
+            </div>
+
+            <div id="special-message"></div>
+
+            <div class="form-group my-3">
+                <label>Enter password to delete account</label>
+                <input type="text" id="passwordDelete" class="form-control" placeholder="Enter your password">
+            </div>
+            <button type="button" class="btn btn-danger btn-block" onclick="deleteLoggedInUser()">DELETE ACCOUNT</button>
         </div>
 
 
@@ -91,36 +108,75 @@
 
 
     <!-- botton nav -->
-    <!-- <footer>
-        <div id="footer">
-            <i class="footeritme fa-solid fa-house"></i>
-            <i class="footeritme fa-solid fa-magnifying-glass"></i>
-            <i class="footeritme fa-solid fa-circle-plus"></i>
-            <i class="footeritme fa-solid fa-comment-dots"></i>
-            <i class="footeritme fa-solid fa-circle-user"></i>
-        </div>
-    </footer> -->
+    <footer class="fixed-bottom"></footer>
 
 
     <!-- jquery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <!-- bootstrap -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
-    </script>
-    <!-- SCRIPTS -->
-    <script src="../js/httpRequests.js"></script>
-    <script src="../js/profile.js"></script>
-    <script>
 
+    <!-- SCRIPTS -->
+    <script src="js/global.js"></script>
+    <script src="../js/profile.js"></script>
+    <script src="/js/httpRequests.js"></script>
+    <script src="/js/webserverInterface.js"></script>
+    <script>
+        async function f() {
+            console.log("On account page");
+
+            // Gets the user info and shows it on the screen
+            var currentUserInfo = JSON.parse(await getUserInfo());
+            // document.getElementById("current-username").innerHTML = `Hello,  ${currentUserInfo.name}`;
+            // document.getElementById("current-email").innerHTML = `Your email is '${currentUserInfo.email}'`;
+
+            // Determine if user is an admin and show admin button if so
+            if (currentUserInfo.accessLevel >= 3) document.getElementById("admin-button").style.display = "block";
+            else document.getElementById("admin-button").style.display = "none";
+            printSpecialMessage();
+        }
+
+        async function printSpecialMessage() {
+            var specialMessage = "";
+            var currentUserInfo = JSON.parse(await getUserInfo());
+            var currentUsername = currentUserInfo.name.toLowerCase();
+            // console.log(currentUsername);
+
+            if (currentUsername === "george") specialMessage = "You're the coolest man on Earth!";
+            else if (currentUsername === "chris" || currentUsername === "christopher" || currentUsername === "cthompson" || currentUsername === "christhompson") {
+                specialMessage = "Thanks for joining us, Chris! Please give us full marks for COMP 2800.";
+            } else if (currentUsername === "lachlan" || currentUsername === "yurtle") specialMessage = "bruh";
+            else if (currentUsername === "toco") specialMessage = "Cool message!";
+
+            if (currentUserInfo.accessLevel >= 3) var adminMessage = `<br>Oh look, you're an admin!`;
+
+            document.getElementById("special-message").innerHTML = specialMessage;
+            document.getElementById("admin-button").innerHTML += adminMessage;
+        }
+
+        async function logoutUser() {
+            await logout();
+            getProfileInfo();
+            window.location.assign('/login');
+        }
+
+        async function gotoAdminPage() {
+            window.location.assign('/admin');
+        }
+
+        async function tradeOffer1() {
+            window.location.assign('/sendTradeOffer/1');
+        }
+
+        async function deleteLoggedInUser() {
+            var currentUserInfo = JSON.parse(await getUserInfo());
+            console.log(currentUserInfo.name, currentUserInfo.email, currentUserInfo.uid, currentUserInfo.ID);
+            console.log(currentUserInfo);
+            console.log(document.getElementById("passwordDelete").value);
+            await deleteAccountV2(currentUserInfo.name, currentUserInfo.email, document.getElementById("passwordDelete").value);
+            logout();
+            window.location.assign("/");
+        }
     </script>
+
 </body>
 
 </html>

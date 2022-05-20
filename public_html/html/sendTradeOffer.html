@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>SwapOmen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- css -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+
+    <link rel="stylesheet" href="#">
+    <link rel="stylesheet" href="../css/template.css">
+    <link rel="stylesheet" href="../css/sendTradeOffer.css">
+
+    <!-- bootstrap -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
+        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+
+</head>
+
+<body>
+    <!-- HTML Layout -->
+
+    <!-- top nav -->
+    <header class="sticky-top"></header>
+
+    <!-- the body of the page -->
+    <div id="content">
+        <div id="TradeItem">
+            <p class="TraderName"></p>
+            <p class="TradeItemName"></p>
+            <img class="TradeItemImg" />
+        </div>
+        <div id="potentialOffers">
+            <template id="offerTemplate">
+                <div class="offerCard">
+                    <p class="OfferName"></p>
+                    <img class="OfferImg" />
+                    <button class="SendOffer">Send Offer</button>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <!-- botton nav -->
+    <footer class="fixed-bottom"></footer>
+
+    <!-- JavaScript functions -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="/js/global.js"></script>
+    <script src="/js/webserverInterface.js"></script>
+    <script src="/js/httpRequests.js"></script>
+    <script>
+        let listings;
+        let userInfo;
+        async function getPotentialOffers() {
+            userInfo = JSON.parse(await getUserInfo());
+            listings = JSON.parse(await getRequest('/api/getListingsFromUser/' + userInfo.uid));
+            console.log(listings);
+
+            const parent = document.querySelector("#potentialOffers");
+
+            for (let offerInd in listings) {
+                let template = document.querySelector("#offerTemplate").content.cloneNode(true);
+                let offer = listings[offerInd];
+
+                template.querySelector(".OfferName").innerHTML = "Your: " + offer.title;
+                let imgs = `/img/post/${offer.images}`;
+                template.querySelector(".OfferImg").setAttribute('src', imgs ? imgs : 'https://dummyimage.com/200x200/000/fff');
+                template.querySelector(".SendOffer").setAttribute('onclick', `sendOffer(${offer.ID})`);
+
+                parent.appendChild(template);
+            }
+        }
+
+        async function sendOffer(id) {
+            let offerListing = listings.find(e => e.ID == id);
+            let listing = JSON.parse(await getRequest(`/api/getListingData?id=${window.location.href.split('/')[window.location.href.split('/').length - 1]}`))
+            console.log(listing);
+            console.log(offerListing);
+            let res = await postRequest('/api/sendTradeOffer', {
+                offereeID: listing.posterID,
+                offererData: JSON.stringify({
+                    name: offerListing.title,
+                    img: (offerListing.images && JSON.parse(offerListing.images).length) > 0 ? JSON.parse(offerListing.images)[0] : 'https://dummyimage.com/200x200/000/fff'
+                }),
+                offereeData: JSON.stringify({
+                    name: listing.title,
+                    img: (listing.images && JSON.parse(listing.images).length) > 0 ? JSON.parse(listing.images)[0] : 'https://dummyimage.com/200x200/000/fff'
+                })
+            });
+            console.log(res);
+        }
+
+        getPotentialOffers();
+    </script>
+</body>
+
+</html>

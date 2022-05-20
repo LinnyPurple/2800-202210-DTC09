@@ -1,9 +1,42 @@
-h1 {
-    padding-top: 20%;
-    text-align: center;
+input {
+  background-color: #D4F3EF;
+  border: none;
+  border-bottom: 1px solid #555;
+  font-size: 2rem;
+  outline: none;
+  width: 100%;
+  padding: 5%;
 }
 
-label, input {
+input:focus {
+  border-bottom: 0.2rem solid #111;
+}
+
+label {
+  color: #555;
+  font-size: 1.5rem;
+}
+
+span {
+  font-size: 1.5rem;
+}
+
+.login-form__table__row {
+  padding: 5% 0 7%;
+  width: 100%;
+}
+
+#invalid-login {
+    color: red;
+    font-size: 1.5rem;
+}
+
+#login-form {
+  width: 70%;
+}
+
+
+/* label, input {
     display: table-cell;
 }
 
@@ -19,4 +52,4 @@ label, input {
 
 .t-row {
     display: table-row;
-}
+} */

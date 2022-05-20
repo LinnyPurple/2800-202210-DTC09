@@ -1,47 +1,78 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-  <title>SwapOmen</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwapOmen</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link type="text/css" rel="stylesheet" href="/css/index.css">
-
-  <!-- icons/fonts -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <!-- css -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link type="text/css" rel="stylesheet" href="/css/index.css">
 </head>
 
-<body>
-  <header>
-    <div id="header">
-      <i class="fa-solid fa-rotate"></i>
-      <p>SwapOmen</p>
-    </div>
-  </header>
-  <div id="outer">
-    <main>
-      <h1>SwapOmen</h1>
-      <div id="login">
-        <button onclick="window.location.assign('/login')">Login</button><br>
-        <button onclick="window.location.assign('/signup')">Sign Up</button>
-      </div>
-    </main>
-  </div>
-  <footer>
-    <div id="footer">
-      <i class="fa-solid fa-house"></i>
-      <i class="fa-solid fa-magnifying-glass"></i>
-      <i class="fa-solid fa-circle-plus"></i>
-      <i class="fa-solid fa-comment-dots"></i>
-      <i class="fa-solid fa-circle-user"></i>
-    </div>
-  </footer>
+<body onload="initialMotto()">
+    <header></header>
 
-  <!-- SCRIPTS -->
-  <script src="/js/httpRequests.js"></script>
-  <script src="/js/webserverInterface.js"></script>
+    <main class="jumbotron">
+        <h2 id="logo-index" onclick="swapMotto()"></h2>
+        <div id="login">
+            <button class="primary-btn" onclick="window.location.assign('/login')">Log In</button>
+            <button class="secondary-btn" onclick="window.location.assign('/signup')">Sign-Up</button>
+        </div>
+    </main>
+
+    <footer></footer>
+
+    <!-- SCRIPTS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="/js/global.js"></script>
+    <script src="/js/httpRequests.js"></script>
+    <script src="/js/webserverInterface.js"></script>
+    <script>
+        function getSpecialDay() {
+            const currentDate = new Date(Date.now());
+            const day = currentDate.getDate();
+            const month = currentDate.getMonth() + 1;
+
+            if (month == 1 && day == 1) return "New Year's";
+            else if (month == 2 && day == 14) return "Valentines";
+            else if (month == 3 && day == 17) return "St. Patrick's";
+            else if (month == 7 && day == 1) return "Canada Day";
+            else if (month == 10 && day == 31) return "Halloween";
+            else if (month == 12 && day == 25) return "Christmas";
+            else if (month == 12 && day == 27) return "George's Birthday";
+            else if (month == 5 && day == 19 || day == 20 || day == 21) return "Client Meeting";
+            else return "";
+        }
+
+        function getMotto() {
+            const year = new Date(Date.now()).getYear();
+
+            const specialDay = getSpecialDay();
+            if (specialDay === "New Year's") return [`SWAP ${year}.`, `SAVE ${year}.`, `REDUCE ${year}.`];
+            else if (specialDay === "Valentines") return ["SWAP CHOCOLATE.", "SAVE LOVE.", "REDUCE HATE."];
+            else if (specialDay === "St. Patrick's") return ["FOLLOW RAINBOW.", "KEEP MONEY AT", "THE OTHER SIDE."];
+            else if (specialDay === "Canada Day") return ["OH CANADA,", "OUR HOME AND", "NATIVE LAND."];
+            else if (specialDay === "Christmas") return ["SWAP PRESENTS.", "SAVE SANTA.", "MERRY CHRISTMAS!"];
+            else if (specialDay === "George's Birthday") return ["TODAY GEORGE", "ROZITIS TURNS", `${year - 98}.`];
+            else if (specialDay === "Client Meeting") return ["CHRIS PLEASE", "GIVE US", "HIGH MARKS."];
+            else return ["SAVE MONEY.", "REDUCE WASTE.", "SWAP ITEMS."];
+        }
+
+        function initialMotto() {
+            document.getElementById("logo-index").innerHTML = `SWAP ITEMS.<br>SAVE MONEY.<br>REDUCE WASTE.`;
+        }
+
+        function swapMotto() {
+            const currentMotto = document.getElementById("logo-index").innerHTML.split('<br>');
+            const motto = getMotto();
+            if (currentMotto[0] === "SWAP ITEMS.") document.getElementById("logo-index").innerHTML = `${motto[0]}<br>${motto[1]}<br>${motto[2]}`;
+            else document.getElementById("logo-index").innerHTML = `SWAP ITEMS.<br>SAVE MONEY.<br>REDUCE WASTE.`;
+        }
+    </script>
 </body>
 
 </html>
