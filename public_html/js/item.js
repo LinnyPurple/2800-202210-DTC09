@@ -39,8 +39,10 @@ async function getTraderInfo() {
     // console.log(res);
     var currentTraderInfo = JSON.parse(res);
     var traderName = currentTraderInfo.data.username;
+    var tradersID = currentTraderInfo.data.ID
 
     $('#traderName').html(traderName);
+    $('#traderName').attr("href", `/traderinfo?trader_id=${tradersID}`);
 
     checkTwoUsers();
 }
