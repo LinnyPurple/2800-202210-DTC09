@@ -17,3 +17,26 @@
   padding: 5%;
   margin: 5% 2%;
 }
+
+.listings__item__img {
+  width: 90%;
+  margin: 0 0 4%;
+}
+
+.listings__item__trader {
+  color: #333;
+  display: inline-block;
+  margin: 0 0 2%;
+}
+
+.listings__item__date {
+  color: #333;
+  display: inline-block;
+  float: right;
+  margin: 0 0 2%;
+}
+
+.listings__item__description {
+  color: #333;
+  font-size: 1.2rem;
+}
