@@ -103,6 +103,12 @@ app.get('/posting', function (req, res) {
     let doc = fs.readFileSync('../public_html/html/posting.html', "utf8");
     res.send(doc);
 });
+
+app.get('/editpost', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/editPost.html', "utf8");
+    res.send(doc);
+});
+
 app.get('/tradeOffers', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/tradeOffer.html', "utf8");
     res.send(doc);
@@ -526,10 +532,49 @@ app.post("/uploadposting", uploadPost.single('image'), (req, res) => {
         if (result) {
             console.log(result.insertId)
             res.redirect('/item?post_id=' + result.insertId);
-        }else {
+        } else {
             console.log(err)
         }
     })
+
+});
+
+// Edit posting
+app.post("/editposting", uploadPost.single('image'), (req, res) => {
+    const postID = req.body.postID;
+    const title = req.body.title;
+    const myItem = req.body.myItem;
+    const tradingItem = req.body.tradingItem;
+    const condition = req.body.condition;
+    const tradingMethod = req.body.tradingMethod;
+    const description = req.body.description;
+
+    const mysql = require("mysql2")
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    if (req.file) {
+        const images = req.file.filename;
+        let query = "UPDATE listing SET title = ?, myItemCategory = ?, tradingItemCategory = ?, itemCondition = ?, tradingMethod =? , description = ?, images = ? WHERE ID = ?";
+
+        connection.query(query, [title, myItem, tradingItem, condition, tradingMethod, description, images, postID], (err, result) => {
+            if (result) {
+                res.redirect('/item?post_id=' + postID);
+            } else {
+                console.log(err)
+            }
+        })
+    } else {
+        let query = "UPDATE listing SET title = ?, myItemCategory = ?, tradingItemCategory = ?, itemCondition = ?, tradingMethod =? , description =? WHERE ID = ?";
+
+        connection.query(query, [title, myItem, tradingItem, condition, tradingMethod, description, postID], (err, result) => {
+            if (result) {
+                res.redirect('/item?post_id=' + postID);
+            } else {
+                console.log(err)
+            }
+        })
+    }
 
 });
 

@@ -25,7 +25,7 @@ async function checkTwoUsers() {
         var currentUserID = currentUserInfo.uid;
 
         if(currentUserID == traderID){
-            $('#chatOrEdit').html('<button id="chat_btn" type="button" class="btn btn-secondary btn-lg" onclick="">Edit</button>')
+            $('#chatOrEdit').html('<button id="chat_btn" type="button" class="btn btn-secondary btn-lg" onclick="go_edit()">Edit</button>')
         }
 
     } else {
@@ -45,6 +45,10 @@ async function getTraderInfo() {
     checkTwoUsers();
 }
 
+function go_edit() {
+    window.location.href = "/editpost?post_id=" + listingID;
+}
+
 async function getListingData(listingID) {
     let res = await getRequest(`/api/getListingData?id=${encodeURIComponent(listingID)}`);
     // console.log(res);
@@ -55,7 +59,7 @@ async function getListingData(listingID) {
     $('#date').html(date[0]);
 
     if(currentItemInfo.images) {
-        $("#item_image").attr("src", `../img_post/${currentItemInfo.images}`);
+        $("#item_image").attr("src", `../img/post/${currentItemInfo.images}`);
     }
 
     $('#myItem').html(currentItemInfo.myItemCategory);
