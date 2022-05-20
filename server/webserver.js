@@ -114,6 +114,16 @@ app.get('/tradeOffers', reqLogin, function (req, res) {
     res.send(doc);
 });
 
+app.get('/confirmation', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/confirmation.html', "utf8");
+    res.send(doc);
+});
+
+app.get('/listings', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/listings.html', "utf8");
+    res.send(doc);
+});
+
 app.get('/sendTradeOffer/:listingID', reqLogin, async (req, res) => {
     let doc = new jsdom.JSDOM(fs.readFileSync('../public_html/html/sendTradeOffer.html', "utf8"));
     let listing = (await getListingData(req.params.listingID)).Data;
@@ -1114,14 +1124,14 @@ async function initializeDB() {
             image TEXT,
             PRIMARY KEY (ID)
         );
-        
+
         CREATE TABLE IF NOT EXISTS listing (
             ID int NOT NULL AUTO_INCREMENT,
             posterID int NOT NULL,
             title varchar(50) NOT NULL,
-            myItemCategory TEXT NOT NULL, 
-            tradingItemCategory TEXT NOT NULL, 
-            itemCondition TEXT NOT NULL, 
+            myItemCategory TEXT NOT NULL,
+            tradingItemCategory TEXT NOT NULL,
+            itemCondition TEXT NOT NULL,
             tradingMethod TEXT NOT NULL,
             description TEXT NOT NULL,
             posted DATETIME default CURRENT_TIMESTAMP NOT NULL,
