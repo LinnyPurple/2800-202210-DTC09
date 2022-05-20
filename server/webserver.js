@@ -60,7 +60,12 @@ app.use(express.static('../public_html'));
 //#region PUBLIC PAGES
 
 app.get('/', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/index.html', "utf8");
+    let doc;
+    if (!req.session.loggedIn) {
+        doc = fs.readFileSync('../public_html/html/index.html', "utf8");
+    } else {
+        doc = fs.readFileSync('../public_html/html/main.html', "utf8");
+    }
     res.send(doc);
 });
 
