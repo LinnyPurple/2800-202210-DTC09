@@ -21,3 +21,18 @@
   height: 40%;
   padding: 10%;
 }
+
+.carousel__item button {
+  background: none;
+  border: 2px solid #f1f1f1;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 2rem;
+  padding: 5%;
+  width: 100%;
+}
+
+.carousel__item button:hover {
+  background-color: #f1f1f1;
+  color: #EE8572;
+}
