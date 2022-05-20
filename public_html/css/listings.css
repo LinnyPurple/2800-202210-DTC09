@@ -7,3 +7,13 @@
   font-size: 3.5rem;
   color: #005555;
 }
+
+.listings__item {
+  font-family: 'Lato', sans-serif;
+  background-color: #fff;
+  border: 0.2rem solid #005555;
+  border-radius: 5px;
+  display: flex;
+  padding: 5%;
+  margin: 5% 2%;
+}
