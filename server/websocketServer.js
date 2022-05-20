@@ -52,14 +52,14 @@ app.get('/', (req, res) => res.send("Websocket Server"));
 wss.on('connection', function connection(ws, req) {
     //console.log(req.url);
     const cUrl = new URL('localhost:8001' + req.url).searchParams;
-    //console.log('New client connected.');
+    console.log('New client connected.');
     ws.send(JSON.stringify({
         sender: 'server',
         msg: 'Successfully connected.'
     }));
     
     let uid = cUrl.get('uid');
-    //console.log(uid);
+    console.log(uid);
 
     ConnectedUsers[uid] = ws;
 
@@ -89,6 +89,10 @@ wss.on('connection', function connection(ws, req) {
         }
         
     });
+
+    ws.on('error', (e) => {
+        console.log(e);
+    })
 });
 
 function reply(msg) {
