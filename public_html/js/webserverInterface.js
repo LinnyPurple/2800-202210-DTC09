@@ -129,7 +129,7 @@ async function adminGetAccounts() {
 
 async function searchListings(query) {
     let res = await getRequest(`/api/searchListings?s=${encodeURIComponent(query)}`);
-    console.log(res);
+    return res;
 }
 
 async function resetPassword(uid, newPassword) {

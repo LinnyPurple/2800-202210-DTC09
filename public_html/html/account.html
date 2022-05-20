@@ -14,7 +14,8 @@
                 <div id="current-username"></div>
                 <div id="current-email"></div>
                 <div id="special-message"></div>
-                <button onclick="logoutUser()">Logout</button>
+                <button onclick="logoutUser()">Logout</button><br>
+                <button onclick="tradeOffer1()">Trade Offer 1</button>
                 <br><br>
                 <div id="admin-button">
                     <button onclick="gotoAdminPage()">FOR ADMINS ONLY!!!</button>
@@ -70,6 +71,10 @@
 
             async function gotoAdminPage() {
                 window.location.assign('/admin');
+            }
+
+            async function tradeOffer1() {
+                window.location.assign('/sendTradeOffer/1');
             }
 
             async function deleteLoggedInUser() {

@@ -1,5 +1,5 @@
 // Populate userinfo
-async function getUserInfo() {
+async function getProfileInfo() {
     let res = await getRequest("/api/getUserInfo");
     console.log(res);
     var currentUserInfo = JSON.parse(res);
@@ -64,7 +64,7 @@ async function saveUserInfo() {
 
 
 function setup() {
-    getUserInfo()
+    getProfileInfo()
 }
 
 $(document).ready(setup)
