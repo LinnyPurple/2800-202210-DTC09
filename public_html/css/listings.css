@@ -40,3 +40,17 @@
   color: #333;
   font-size: 1.2rem;
 }
+
+.listings__item__btn {
+  float: right;
+  margin: 2% 0 0;
+}
+
+.listings__item__btn button {
+  font-family: 'Lato', sans-serif;
+  background-color: #005555;
+  border: none;
+  border-radius: 3px;
+  color: #f1f1f1;
+  padding: 1rem 1.5rem;
+}
