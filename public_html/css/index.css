@@ -60,6 +60,10 @@ main h2 {
   margin: 2%;
 }
 
+.jumbotron {
+  padding: 45% 0;
+}
+
 .divisor {
   display: block;
   height: 0.1rem;
