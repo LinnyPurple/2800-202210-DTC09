@@ -18,7 +18,15 @@ body {
   height: 100vh;
 }
 
-header, footer {
+header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
   width: 100%;
 }
 
@@ -40,6 +48,7 @@ main {
   align-items: center;
   justify-content: space-around;
   width: 100%;
+  padding: 10rem 0 12rem;
 }
 
 main h2 {
@@ -55,7 +64,7 @@ main h2 {
   display: block;
   height: 0.1rem;
   background-color: #005555;
-  margin: 1.5rem auto;
+  margin: 1.2rem auto;
 }
 
 #login {
