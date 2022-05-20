@@ -49,6 +49,10 @@ function go_edit() {
     window.location.href = "/editpost?post_id=" + listingID;
 }
 
+function go_chat() {
+    window.location.href = "/chat/" + traderID;
+}
+
 async function getListingData(listingID) {
     let res = await getRequest(`/api/getListingData?id=${encodeURIComponent(listingID)}`);
     // console.log(res);
