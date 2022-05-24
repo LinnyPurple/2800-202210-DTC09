@@ -1,4 +1,3 @@
-// Todo: get ID from URL
 var listingID = 0;
 var traderID = '';
 
@@ -25,7 +24,8 @@ async function checkTwoUsers() {
         var currentUserID = currentUserInfo.uid;
 
         if(currentUserID == traderID){
-            $('#chatOrEdit').html('<button id="chat_btn" type="button" class="btn btn-secondary btn-lg" onclick="go_edit()">Edit</button>')
+            $('#chatOrEdit').html('<button id="chat_btn" type="button" class="btn btn-secondary btn-lg" onclick="go_edit()">Edit</button>');
+            $('#trade_btn').css('display','none');
         }
 
     } else {

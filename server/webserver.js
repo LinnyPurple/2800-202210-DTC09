@@ -787,16 +787,16 @@ app.post('/api/postReview', urlencodedParser, function (req, res) {
         const reviewee = req.body.reviewee;
         const reviewText = req.body.reviewText;
         const score = req.body.score;
-        const itemID = req.body.itemID;
+        const offerID = req.body.offerID;
 
         const mysql = require("mysql2")
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        console.log(reviewText, reviewee, reviewer, score, itemID)
-        let query = "INSERT INTO review (reviewerID, revieweeID, reviewText, score, itemID) values ?"
+        console.log(reviewText, reviewee, reviewer, score, offerID)
+        let query = "INSERT INTO review (reviewerID, revieweeID, reviewText, score, offerID) values ?"
         let recordValues = [
-            [reviewer, reviewee, reviewText, score, itemID]
+            [reviewer, reviewee, reviewText, score, offerID]
         ];
 
         connection.query(query, [recordValues]);
@@ -1170,13 +1170,13 @@ async function initializeDB() {
         );
 
         CREATE TABLE IF NOT EXISTS review (
-            itemID int NOT NULL AUTO_INCREMENT,
+            offerID int NOT NULL,
             reviewerID int NOT NULL,
             revieweeID int NOT NULL,
             reviewText TEXT NOT NULL,
             score int NOT NULL,
             timestamp DATETIME default CURRENT_TIMESTAMP NOT NULL,
-            PRIMARY KEY (itemID)
+            PRIMARY KEY (offerID)
         );
 
         CREATE TABLE IF NOT EXISTS offers (

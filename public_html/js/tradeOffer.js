@@ -41,14 +41,14 @@ async function populateOffers() {
         template.querySelector(".ForImg").setAttribute('src', offereeImg);
         template.querySelector(".ForItem").href = `/item?post_id=${offereeData.ID}`;
 
-        template.querySelector('.aButton').setAttribute('onclick', `tradeReply(${offer.ID}, true)`)
-        template.querySelector('.dButton').setAttribute('onclick', `tradeReply(${offer.ID}, false)`)
+        template.querySelector('.aButton').setAttribute('onclick', `tradeReply(${offer.ID}, ${offer.offererID}, true)`)
+        template.querySelector('.dButton').setAttribute('onclick', `tradeReply(${offer.ID}, ${offer.offererID}, false)`)
 
         parent.appendChild(template);
     }
 }
 
-async function tradeReply(offerID, accept) {
+async function tradeReply(offerID, traderID, accept) {
     let confirmation = confirm(`Do you want to ${accept ? 'accept' : 'decline'} trade?`)
 
     if (confirmation) {
@@ -59,7 +59,7 @@ async function tradeReply(offerID, accept) {
         console.log(res);
         if (res.msg == "Accepted trade offer.") {
             alert(res.msg)
-            window.location.href = "/confirmation?tradeID=" + offerID;
+            window.location.href = `/confirmation?offerID=${offerID}&traderID=${traderID}`;
         } else {
             alert(res.msg)
             location.reload();

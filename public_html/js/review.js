@@ -1,32 +1,19 @@
-// Todo: Should be changed!!
-var revieweeID = 30;
-var itemID = Math.floor(Math.random() * 100);
+var offerID = 0;
+var revieweeID = 0;
 
 
-let ratingNum = 0;
+// get trade ID and other trader ID from URL
+function getTradeInfo() {
+    // create a URL object
+    let params = new URL(window.location.href);
+    offerID = params.searchParams.get("offerID");
+    revieweeID = params.searchParams.get("traderID");
 
-function rating(src) {
-    ratingNum = src.value;
-    console.log(ratingNum)
+    getUserInfo()
 }
 
-async function sendReview() {
-    var reviewee = revieweeID;
-    var score = ratingNum;
-    var reviewText = document.getElementById("comment").value;
-    if (ratingNum != 0) {
-        let res = await postRequest('/api/postReview', {
-            reviewee: reviewee,
-            reviewText: reviewText,
-            score: score,
-            itemID: itemID
-        });
-        console.log(res);
-    } else{
-        alert("Please rate your trade :)")
-    }
-}
 
+// get user info
 async function getUserInfo() {
     let res = await getRequest("/api/getUserInfo");
     console.log(res);
@@ -41,8 +28,37 @@ async function getUserInfo() {
     }
 }
 
+
+// get rating number from user input
+let ratingNum = 0;
+
+function rating(src) {
+    ratingNum = src.value;
+}
+
+
+// send review when user click submit button
+async function sendReview() {
+    var reviewee = revieweeID;
+    var score = ratingNum;
+    var reviewText = document.getElementById("comment").value;
+    if (ratingNum != 0) {
+        let res = await postRequest('/api/postReview', {
+            reviewee: reviewee,
+            reviewText: reviewText,
+            score: score,
+            offerID: offerID
+        });
+        console.log(res);
+        alert('Thank you for your review!')
+        window.location.href ='/'
+    } else{
+        alert("Please rate your trade :)")
+    }
+}
+
 function setup() {
-    getUserInfo()
+    getTradeInfo() 
 }
 
 $(document).ready(setup)
