@@ -1052,7 +1052,7 @@ app.get('/api/getTradeOffersToMe', (req, res) => {
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let query = "SELECT * FROM offers WHERE offereeID = ?"
+        let query = "SELECT * FROM offers WHERE offereeID = ? AND status = -1"
         let recordValues = uid;
 
         connection.query(query, [recordValues], (err, result) => {

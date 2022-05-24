@@ -1,5 +1,6 @@
+
 #OfferContainer {
-    width: 100%;
+    text-align: center;
     display: flex;
     flex-direction: column;
     align-content: center;
@@ -8,33 +9,72 @@
 }
 
 .TradeOffer {
-    width: 80%;
-    margin: auto;
-    border-width: 1px;
-    border-style: solid;
-    border-radius: 10px;
+    background: white;
+    border: 0.2rem solid #005555;
+    border-radius: 5px;
+    padding: 5%;
+    margin: 5%;
     display: flex;
     flex-direction: column;
     text-align: center;
 }
 
 .TradeOfferer {
+    display: flex;
+    flex-direction: row;
     margin: auto;
     width: 100%;
+    color: black;
 }
 
-.OfferDetails, .OfferItem, .ForItem {
+.OffererPicture {
+    width: 60px;
+    border-radius: 60px;
+    margin: 0 20px;
+}
+.OfferDetails {
     width: 100%;
     margin: auto;
     padding: 10px;
+    display: flex;
+    flex-direction: column;
 }
 
+.OfferDetails a {
+    color: black;
+}
+
+.OfferItem, .ForItem {
+    margin-bottom: 15px;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+.OfferItem h4, .ForItem h4{
+    margin: 20px 0 0 20px;
+}
+
+
 .ForItem img, .OfferItem img {
-    max-width: 90%;
-    max-height: 50%;
-    margin: auto;
+    width: 30%;
+    border-radius: 20px;
 }
 
 .TradeActions {
     padding: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+
+.aButton {
+    border: none;
+    color: #f1f1f1;
+    background-color: #005555;
+}
+
+.dButton {
+    background-color: #EE8572;
+    border: none;
+    color: #f1f1f1;
 }
