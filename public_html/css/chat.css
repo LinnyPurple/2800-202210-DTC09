@@ -44,7 +44,7 @@ footer {
     flex-direction: row;
     min-height: 10%;
     max-width: 60%;
-    font-size: 200%;
+    font-size: 3rem;
     color: white;
     padding: 20px;
 }
@@ -71,7 +71,7 @@ footer {
 }
 
 .msg .cP {
-    padding: 10px;
+    padding: 20px 30px;
     border-radius: 30px;
     height: fit-content;
 }
@@ -110,18 +110,23 @@ footer form {
 }
 
 footer form #sendMessage {
-    height: 70%;
+    height: 40%;
     width: 60%;
-    font-size: 200%;
+    font-size: 3rem;
     border-radius: 20px;
+    margin: auto;
+    padding: 2%;
 }
 
 footer form #sendButton {
-    height: 100%;
-    width: 30%;
+    border: none;
+    background-color: #005555;
+    color: #f1f1f1;
+    height: 60%;
+    width: 25%;
     border-radius: 20px;
-    font-size: 200%;
-    color: black;
+    font-size: 3rem;
+    margin: auto;
 }
 
 header {
@@ -154,16 +159,15 @@ header {
 .profileName {
     text-align: center;
     color: white;
-    font-size: 200%;
+    font-size: 4rem;
     padding-left: 20px;
-    margin-bottom: auto;
-    margin-top: auto;
+    margin: auto;
 }
 
 #backButton {
     height: 80%;
     width: 15%;
-    font-size: 300%;
+    font-size: 5rem;
     color: white;
     background: transparent;
     border-color: transparent;
