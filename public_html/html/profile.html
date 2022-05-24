@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
     <link rel="stylesheet" href="../css/profile.css">
-    <link rel="stylesheet" href="../css/template.css">
+    <link rel="stylesheet" href="../css/index.css">
 
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -23,7 +23,7 @@
 
 <body onload="f()">
     <!-- top nav -->
-    <header class="sticky-top"></header>
+    <header></header>
 
     <!-- contents -->
     <main>
@@ -61,7 +61,7 @@
                         <!-- place for uploading profile picture -->
                         <div class="form-group my-3">
                             <label>Upload picture:</label>
-                            <div style="display: flex;"> 
+                            <div style="display: flex;">
                                 <input type="file" name="image" id="uploadButton" accept="image/*" />
                                 <input type="submit" value="Submit">
                             </div>
@@ -71,7 +71,6 @@
 
                 <!-- edit and save buttons -->
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-danger my-2" onclick="logoutUser()">Logout</button>
                     <button type="button" id="edit_btn" class="btn btn-secondary m-2"
                         onclick="editUserInfo()">Edit</button>
                     <button type="button" id="save_btn" class="btn btn-primary m-2"
@@ -83,7 +82,7 @@
 
         </div>
 
-        <div id="history_buttons">
+        <div class="account" id="history_buttons">
             <!-- todo: previous button? -->
             <!-- <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My listings</button>
 
@@ -95,7 +94,9 @@
             </div>
 
             <div id="special-message"></div>
-
+            <div class="account__logout">
+              <button type="button" class="btn btn-danger my-2" onclick="logoutUser()">Logout</button>
+            </div>
             <div class="form-group my-3">
                 <label>Enter password to delete account</label>
                 <input type="text" id="passwordDelete" class="form-control" placeholder="Enter your password">
@@ -108,7 +109,7 @@
 
 
     <!-- botton nav -->
-    <footer class="fixed-bottom"></footer>
+    <footer></footer>
 
 
     <!-- jquery -->
