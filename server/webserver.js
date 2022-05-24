@@ -134,15 +134,9 @@ app.get('/main', function (req, res) {
     res.send(doc);
 });
 
-app.get('/sendTradeOffer/:listingID', reqLogin, async (req, res) => {
-    let doc = new jsdom.JSDOM(fs.readFileSync('../public_html/html/sendTradeOffer.html', "utf8"));
-    const listing = (await getListingData(req.params.listingID));
-    doc.window.document.querySelector('.TradeItemName').textContent = listing.title;
-
-    let imgs = listing.images;
-
-    // doc.window.document.querySelector('.TradeItemImg').src = imgs ? imgs : 'https://dummyimage.com/200x200/000/fff';
-    res.send(doc.serialize());
+app.get('/sendTradeOffer', reqLogin, async (req, res) => {
+    let doc = fs.readFileSync('../public_html/html/sendTradeOffer.html', "utf8");
+    res.send(doc);
 });
 
 app.get('/chat/:uid', reqLogin, function (req, res) {
@@ -715,6 +709,18 @@ app.get('/api/getListingsFromUser/:uid', (req, res) => {
     });
 });
 
+app.get('/api/getListingsFromUserNotDone/:uid', (req, res) => {
+    const mysql = require("mysql2")
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+    let uid = req.params.uid;
+
+    let query = "SELECT * FROM listing WHERE posterID = ? AND archived = 0";
+    connection.query(query, uid, (err, result) => {
+        res.send(result);
+    });
+});
+
 app.get("/api/getListingData", async function (req, res) {
     let auctionID = req.query.id;
     let result = await getListingData(auctionID);
@@ -992,16 +998,16 @@ app.post('/api/sendTradeOffer', urlencodedParser, (req, res) => {
     if (req.session.loggedIn) {
         const offererID = req.session.uid;
         const offereeID = req.body.offereeID;
-        const offererData = req.body.offererData;
-        const offereeData = req.body.offereeData;
+        const offererListingID = req.body.offererListingID;
+        const offereeListingID = req.body.offereeListingID;
 
         const mysql = require("mysql2")
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let query = "INSERT INTO offers (offererID, offereeID, offererData, offereeData) values ?"
+        let query = "INSERT INTO offers (offererID, offereeID, offererListingID, offereeListingID) values ?"
         let recordValues = [
-            [offererID, offereeID, offererData, offereeData]
+            [offererID, offereeID, offererListingID, offereeListingID]
         ];
 
         connection.query(query, [recordValues]);
@@ -1177,8 +1183,8 @@ async function initializeDB() {
             ID int NOT NULL AUTO_INCREMENT,
             offererID int NOT NULL,
             offereeID int NOT NULL,
-            offererData TEXT NOT NULL,
-            offereeData TEXT NOT NULL,
+            offererListingID int NOT NULL,
+            offereeListingID int NOT NULL,
             status int default -1,
             timestamp DATETIME default CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY (ID)

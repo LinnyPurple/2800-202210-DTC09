@@ -1,5 +1,5 @@
 // Todo: get ID from URL
-var listingID = 2;
+var listingID = 0;
 var traderID = '';
 
 // get post ID from URL
@@ -53,6 +53,10 @@ function go_edit() {
 
 function go_chat() {
     window.location.href = "/chat/" + traderID;
+}
+
+function send_offer() {
+    window.location.href = `/sendTradeOffer?post=${listingID}&trader=${traderID}`;
 }
 
 async function getListingData(listingID) {

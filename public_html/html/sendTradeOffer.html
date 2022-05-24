@@ -31,16 +31,29 @@
     <!-- the body of the page -->
     <div id="content">
         <div id="TradeItem">
-            <p class="TraderName"></p>
-            <p class="TradeItemName"></p>
-            <img class="TradeItemImg" />
+            <h2>Item you chose</h2>
+            <div id="choseItem">
+                <img id="tradeItemImg" />
+                <div style="margin-left: 10%;">
+                    <h4>Title</h4>
+                    <div id="tradeItemName"></div>
+                    <h4>User name</h4>
+                    <div id="traderName"></div>
+                </div>
+
+            </div>
         </div>
+
         <div id="potentialOffers">
+            <h2>Trade off item</h2>
             <template id="offerTemplate">
                 <div class="offerCard">
-                    <p class="OfferName"></p>
                     <img class="OfferImg" />
-                    <button class="SendOffer">Send Offer</button>
+                    <div style="padding-top: 15%; padding-left: 10px;">
+                        <h4 class="OfferName" style="padding-bottom: 15%; text-align: center;"></h4>
+                        <button class="SendOffer">Send Offer</button>
+                    </div>
+
                 </div>
             </template>
         </div>
@@ -50,7 +63,7 @@
     <footer class="fixed-bottom"></footer>
 
     <!-- JavaScript functions -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="/js/global.js"></script>
     <script src="/js/webserverInterface.js"></script>
     <script src="/js/httpRequests.js"></script>
@@ -59,7 +72,7 @@
         let userInfo;
         async function getPotentialOffers() {
             userInfo = JSON.parse(await getUserInfo());
-            listings = JSON.parse(await getRequest('/api/getListingsFromUser/' + userInfo.uid));
+            listings = JSON.parse(await getRequest('/api/getListingsFromUserNotDone/' + userInfo.uid));
             console.log(listings);
 
             const parent = document.querySelector("#potentialOffers");
@@ -68,34 +81,69 @@
                 let template = document.querySelector("#offerTemplate").content.cloneNode(true);
                 let offer = listings[offerInd];
 
-                template.querySelector(".OfferName").innerHTML = "Your: " + offer.title;
-                let imgs = `/img/post/${offer.images}`;
-                template.querySelector(".OfferImg").setAttribute('src', imgs ? imgs : 'https://dummyimage.com/200x200/000/fff');
+                template.querySelector(".OfferName").innerHTML = offer.title;
+                console.log(!offer.images)
+                let imgs = '';
+                if (!offer.images) {
+                    imgs = '/etc/camera.svg';
+                } else {
+                    imgs = `/img/post/${offer.images}`;
+                }
+                template.querySelector(".OfferImg").setAttribute('src', imgs);
                 template.querySelector(".SendOffer").setAttribute('onclick', `sendOffer(${offer.ID})`);
 
                 parent.appendChild(template);
             }
         }
 
-        async function sendOffer(id) {
-            let offerListing = listings.find(e => e.ID == id);
-            let listing = JSON.parse(await getRequest(`/api/getListingData?id=${window.location.href.split('/')[window.location.href.split('/').length - 1]}`))
-            console.log(listing);
-            console.log(offerListing);
-            let res = await postRequest('/api/sendTradeOffer', {
-                offereeID: listing.posterID,
-                offererData: JSON.stringify({
-                    name: offerListing.title,
-                    img: (offerListing.images && JSON.parse(offerListing.images).length) > 0 ? JSON.parse(offerListing.images)[0] : 'https://dummyimage.com/200x200/000/fff'
-                }),
-                offereeData: JSON.stringify({
-                    name: listing.title,
-                    img: (listing.images && JSON.parse(listing.images).length) > 0 ? JSON.parse(listing.images)[0] : 'https://dummyimage.com/200x200/000/fff'
-                })
-            });
-            console.log(res);
+        let traderID = ''
+        let tradeItemID = ''
+
+        // get post ID and trader ID from URL
+        function getTradesInfo() {
+            // create a URL object
+            let params = new URL(window.location.href);
+            traderID = params.searchParams.get("trader");
+            tradeItemID = params.searchParams.get("post");
+
+            loadSelectedItem()
         }
 
+        async function loadSelectedItem() {
+            var traderInfo = JSON.parse(await getRequest(`/api/getTraderInfo?id=${encodeURIComponent(traderID)}`));
+            var tradeItemInfo = JSON.parse(await getRequest(
+                `/api/getListingData?id=${encodeURIComponent(tradeItemID)}`));
+            console.log(traderInfo);
+            console.log(tradeItemInfo)
+
+            $('#traderName').html(traderInfo.data.username);
+            $('#tradeItemName').html(tradeItemInfo.title);
+            if (!tradeItemInfo.images) {
+                $('#tradeItemImg').attr("src", '/etc/camera.svg')
+            } else {
+                $('#tradeItemImg').attr("src", '/img/post/' + tradeItemInfo.images)
+            };
+        }
+
+        async function sendOffer(id) {
+            let offerListing = listings.find(e => e.ID == id);
+
+            let confirmation = confirm(`Do you want to trade off ${offerListing.title}?`);
+
+            if (confirmation) {
+                let res = await postRequest('/api/sendTradeOffer', {
+                    offereeID: traderID,
+                    offereeListingID: tradeItemID,
+                    offererListingID: id
+                });
+                console.log(res);
+                alert("Offer has been sent.")
+                window.location.href = "/";
+            }
+
+        }
+
+        getTradesInfo()
         getPotentialOffers();
     </script>
 </body>

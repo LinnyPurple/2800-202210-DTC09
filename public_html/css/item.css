@@ -23,18 +23,21 @@ main {
     text-decoration: underline;
 }
 
-#titleNDate, #category {
+#titleNDate,
+#category {
     display: flex;
     justify-content: space-between;
     align-items: flex-end;
 }
 
 #userNcategory {
-    margin:0px 10px
+    margin: 0px 10px
 }
+
 #category {
     color: #8b8f8f;
 }
+
 #detail {
     border: #b2b2b2 solid 2px;
     border-radius: 20px;
@@ -63,14 +66,23 @@ main {
     width: 110px;
 }
 
-#back_btn {
-    color: #45807E;
-    border: 3px solid #45807E;
-    background-color: #D4F3EF;
+#trade_btn {
+    background-color: #EE8572;
+    border: none;
+    color: #f1f1f1;
 }
 
 #chat_btn {
     border: none;
     color: #f1f1f1;
-    background-color: #EE8572;
+    background-color: #005555;
+}
+
+#back_btn {
+    color: #45807E;
+    border: 3px solid #45807E;
+    background-color: #D4F3EF;
+    padding: 0;
+    width: 84%;
+    height: 40px;
 }
