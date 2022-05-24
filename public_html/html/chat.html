@@ -82,9 +82,9 @@
                 msg.value = '';
             }
 
-            async function initWebsocket() { 
+            async function initWebsocket() {
                 socket = new WebSocket(`ws://${getVariable('webSocketAddress')}?uid=${encodeURIComponent(currentUser.uid)}`);
-                
+
                 socket.addEventListener('open', function (event) {
                     console.log("Successfully connected to websocket.");
                 });
