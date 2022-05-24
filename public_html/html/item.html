@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
     <link rel="stylesheet" href="../css/item.css">
-    <link rel="stylesheet" href="../css/template.css">
+    <link rel="stylesheet" href="../css/index.css">
 
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -23,14 +23,14 @@
 
 <body>
     <!-- top nav -->
-    <header class="sticky-top"></header>
+    <header></header>
 
     <!-- contents -->
     <main>
-        <div>
+        <div class="item">
             <div id="titleNDate">
-                <h2 id="title_" style="width: 70%;"> title </h2>
-                <h6 id="date" style="width: 30%;"> Posting date </h6>
+                <h2 class="item__title" id="title_">Title</h2>
+                <h3 id="date">Date</h6>
             </div>
             <div id="item_img">
                 <img id="item_image" src="../etc/camera.svg">
@@ -43,45 +43,39 @@
                 </div>
 
                 <div id="category">
-                    <h5 id="myItem"> mycategory </h5>
-                    <h5>↔</h5>
-                    <h5 id="itemLookfor"> tradingcategory</h5>
+                    <p id="myItem"> mycategory </p>
+                    <p>&#8596;</p>
+                    <p id="itemLookfor"> tradingcategory</p>
                 </div>
             </div>
 
-            <div id="detail">
-                <div id="description"> Description</div>
-                <div>
-                    <span class="details">Condition: </span>
-                    <span id="condition"> ... </span>
+            <div class="deteil" id="detail">
+                <div class="detail__item" id="description">
+                  <span>Description:</span>
                 </div>
-                <div>
-                    <span class="details">Trading Method: </span>
-                    <span id="trading_method"> ... </span>
+                <div class="detail__item">
+                    <span>Condition: </span>
+                    <span id="condition"></span></span>
+                </div>
+                <div class="detail__item">
+                    <span>Trading Method: </span>
+                    <span id="trading_method"></span>
                 </div>
             </div>
         </div>
         <div id="buttons">
-
-
             <div id="chatOrEdit">
                 <button id="chat_btn" type="button" class="btn btn-secondary btn-lg" onclick="go_chat()">Chat</button>
             </div>
             <div>
-                <button id="trade_btn" type="button" class="btn btn-secondary btn-lg"
-                    onclick="send_offer()">Trade</button>
+                <button id="trade_btn" type="button" class="btn btn-secondary btn-lg" onclick="send_offer()">Trade</button>
             </div>
         </div>
-        <div style="text-align: center;">
-            <button id="back_btn" type="button" class="btn btn-secondary btn-lg" onclick="history.back()">Go
-                Back</button>
-        </div>
-
     </main>
 
 
     <!-- botton nav -->
-    <footer class="fixed-bottom"></footer>
+    <footer></footer>
 
 
     <!-- jquery -->
