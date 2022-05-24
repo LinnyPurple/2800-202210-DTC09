@@ -94,22 +94,22 @@ app.get('/websocket', reqLogin, function (req, res) {
     res.send(doc);
 });
 
-app.get('/review', function (req, res) {
+app.get('/review', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/review.html', "utf8");
     res.send(doc);
 });
 
-app.get('/profile', function (req, res) {
+app.get('/profile', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/profile.html', "utf8");
     res.send(doc);
 });
 
-app.get('/posting', function (req, res) {
+app.get('/posting', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/posting.html', "utf8");
     res.send(doc);
 });
 
-app.get('/editpost', function (req, res) {
+app.get('/editpost', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/editPost.html', "utf8");
     res.send(doc);
 });
@@ -119,17 +119,17 @@ app.get('/tradeOffers', reqLogin, function (req, res) {
     res.send(doc);
 });
 
-app.get('/confirmation', function (req, res) {
+app.get('/confirmation', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/confirmation.html', "utf8");
     res.send(doc);
 });
 
-app.get('/listings', function (req, res) {
+app.get('/listings', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/listings.html', "utf8");
     res.send(doc);
 });
 
-app.get('/main', function (req, res) {
+app.get('/main', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/main.html', "utf8");
     res.send(doc);
 });
@@ -149,12 +149,12 @@ app.get('/chat/', reqLogin, function (req, res) {
     res.send(doc);
 });
 
-app.get('/item', function (req, res) {
+app.get('/item', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/item.html', "utf8");
     res.send(doc);
 });
 
-app.get('/traderinfo', function (req, res) {
+app.get('/traderinfo', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/traderInfo.html', "utf8");
     res.send(doc);
 });
