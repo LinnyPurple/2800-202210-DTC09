@@ -5,6 +5,12 @@
 })
 ();
 
+async function logoutUser() {
+    await logout();
+    getProfileInfo();
+    window.location.assign('/login');
+}
+
 $(document).ready(() => {
   const hamburger = $(".top-nav__hamburger");
   const hamburger__nav = $(".top-nav__hamburger__nav")

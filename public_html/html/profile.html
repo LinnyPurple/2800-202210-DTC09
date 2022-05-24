@@ -28,6 +28,7 @@
     <!-- contents -->
     <main>
         <div id="userinfo">
+          
             <div class="container">
 
                 <!-- User profile picture -->
@@ -82,7 +83,7 @@
 
         </div>
 
-        <div class="account" id="history_buttons">
+        <div class="account">
             <!-- todo: previous button? -->
             <!-- <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My listings</button>
 
@@ -94,14 +95,11 @@
             </div>
 
             <div id="special-message"></div>
-            <div class="account__logout">
-              <button type="button" class="btn btn-danger my-2" onclick="logoutUser()">Logout</button>
-            </div>
-            <div class="form-group my-3">
-                <label>Enter password to delete account</label>
+            <div class="account__delete form-group my-3">
+                <label>Enter password to delete your account:</label>
                 <input type="text" id="passwordDelete" class="form-control" placeholder="Enter your password">
+                <button type="button" class="btn btn-danger btn-block" onclick="deleteLoggedInUser()">DELETE ACCOUNT</button>
             </div>
-            <button type="button" class="btn btn-danger btn-block" onclick="deleteLoggedInUser()">DELETE ACCOUNT</button>
         </div>
 
 
@@ -151,12 +149,6 @@
 
             document.getElementById("special-message").innerHTML = specialMessage;
             document.getElementById("admin-button").innerHTML += adminMessage;
-        }
-
-        async function logoutUser() {
-            await logout();
-            getProfileInfo();
-            window.location.assign('/login');
         }
 
         async function gotoAdminPage() {
