@@ -8,8 +8,8 @@ html {
 body {
     width: 100%;
     height: 100%;
-    padding: 0px;
-    margin: 0px;
+    padding: 0;
+    margin: 0;
     display: grid;
     grid-template-columns: 100%;
     grid-template-rows: 10% 80% 10%;
@@ -44,7 +44,7 @@ footer {
     flex-direction: row;
     min-height: 10%;
     max-width: 60%;
-    font-size: 300%;
+    font-size: 200%;
     color: white;
     padding: 20px;
 }
@@ -53,14 +53,14 @@ footer {
     margin-left: auto;
     display: flex;
     flex-direction: row;
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 .reciChat {
     margin-right: auto;
     display: flex;
     flex-direction: row;
-    justify-content: start;
+    justify-content: flex-start;
 }
 
 .msg .cImg {
@@ -82,7 +82,7 @@ footer {
 
 .sentP {
     background-color: cornflowerblue;
-    text-align: end;
+    text-align: right;
 }
 
 .reciImg {
@@ -112,7 +112,7 @@ footer form {
 footer form #sendMessage {
     height: 70%;
     width: 60%;
-    font-size: 500%;
+    font-size: 200%;
     border-radius: 20px;
 }
 
@@ -120,7 +120,7 @@ footer form #sendButton {
     height: 100%;
     width: 30%;
     border-radius: 20px;
-    font-size: 400%;
+    font-size: 200%;
     color: black;
 }
 
@@ -131,7 +131,7 @@ header {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    justify-content: start;
+    justify-content: flex-start;
     align-content: center;
 }
 
@@ -154,7 +154,7 @@ header {
 .profileName {
     text-align: center;
     color: white;
-    font-size: 400%;
+    font-size: 200%;
     padding-left: 20px;
     margin-bottom: auto;
     margin-top: auto;
@@ -163,7 +163,7 @@ header {
 #backButton {
     height: 80%;
     width: 15%;
-    font-size: 500%;
+    font-size: 300%;
     color: white;
     background: transparent;
     border-color: transparent;
