@@ -51,24 +51,7 @@
 /* account section */
 .account {
   margin: 4% auto;
-  width: 70%;
-}
-
-.account__logout {
-  display: flex;
-  justify-content: flex-end;
-}
-
-.account__logout button {
-  border: 3px solid #45807E;
-  border-radius: 5px;
-  padding: 3% 6%;
-}
-
-.account__logout button:active {
-  border: none;
-  background-color: #45807E;
-  color: #fff;
+  width: 90%;
 }
 
 .account__delete {
@@ -79,4 +62,6 @@
 .account__delete button {
   background-color: rgba(95, 128, 127, 0.478);
   border: none;
+  margin: 2% 0 0 auto;
+  width: 25%;
 }

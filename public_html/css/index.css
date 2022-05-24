@@ -147,7 +147,7 @@ main h2 {
   display: flex;
   justify-content: space-around;
   list-style-type: none;
-  padding: 4% 3% 3%;
+  padding: 3% 3% 2%;
   position: relative;
   margin: 0;
 }
@@ -160,7 +160,7 @@ main h2 {
 }
 
 .menu-bar__btn {
-  font-size: 4.5rem;
+  font-size: 3.5rem;
 }
 
 .menu-bar__label {
