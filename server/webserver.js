@@ -302,31 +302,43 @@ var storage = multer.diskStorage({
 })
 
 var upload = multer({
-    storage: storage
-});
+    storage: storage,
+    limits: {
+        fileSize: 500000
+    }
+}).single('image');
 
 
 //route for upload data
-app.post("/upload", upload.single('image'), (req, res) => {
+app.post("/upload", (req, res) => {
     const mysql = require("mysql2")
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
-    if (req.file) {
-        console.log(req.file.filename)
-        var imgsrc = '/img/profiles/' + req.file.filename
-        let query = `UPDATE user SET image = ? WHERE ID = ${req.session.uid};`
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            // A Multer error occurred when uploading.  
+            res.write("<script>alert('Allowed file size is 500KB.')</script>");
+            res.write("<script>window.location.href = '/profile'</script>");
+            // res.status(400).json({error: "Allowed file size is 500KB."}); 
+        } else {
+            if (req.file) {
+                console.log(req.file.filename)
+                var imgsrc = '/img/profiles/' + req.file.filename
+                let query = `UPDATE user SET image = ? WHERE ID = ${req.session.uid};`
 
-        connection.query(query,
-            [imgsrc ? imgsrc : req.session.image], (err, result) => {
-                if (err) {
-                    console.log(err);
-                }
-                req.session.image = imgsrc ? imgsrc : req.session.image;
+                connection.query(query,
+                    [imgsrc ? imgsrc : req.session.image], (err, result) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        req.session.image = imgsrc ? imgsrc : req.session.image;
 
-                res.redirect("profile")
-            });
-    }
+                        res.redirect("profile")
+                    });
+            }
+        }
+    });
 });
 
 
