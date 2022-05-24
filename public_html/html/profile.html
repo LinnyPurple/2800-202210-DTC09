@@ -93,12 +93,15 @@
             <div id="admin-button">
                 <button type="button" class="btn btn-secondary btn-block" onclick="gotoAdminPage()">Go to admin page</button>
             </div>
-
             <div id="special-message"></div>
+            <br>
+            <div id="send-offer">
+                <button type="button" class="btn btn-info btn-block" onclick="goToTradeOffers()">Trade Offers</button>
+            </div>
             <div class="account__delete form-group my-3">
                 <label>Delete account:</label>
                 <input type="text" id="passwordDelete" class="form-control" placeholder="Enter your password">
-                <button type="button" class="btn btn-danger btn-block" onclick="deleteLoggedInUser()">DELETE</button>
+                <button type="button" class="btn btn-danger btn-block" onclick="deleteLoggedInUser()"><b>DELETE</b></button>
             </div>
         </div>
 
@@ -167,6 +170,10 @@
             await deleteAccountV2(currentUserInfo.name, currentUserInfo.email, document.getElementById("passwordDelete").value);
             logout();
             window.location.assign("/");
+        }
+
+        async function goToTradeOffers() {
+            window.location.assign('/tradeOffers');
         }
     </script>
 
