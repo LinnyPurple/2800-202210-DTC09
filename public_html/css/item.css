@@ -1,6 +1,10 @@
-/* main */
-main {
-    margin: 5px 40px;
+.item {
+  margin: 0 7%;
+}
+
+.item__title {
+  font-family: 'Lato', sans-serif;
+  line-height: 1;
 }
 
 /* image */
@@ -19,10 +23,6 @@ main {
     font-size: x-large;
 }
 
-#title_ {
-    text-decoration: underline;
-}
-
 #titleNDate,
 #category {
     display: flex;
@@ -31,22 +31,17 @@ main {
 }
 
 #userNcategory {
-    margin: 0px 10px
+  margin: 0px 10px
 }
 
 #category {
-    color: #8b8f8f;
+  color: #8b8f8f;
 }
 
 #detail {
     border: #b2b2b2 solid 2px;
     border-radius: 20px;
     padding: 15px;
-}
-
-.details {
-    font-size: 16px;
-    padding: 15px 0;
 }
 
 #description {
@@ -63,7 +58,7 @@ main {
 }
 
 #buttons button {
-    width: 110px;
+  padding: 1.5rem 3rem;
 }
 
 #trade_btn {
@@ -76,13 +71,4 @@ main {
     border: none;
     color: #f1f1f1;
     background-color: #005555;
-}
-
-#back_btn {
-    color: #45807E;
-    border: 3px solid #45807E;
-    background-color: #D4F3EF;
-    padding: 0;
-    width: 84%;
-    height: 40px;
 }
