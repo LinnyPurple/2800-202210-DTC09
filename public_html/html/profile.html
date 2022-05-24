@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
     <link rel="stylesheet" href="../css/profile.css">
-    <link rel="stylesheet" href="../css/template.css">
+    <link rel="stylesheet" href="../css/index.css">
 
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
@@ -23,11 +23,12 @@
 
 <body onload="f()">
     <!-- top nav -->
-    <header class="sticky-top"></header>
+    <header></header>
 
     <!-- contents -->
     <main>
         <div id="userinfo">
+
             <div class="container">
 
                 <!-- User profile picture -->
@@ -61,7 +62,7 @@
                         <!-- place for uploading profile picture -->
                         <div class="form-group my-3">
                             <label>Upload picture:</label>
-                            <div style="display: flex;"> 
+                            <div style="display: flex;">
                                 <input type="file" name="image" id="uploadButton" accept="image/*" />
                                 <input type="submit" value="Submit">
                             </div>
@@ -71,7 +72,6 @@
 
                 <!-- edit and save buttons -->
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-danger my-2" onclick="logoutUser()">Logout</button>
                     <button type="button" id="edit_btn" class="btn btn-secondary m-2"
                         onclick="editUserInfo()">Edit</button>
                     <button type="button" id="save_btn" class="btn btn-primary m-2"
@@ -83,7 +83,7 @@
 
         </div>
 
-        <div id="history_buttons">
+        <div class="account">
             <!-- todo: previous button? -->
             <!-- <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My listings</button>
 
@@ -95,12 +95,11 @@
             </div>
 
             <div id="special-message"></div>
-
-            <div class="form-group my-3">
-                <label>Enter password to delete account</label>
+            <div class="account__delete form-group my-3">
+                <label>Delete account:</label>
                 <input type="text" id="passwordDelete" class="form-control" placeholder="Enter your password">
+                <button type="button" class="btn btn-danger btn-block" onclick="deleteLoggedInUser()">DELETE</button>
             </div>
-            <button type="button" class="btn btn-danger btn-block" onclick="deleteLoggedInUser()">DELETE ACCOUNT</button>
         </div>
 
 
@@ -108,7 +107,7 @@
 
 
     <!-- botton nav -->
-    <footer class="fixed-bottom"></footer>
+    <footer></footer>
 
 
     <!-- jquery -->
@@ -150,12 +149,6 @@
 
             document.getElementById("special-message").innerHTML = specialMessage;
             document.getElementById("admin-button").innerHTML += adminMessage;
-        }
-
-        async function logoutUser() {
-            await logout();
-            getProfileInfo();
-            window.location.assign('/login');
         }
 
         async function gotoAdminPage() {
