@@ -1,12 +1,10 @@
-/* main */
-main {
-    margin: 20px 40px;
-}
-
 label {
-    font-size: 13px;
+  font-size: 1.6rem;
 }
 
+a {
+  text-decoration: none;
+}
 
 /* upload picture */
 #upload {
@@ -18,6 +16,10 @@ label {
     top: 50%;
     left: 1rem;
     transform: translateY(-50%);
+}
+
+.input-group .btn {
+  z-index: 1;
 }
 
 .image-area {
@@ -36,7 +38,6 @@ label {
 }
 
 .image-area img {
-    z-index: 2;
     position: relative;
 }
 
