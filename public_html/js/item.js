@@ -24,8 +24,8 @@ async function checkTwoUsers() {
         var currentUserID = currentUserInfo.uid;
 
         if(currentUserID == traderID){
-            $('#chatOrEdit').html('<button id="chat_btn" type="button" class="btn btn-secondary btn-lg" onclick="go_edit()">Edit</button>');
-            $('#trade_btn').css('display','none');
+            $('#tradeOrEdit').html('<button id="edit_btn" type="button" class="btn btn-lg" onclick="go_edit()">Edit</button>');
+            $('#chat_btn').css('display','none');
         }
 
     } else {

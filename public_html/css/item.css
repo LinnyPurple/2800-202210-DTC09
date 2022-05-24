@@ -9,25 +9,25 @@
 
 /* image */
 #item_img {
-    text-align: center;
+  text-align: center;
 }
 
 #item_img img {
-    width: 87%;
+  width: 87%;
 }
 
 /* info */
 
 #user_info a {
-    color: #45807E;
-    font-size: x-large;
+  color: #45807E;
+  font-size: x-large;
 }
 
 #titleNDate,
 #category {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
 }
 
 #userNcategory {
@@ -39,22 +39,22 @@
 }
 
 #detail {
-    border: #b2b2b2 solid 2px;
-    border-radius: 20px;
-    padding: 15px;
+  border: #b2b2b2 solid 2px;
+  border-radius: 20px;
+  padding: 15px;
 }
 
 #description {
-    height: 90px;
-    font-size: 20px;
+  height: 90px;
+  font-size: 20px;
 }
 
 
 /* buttons */
 #buttons {
-    display: flex;
-    justify-content: space-around;
-    margin: 20px 0;
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
 }
 
 #buttons button {
@@ -62,13 +62,19 @@
 }
 
 #trade_btn {
-    background-color: #EE8572;
-    border: none;
-    color: #f1f1f1;
+  background-color: #EE8572;
+  border: none;
+  color: #f1f1f1;
 }
 
 #chat_btn {
-    border: none;
-    color: #f1f1f1;
-    background-color: #005555;
+  border: none;
+  color: #f1f1f1;
+  background-color: #005555;
+}
+
+#edit_btn {
+  border: none;
+  color: #f1f1f1;
+  background-color: #005555;
 }
