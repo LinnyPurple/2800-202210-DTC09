@@ -40,6 +40,9 @@
 
       for (var listing in listings) {
         if (listings[listing].posterID != userInfo.uid) {
+          const otherUserInfo = JSON.parse(await getOtherUserInfo(listings[listing].posterID));
+          console.log(listings[listing]);
+          console.log(otherUserInfo);
           let itemImgs;
           if(!listings[listing].images){
             itemImgs = '/etc/camera.svg';
@@ -49,13 +52,12 @@
           document.getElementById("listings").innerHTML +=
             `
               <div class="listings__item">
-                <!-- <template id="listings__template"> -->
                   <a href="/item?post_id=${listings[listing].ID}">
                     <div class="listings__item__img">
                       <img id="item__img" src="${itemImgs}" alt="dummy">
                     </div>
                     <div class="listings__item__trader">
-                      <p id="item__trader">${userInfo.name}</p>
+                      <p id="item__trader">${otherUserInfo.username}</p>
                     </div>
                     <div class="listings__item__date">
                       <p id="item__date">${listings[listing].posted}</p>
@@ -68,7 +70,6 @@
                       <p id="item__description">${listings[listing].description}</p>
                     </div>
                   </a>
-                <!-- </template> -->
               </div>
             `;
         }
