@@ -30,7 +30,7 @@
     color: black;
 }
 
-.OffererPicture {
+.OffererPicture, .OffereePicture {
     width: 60px;
     border-radius: 60px;
     margin: 0 20px;
