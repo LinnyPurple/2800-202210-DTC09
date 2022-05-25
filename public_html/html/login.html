@@ -57,7 +57,7 @@
       console.log(`loginSuccess: ${loginSuccess.result}`);
       if (loginSuccess.result === "Failed to log in.") {
           console.log("COULD NOT LOG IN");
-          document.getElementById("invalid-login").innerHTML = "Username/password does not exist.";
+          document.getElementById("invalid-login").innerHTML = "Username/password does not exist...";
       } else window.location.assign('/profile');
     }
   </script>

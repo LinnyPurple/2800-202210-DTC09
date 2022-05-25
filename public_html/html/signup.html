@@ -32,6 +32,7 @@
           <label for="p">Password:</label>
           <input id="password" type="password" value="">
         </div>
+        <div id="unfilled"></div>
         <div id="login">
           <button class="primary-btn" onclick="f()">Sign-Up</button>
           <span>OR</span>
@@ -39,7 +40,6 @@
         </div>
       </div>
     </div>
-    <div id="unfilled"></div>
   </main>
 
   <footer></footer>
@@ -58,18 +58,30 @@
       return re.test(string);
     }
 
+    function validateEmail(email) {
+        var re = /\S+@\S+\.\S+/;
+        return re.test(email);
+    }
+
     async function f() {
       var username_ = document.getElementById("username").value;
       var email_ = document.getElementById("email").value;
       var password_ = document.getElementById("password").value;
       console.log(username_, email_, password_);
-      if (!username_ || !email_ || !password_ || containsWhitespace(username_) || containsWhitespace(email_) || containsWhitespace(password_)) {
-        document.getElementById("unfilled").innerHTML = "INVALID ARGUMENTS.";
+
+      if (!username_ || containsWhitespace(username_)) {
+        document.getElementById("unfilled").innerHTML = "INVALID USERNAME...";
+        document.getElementById("username").style["border-color"] = "red";
+      } else if (!email_ || containsWhitespace(email_) || !validateEmail(email_)) {
+        document.getElementById("unfilled").innerHTML = "INVALID EMAIL...";
+        document.getElementById("email").style["border-color"] = "red";
+      } else if (!password_ || containsWhitespace(password_)) {
+        document.getElementById("unfilled").innerHTML = "INVALID PASSWORD...";
+        document.getElementById("password").style["border-color"] = "red";
       } else {
         createAccountV2(username_, email_, password_);
         window.location.assign('/');
       }
-
     }
   </script>
 </body>

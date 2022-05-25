@@ -26,9 +26,9 @@ span {
   width: 100%;
 }
 
-#invalid-login {
-    color: red;
-    font-size: 1.5rem;
+#invalid-login, #unfilled {
+  color: red;
+  font-size: 1.8rem;
 }
 
 #login-form {
