@@ -37,12 +37,12 @@
   padding: 2% 3%;
 }
 
-#send-offer {
+#send-offer, #sent-offers {
   display: flex;
   margin: 10% 0 5%;
 }
 
-#send-offer button {
+#send-offer button, #sent-offers button {
   background-color: #45807E;
   border: none;
   color: #f1f1f1;

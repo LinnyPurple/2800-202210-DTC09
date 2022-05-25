@@ -1,6 +1,6 @@
-async function populateOffers() {
+async function populateOffers(recieving=true) {
     // get all my offers
-    let res = JSON.parse(await getRequest('/api/getTradeOffersToMe'));;
+    let res = JSON.parse(await getRequest('/api/getTradeOffersFromMe'));
     console.log(res)
     const parent = document.querySelector("#OfferContainer");
 
@@ -10,7 +10,7 @@ async function populateOffers() {
         let offer = res.data[offerInd];
 
         // get other trade's information
-        let offerer = JSON.parse(await getOtherUserInfo(offer.offererID));
+        let offeree = JSON.parse(await getOtherUserInfo(offer.offereeID));
 
         // get two itmes information
         let offererData = JSON.parse(await getRequest(`/api/getListingData?id=${encodeURIComponent(offer.offererListingID)}`));
@@ -29,20 +29,20 @@ async function populateOffers() {
         } else {
             offereeImg = `/img/post/${offereeData.images}`
         }
-        template.querySelector(".OffererPicture").setAttribute('src', offerer.image ? offerer.image : '/etc/person-circle');
-        template.querySelector(".OffererName").innerHTML = offerer.username;
-        template.querySelector(".TradeOfferer").href = `/traderinfo?trader_id=${offer.offererID}`;
+        template.querySelector(".OffereePicture").setAttribute('src', offeree.image ? offeree.image : '/etc/person-circle.svg');
+        template.querySelector(".OffereeName").innerHTML = offeree.username;
+        template.querySelector(".TradeOfferer").href = `/traderinfo?trader_id=${offer.offereeID}`;
 
-        template.querySelector(".OfferName").innerHTML = "Their item: " + offererData.title;
+        template.querySelector(".OfferName").innerHTML = "Your: " + offererData.title;
         template.querySelector(".OfferImg").setAttribute('src', offererImg);
         template.querySelector(".OfferItem").href = `/item?post_id=${offererData.ID}`;
 
-        template.querySelector(".ForName").innerHTML = "My Item: " + offereeData.title;
+        template.querySelector(".ForName").innerHTML = "Their: " + offereeData.title;
         template.querySelector(".ForImg").setAttribute('src', offereeImg);
         template.querySelector(".ForItem").href = `/item?post_id=${offereeData.ID}`;
 
-        template.querySelector('.aButton').setAttribute('onclick', `tradeReply(${offer.ID}, ${offer.offererID}, true)`)
-        template.querySelector('.dButton').setAttribute('onclick', `tradeReply(${offer.ID}, ${offer.offererID}, false)`)
+        template.querySelector('.statusM').innerHTML = (offer.status == -1 ? "Pending" : (offer.status == 1 ? "Accepted" : "Declined"));
+        template.querySelector('.chat_btn').setAttribute('onclick', `window.location.assign('/chat/${offer.offereeID}')`);
 
         parent.appendChild(template);
     }

@@ -119,6 +119,11 @@ app.get('/tradeOffers', reqLogin, function (req, res) {
     res.send(doc);
 });
 
+app.get('/sentTradeOffers', reqLogin, function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/sentOffers.html', "utf8");
+    res.send(doc);
+});
+
 app.get('/confirmation', reqLogin, function (req, res) {
     let doc = fs.readFileSync('../public_html/html/confirmation.html', "utf8");
     res.send(doc);
@@ -1108,6 +1113,34 @@ app.get('/api/getTradeOffersToMe', (req, res) => {
         connection.connect();
 
         let query = "SELECT * FROM offers WHERE offereeID = ? AND status = -1"
+        let recordValues = uid;
+
+        connection.query(query, [recordValues], (err, result) => {
+            res.send({
+                "result": "Success",
+                "msg": "Retrieved offers.",
+                "data": result
+            });
+        });
+    } else {
+        res.send({
+            "result": "Failed",
+            "msg": "Not logged in.",
+            "data": {}
+        })
+    }
+});
+
+app.get('/api/getTradeOffersFromMe', (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    if (req.session.loggedIn) {
+        const uid = req.session.uid;
+
+        const mysql = require("mysql2")
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        let query = "SELECT * FROM offers WHERE offererID = ?"
         let recordValues = uid;
 
         connection.query(query, [recordValues], (err, result) => {
