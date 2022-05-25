@@ -15,9 +15,9 @@
 [SwapOmen](https://sub.yurtle.net/)
 
 ## Creators
-*George Rozitis* ()
-*Lachlan Butler* ()
-*Toco Tachibana* (https://github.com/toco-t)
+*George Rozitis* ()  
+*Lachlan Butler* ()  
+*Toco Tachibana* (https://github.com/toco-t)  
 *Soo Park* ()  
 
 
