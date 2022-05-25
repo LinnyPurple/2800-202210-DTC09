@@ -49,17 +49,21 @@ async function saveUserInfo() {
     userName = document.getElementById("nameInput").value;
     userPassword = document.getElementById("passwordInput").value;
 
-    let res = await postRequest("/api/editAccount2", {
-        newUsername: userName,
-    });
-    console.log(res);
+    if (userName == '') {
+        alert('Please enter your name.')
+    } else {
+        let res = await postRequest("/api/editAccount2", {
+            newUsername: userName,
+        });
 
-    if (userPassword != "") {
-        resetPassword(userPassword)
+        if (userPassword != "") {
+            resetPassword(userPassword)
+        }
+
+        // after
+        document.getElementById('personalInfoFields').disabled = true
     }
 
-    // after
-    document.getElementById('personalInfoFields').disabled = true
 }
 
 
