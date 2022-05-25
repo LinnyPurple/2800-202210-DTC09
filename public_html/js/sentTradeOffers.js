@@ -42,6 +42,7 @@ async function populateOffers(recieving=true) {
         template.querySelector(".ForItem").href = `/item?post_id=${offereeData.ID}`;
 
         template.querySelector('.statusM').innerHTML = (offer.status == -1 ? "Pending" : (offer.status == 1 ? "Accepted" : "Declined"));
+        template.querySelector('.chat_btn').setAttribute('onclick', `window.location.assign('/chat/${offer.offereeID}')`);
 
         parent.appendChild(template);
     }
