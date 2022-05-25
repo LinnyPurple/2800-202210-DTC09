@@ -1,4 +1,4 @@
-async function populateOffers(recieving=true) {
+async function populateOffers(recieving = true) {
     // get all my offers
     let res = JSON.parse(await getRequest('/api/getTradeOffersFromMe'));
     console.log(res)
@@ -30,6 +30,8 @@ async function populateOffers(recieving=true) {
             offereeImg = `/img/post/${offereeData.images}`
         }
         template.querySelector(".OffereePicture").setAttribute('src', offeree.image ? offeree.image : '/etc/person-circle.svg');
+
+        template.querySelector(".offerDate").innerHTML = offer.timestamp.split('T')[0];
         template.querySelector(".OffereeName").innerHTML = offeree.username;
         template.querySelector(".TradeOfferer").href = `/traderinfo?trader_id=${offer.offereeID}`;
 
@@ -44,27 +46,22 @@ async function populateOffers(recieving=true) {
         template.querySelector('.statusM').innerHTML = (offer.status == -1 ? "Pending" : (offer.status == 1 ? "Accepted" : "Declined"));
         template.querySelector('.chat_btn').setAttribute('onclick', `window.location.assign('/chat/${offer.offereeID}')`);
 
+        // when user is accepted offer and not yet did confirm
+        if (offererData.archived == 0 && offer.status == 1) {
+            template.querySelector('.confirm_btn').setAttribute('value', `?offerID=${offer.ID}&traderID=${offer.offereeID}`);
+            template.querySelector('.confirm_btn').disabled = false;
+        }
+
+
         parent.appendChild(template);
     }
 }
 
-async function tradeReply(offerID, traderID, accept) {
-    let confirmation = confirm(`Do you want to ${accept ? 'accept' : 'decline'} trade?`)
-
-    if (confirmation) {
-        let res = JSON.parse(await postRequest('/api/replyTradeOffer', {
-            'offerID': offerID,
-            'accepted': (accept ? 1 : 0)
-        }));
-        console.log(res);
-        if (res.msg == "Accepted trade offer.") {
-            alert(res.msg)
-            window.location.href = `/confirmation?offerID=${offerID}&traderID=${traderID}`;
-        } else {
-            alert(res.msg)
-            location.reload();
-        }
+function confirmation(src) {
+    if (confirm("Do you want to confirm this trade?")) {
+        window.location.assign(`/confirmation${src.value}`);
     }
+
 }
 
 populateOffers();

@@ -847,16 +847,16 @@ app.post('/api/postReview', urlencodedParser, function (req, res) {
         const reviewee = req.body.reviewee;
         const reviewText = req.body.reviewText;
         const score = req.body.score;
-        const offerID = req.body.offerID;
+        const postID = req.body.postID;
 
         const mysql = require("mysql2")
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        console.log(reviewText, reviewee, reviewer, score, offerID)
-        let query = "INSERT INTO review (reviewerID, revieweeID, reviewText, score, offerID) values ?"
+        console.log(reviewText, reviewee, reviewer, score, postID)
+        let query = "INSERT INTO review (reviewerID, revieweeID, reviewText, score, postID) values ?"
         let recordValues = [
-            [reviewer, reviewee, reviewText, score, offerID]
+            [reviewer, reviewee, reviewText, score, postID]
         ];
 
         connection.query(query, [recordValues]);
@@ -1159,6 +1159,31 @@ app.get('/api/getTradeOffersFromMe', (req, res) => {
     }
 });
 
+app.post('/api/getOfferByid', urlencodedParser, (req, res) => {
+    const offerID = req.body.offerID;
+
+    const mysql = require("mysql2");
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    let query = 'SELECT * FROM offers WHERE ID = ?';
+    let values = [offerID];
+
+    connection.query(query, values, (err, result) => {
+        if (result[0] != null) {
+            res.send({
+                "result": "Success",
+                "data": result[0]
+            })
+        } else {
+            res.status(400).send({
+                "result": "Failed",
+                "data": null
+            });
+        }
+    });
+});
+
 //#endregion
 
 //#endregion
@@ -1258,13 +1283,13 @@ async function initializeDB() {
         );
 
         CREATE TABLE IF NOT EXISTS review (
-            offerID int NOT NULL,
+            postID int NOT NULL,
             reviewerID int NOT NULL,
             revieweeID int NOT NULL,
             reviewText TEXT NOT NULL,
             score int NOT NULL,
             timestamp DATETIME default CURRENT_TIMESTAMP NOT NULL,
-            PRIMARY KEY (offerID)
+            PRIMARY KEY (postID)
         );
 
         CREATE TABLE IF NOT EXISTS offers (

@@ -15,7 +15,6 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
     <link rel="stylesheet" href="../css/index.css">
-    <link rel="stylesheet" href="../css/sendTradeOffer.css">
     <link rel="stylesheet" href="../css/tradeOffer.css">
 </head>
 
@@ -29,6 +28,8 @@
         <div id="OfferContainer">
             <template id="OfferTemplate">
                 <div class="TradeOffer">
+                    <h3 class="statusM">Status: </h3>
+                    <div class="offerDate"></div>
                     <a href="#" class="TradeOfferer">
                         <h3>To: </h3>
                         <img class="OffereePicture" />
@@ -47,8 +48,8 @@
                         </a>
                     </div>
                     <div class="TradeActions">
-                        <button type="button" class="btn btn-secondary btn-lg chat_btn" onclick="">Chat</button>
-                        <h3 class="statusM">Status: </h3>
+                        <button type="button" class="btn btn-secondary btn-lg chat_btn" onclick="" style="width: 100px;">Chat</button>
+                        <button type="button" class="btn btn-secondary btn-lg confirm_btn" onclick="confirmation(this)" style="width: 100px;" disabled>Confirm</button>
                     </div>
                 </div>
 

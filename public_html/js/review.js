@@ -1,4 +1,4 @@
-var offerID = 0;
+var postID = 0;
 var revieweeID = 0;
 
 
@@ -6,7 +6,7 @@ var revieweeID = 0;
 function getTradeInfo() {
     // create a URL object
     let params = new URL(window.location.href);
-    offerID = params.searchParams.get("offerID");
+    postID = params.searchParams.get("postID");
     revieweeID = params.searchParams.get("traderID");
 
     getUserInfo()
@@ -47,7 +47,7 @@ async function sendReview() {
             reviewee: reviewee,
             reviewText: reviewText,
             score: score,
-            offerID: offerID
+            postID: postID
         });
         console.log(res);
         alert('Thank you for your review!')

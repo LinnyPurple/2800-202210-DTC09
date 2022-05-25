@@ -30,6 +30,8 @@ async function populateOffers() {
             offereeImg = `/img/post/${offereeData.images}`
         }
         template.querySelector(".OffererPicture").setAttribute('src', offerer.image ? offerer.image : '/etc/person-circle');
+
+        template.querySelector(".offerDate").innerHTML = offer.timestamp.split('T')[0];
         template.querySelector(".OffererName").innerHTML = offerer.username;
         template.querySelector(".TradeOfferer").href = `/traderinfo?trader_id=${offer.offererID}`;
 
