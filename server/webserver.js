@@ -317,10 +317,10 @@ app.post("/upload", (req, res) => {
 
     upload(req, res, function (err) {
         if (err instanceof multer.MulterError) {
-            // A Multer error occurred when uploading.  
-            res.write("<script>alert('Allowed file size is 500KB.')</script>");
+            // A Multer error occurred when uploading.
+            res.write("<script>alert('Maximum file size is 500KB.')</script>");
             res.write("<script>window.location.href = '/profile'</script>");
-            // res.status(400).json({error: "Allowed file size is 500KB."}); 
+            // res.status(400).json({error: "Allowed file size is 500KB."});
         } else {
             if (req.file) {
                 console.log(req.file.filename)
@@ -549,10 +549,10 @@ app.post("/uploadposting", (req, res) => {
     uploadPost(req, res, function (err) {
         // send error message when file size is over 500KB
         if (err instanceof multer.MulterError) {
-            // A Multer error occurred when uploading.  
-            res.write("<script>alert('Allowed file size is 500KB.')</script>");
+            // A Multer error occurred when uploading.
+            res.write("<script>alert('Maximum file size is 500KB.')</script>");
             res.write("<script>history.go(-1)</script>");
-            // res.status(400).json({error: "Allowed file size is 500KB."}); 
+            // res.status(400).json({error: "Allowed file size is 500KB."});
         } else {
             // store all user input
             const title = req.body.title;
@@ -568,7 +568,7 @@ app.post("/uploadposting", (req, res) => {
 
             // Check all mandatory input is filled in
             if (title == '' || myItem == 'My Item' || tradingItem == 'Looking For' || condition == 'Select Condition' || tradingMethod == 'Select Method') {
-                res.write("<script>alert('Please enter all blanks with asterisk.')</script>");
+                res.write("<script>alert('Please fill out all the required fields (with red asterisk).')</script>");
                 res.write("<script>history.go(-1)</script>");
             } else {
                 let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description, images) values ?";
@@ -601,10 +601,10 @@ app.post("/editposting", (req, res) => {
     uploadPost(req, res, function (err) {
         // send error message when file size is over 500KB
         if (err instanceof multer.MulterError) {
-            // A Multer error occurred when uploading.  
-            res.write("<script>alert('Allowed file size is 500KB.')</script>");
+            // A Multer error occurred when uploading.
+            res.write("<script>alert('Maximum file size is 500KB.')</script>");
             res.write("<script>history.go(-1)</script>");
-            // res.status(400).json({error: "Allowed file size is 500KB."}); 
+            // res.status(400).json({error: "Allowed file size is 500KB."});
         } else {
             // store all user input
             const postID = req.body.postID;
@@ -618,7 +618,7 @@ app.post("/editposting", (req, res) => {
 
             // Check all mandatory input is filled in
             if (title == '' || myItem == 'My Item' || tradingItem == 'Looking For' || condition == 'Select Condition' || tradingMethod == 'Select Method') {
-                res.write("<script>alert('Please enter all blanks with asterisk.')</script>");
+                res.write("<script>alert('Please fill out all the reqired fields (with red asterisk).')</script>");
                 res.write("<script>history.go(-1)</script>");
             } else {
                 // Update database
