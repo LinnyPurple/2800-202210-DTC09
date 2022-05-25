@@ -44,7 +44,7 @@ Content of the project folder:
 It has the following subfolders and files:
 ├── .git                     # Directory for git repo     
 ├── public_html              # Directory for client side files
-   ├── css
+   └── css
        /chat.css
        /confirmation.css
        /index.css
@@ -60,7 +60,7 @@ It has the following subfolders and files:
        /traderInfo.css
        /viewChats.css
    ├── html                  # Directory for HTML files
-       ├── partials          # Directory for components
+       └── partials          # Directory for components
            /menu-bar.html
            /top-nav.html
        /account.html
@@ -82,8 +82,9 @@ It has the following subfolders and files:
        /traderInfo.html
        /viewChats.html
        /websocket.html
-   ├── img
-   ├── img_post
+   ├── img                    # Directory for images
+       ├── post               # Directory for posts' images
+       └── profiles           # Directory for profile images  
    ├── js                     # Directory for JavaScript files
       /confirmation.js
       /editPost.js
