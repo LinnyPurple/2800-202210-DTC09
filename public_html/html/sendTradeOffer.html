@@ -11,56 +11,55 @@
         rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-    <link rel="stylesheet" href="#">
-    <link rel="stylesheet" href="../css/template.css">
-    <link rel="stylesheet" href="../css/sendTradeOffer.css">
-
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/sendTradeOffer.css">
 </head>
 
 <body>
-    <!-- HTML Layout -->
-
     <!-- top nav -->
-    <header class="sticky-top"></header>
+    <header></header>
 
     <!-- the body of the page -->
-    <div id="content">
+    <main>
+      <div id="content">
         <div id="TradeItem">
-            <h2>Item you chose</h2>
-            <div id="choseItem">
-                <img id="tradeItemImg" />
-                <div style="margin-left: 10%;">
-                    <h4>Title</h4>
-                    <div id="tradeItemName"></div>
-                    <h4>User name</h4>
-                    <div id="traderName"></div>
-                </div>
-
+          <h2>Item you chose</h2>
+          <div id="choseItem">
+            <img id="tradeItemImg" />
+            <div style="margin-left: 10%;">
+              <h4>Title</h4>
+              <div id="tradeItemName"></div>
+              <h4>User name</h4>
+              <div id="traderName"></div>
             </div>
+
+          </div>
         </div>
 
         <div id="potentialOffers">
-            <h2>Trade off item</h2>
-            <template id="offerTemplate">
-                <div class="offerCard">
-                    <img class="OfferImg" />
-                    <div style="padding-top: 15%; padding-left: 10px;">
-                        <h4 class="OfferName" style="padding-bottom: 15%; text-align: center;"></h4>
-                        <button class="SendOffer">Send Offer</button>
-                    </div>
+          <h2>Trade off item</h2>
+          <template id="offerTemplate">
+            <div class="offerCard">
+              <img class="OfferImg" />
+              <div style="padding-top: 15%; padding-left: 10px;">
+                <h4 class="OfferName" style="padding-bottom: 15%; text-align: center;"></h4>
+                <button class="SendOffer">Send Offer</button>
+              </div>
 
-                </div>
-            </template>
+            </div>
+          </template>
         </div>
-    </div>
+      </div>
+      
+    </main>
 
     <!-- botton nav -->
-    <footer class="fixed-bottom"></footer>
+    <footer></footer>
 
     <!-- JavaScript functions -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
