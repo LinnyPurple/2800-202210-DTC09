@@ -45,6 +45,7 @@ async function login(username = "testuser") {
 async function logout() {
     let res = await getRequest("/api/logout");
     console.log(res);
+    window.location.assign('/login');
 }
 
 async function loginV2(username = "testuser", password = "testPass") {
