@@ -31,7 +31,7 @@ async function deleteAccountV2(username = "testuser", email = "testEmail", passw
         username: username,
         email: email
     });
-    console.log(res);
+    return res;
 }
 
 async function login(username = "testuser") {

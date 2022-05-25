@@ -68,3 +68,21 @@
   margin: 2% 0 0 auto;
   width: 25%;
 }
+
+#account-delete-buttons {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#yes-delete {
+    background-color: #e64225;
+    border: #e64225 2px solid;
+    color: #f1f1f1;
+    margin: 2% 0 0 auto;
+    width: 25%;
+}
+
+#delete-fail {
+    color: red;
+}

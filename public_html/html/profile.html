@@ -91,7 +91,9 @@
             <div class="account__delete form-group my-3">
                 <label>Enter password to delete account:</label>
                 <input type="text" id="passwordDelete" class="form-control" placeholder="Enter your password">
-                <button type="button" class="btn btn-danger btn-block" onclick="deleteLoggedInUser()">Delete</button>
+                <div id="account-delete-buttons">
+                    <button type="button" class="btn btn-danger btn-block" onclick="confirmDeleteButtons()">Delete</button>
+                </div>
             </div>
         </div>
     </main>
@@ -152,14 +154,38 @@
             window.location.assign('/sendTradeOffer/1');
         }
 
+        async function confirmDeleteButtons() {
+            document.getElementById("account-delete-buttons").innerHTML =
+            `Delete account?
+            <button type="button" id="yes-delete" class="btn btn-primary btn-block" onclick="deleteLoggedInUser()">Yes</button>
+            <button type="button" id="no-delete" class="btn btn-primary btn-block" onclick="removeDeleteButtons()">No</button>`;
+        }
+
+        async function removeDeleteButtons() {
+            document.getElementById("account-delete-buttons").innerHTML =
+            `<button type="button" class="btn btn-danger btn-block" onclick="confirmDeleteButtons()">Delete</button>`;
+        }
+
         async function deleteLoggedInUser() {
             var currentUserInfo = JSON.parse(await getUserInfo());
+            var accountDelete;
             console.log(currentUserInfo.name, currentUserInfo.email, currentUserInfo.uid, currentUserInfo.ID);
             console.log(currentUserInfo);
             console.log(document.getElementById("passwordDelete").value);
-            await deleteAccountV2(currentUserInfo.name, currentUserInfo.email, document.getElementById("passwordDelete").value);
-            logout();
-            window.location.assign("/");
+            accountDelete = JSON.parse(await deleteAccountV2(currentUserInfo.name, currentUserInfo.email, document.getElementById("passwordDelete").value));
+            confirmDeletion(accountDelete);
+        }
+
+        function confirmDeletion(accountDelete) {
+            console.log(accountDelete);
+            if (accountDelete.msg === "Account Deleted.") {
+                logout();
+                window.location.assign("/");
+            } else {
+                document.getElementById("account-delete-buttons").innerHTML =
+                `<div id="delete-fail">Could not delete account.</div>
+                <button type="button" class="btn btn-danger btn-block" onclick="confirmDeleteButtons()">Delete</button>`;
+            }
         }
 
         async function goToTradeOffers() {
