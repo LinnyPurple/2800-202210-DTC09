@@ -8,6 +8,7 @@
 * [Creators](#creators)
 * [Technologies](#technologies)
 * [Contents](#content)
+* [Citation](#citation)
 
 ## General Info
 
@@ -100,7 +101,6 @@ It has the following subfolders and files:
     /webserver.js              
     /websocketServer.css             
 ```
-
-citation:
-1. Rating design: https://bbbootstrap.com/snippets/bootstrap-rate-your-experience-template-star-ratings-30972576
-2. image-upload: https://bootstrapious.com/p/bootstrap-image-upload
+## Citation
+* Rating design: https://bbbootstrap.com/snippets/bootstrap-rate-your-experience-template-star-ratings-30972576
+* image-upload: https://bootstrapious.com/p/bootstrap-image-upload
