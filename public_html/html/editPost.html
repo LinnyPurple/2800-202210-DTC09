@@ -53,13 +53,13 @@
                     <input type="text" id="postID" style="display:none;" name="postID">
 
                 <div class="form-group my-3">
-                    <label>Title</label>
-                    <input type="text" id="titleInput" class="form-control" placeholder="Title" name="title">
+                    <label>Title <span style="color: red;">*</span> </label>
+                    <input type="text" id="titleInput" class="form-control" placeholder="Title" name="title" maxlength="40">
                 </div>
 
                 <div id="category" class="form-group" style="margin-bottom: 0;">
                     <div>
-                        <label>Category</label>
+                        <label>Category <span style="color: red;">*</span> </label>
                     </div>
                     <div style="display:flex;">
                         <select id="myCategory" class="form-select form-select-lg mb-3"
@@ -85,7 +85,7 @@
 
                 <div class="form-group">
                     <div>
-                        <label>Item Condition</label>
+                        <label>Item Condition <span style="color: red;">*</span> </label>
                     </div>
                     <select id="condition" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example"
                         name="condition">
@@ -100,7 +100,7 @@
 
                 <div class="form-group">
                     <div>
-                        <label>Trading Method</label>
+                        <label>Trading Method <span style="color: red;">*</span> </label>
                     </div>
                     <select id="tradingMethod" class="form-select form-select-lg mb-3"
                         aria-label=".form-select-lg example" name="tradingMethod">

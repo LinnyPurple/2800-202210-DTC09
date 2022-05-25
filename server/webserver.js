@@ -547,13 +547,14 @@ app.post("/uploadposting", (req, res) => {
     connection.connect();
 
     uploadPost(req, res, function (err) {
+        // send error message when file size is over 500KB
         if (err instanceof multer.MulterError) {
             // A Multer error occurred when uploading.  
             res.write("<script>alert('Allowed file size is 500KB.')</script>");
             res.write("<script>history.go(-1)</script>");
             // res.status(400).json({error: "Allowed file size is 500KB."}); 
         } else {
-
+            // store all user input
             const title = req.body.title;
             const myItem = req.body.myItem;
             const tradingItem = req.body.tradingItem;
@@ -565,19 +566,26 @@ app.post("/uploadposting", (req, res) => {
                 images = req.file.filename;
             }
 
-            let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description, images) values ?";
-            let values = [
-                [req.session.uid, title, myItem, tradingItem, condition, tradingMethod, description, images]
-            ]
+            // Check all mandatory input is filled in
+            if (title == '' || myItem == 'My Item' || tradingItem == 'Looking For' || condition == 'Select Condition' || tradingMethod == 'Select Method') {
+                res.write("<script>alert('Please enter all blanks with asterisk.')</script>");
+                res.write("<script>history.go(-1)</script>");
+            } else {
+                let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description, images) values ?";
+                let values = [
+                    [req.session.uid, title, myItem, tradingItem, condition, tradingMethod, description, images]
+                ]
 
-            connection.query(query, [values], (err, result) => {
-                if (result) {
-                    console.log(result.insertId)
-                    res.redirect('/item?post_id=' + result.insertId);
-                } else {
-                    console.log(err)
-                }
-            })
+                connection.query(query, [values], (err, result) => {
+                    if (result) {
+                        console.log(result.insertId)
+                        res.redirect('/item?post_id=' + result.insertId);
+                    } else {
+                        console.log(err)
+                    }
+                })
+            }
+
         }
     })
 
@@ -591,13 +599,14 @@ app.post("/editposting", (req, res) => {
 
 
     uploadPost(req, res, function (err) {
+        // send error message when file size is over 500KB
         if (err instanceof multer.MulterError) {
             // A Multer error occurred when uploading.  
             res.write("<script>alert('Allowed file size is 500KB.')</script>");
             res.write("<script>history.go(-1)</script>");
             // res.status(400).json({error: "Allowed file size is 500KB."}); 
         } else {
-
+            // store all user input
             const postID = req.body.postID;
             const title = req.body.title;
             const myItem = req.body.myItem;
@@ -606,28 +615,38 @@ app.post("/editposting", (req, res) => {
             const tradingMethod = req.body.tradingMethod;
             const description = req.body.description;
 
-            if (req.file) {
-                const images = req.file.filename;
-                let query = "UPDATE listing SET title = ?, myItemCategory = ?, tradingItemCategory = ?, itemCondition = ?, tradingMethod =? , description = ?, images = ? WHERE ID = ?";
 
-                connection.query(query, [title, myItem, tradingItem, condition, tradingMethod, description, images, postID], (err, result) => {
-                    if (result) {
-                        res.redirect('/item?post_id=' + postID);
-                    } else {
-                        console.log(err)
-                    }
-                })
+            // Check all mandatory input is filled in
+            if (title == '' || myItem == 'My Item' || tradingItem == 'Looking For' || condition == 'Select Condition' || tradingMethod == 'Select Method') {
+                res.write("<script>alert('Please enter all blanks with asterisk.')</script>");
+                res.write("<script>history.go(-1)</script>");
             } else {
-                let query = "UPDATE listing SET title = ?, myItemCategory = ?, tradingItemCategory = ?, itemCondition = ?, tradingMethod =? , description =? WHERE ID = ?";
+                // Update database
+                if (req.file) {
+                    const images = req.file.filename;
+                    let query = "UPDATE listing SET title = ?, myItemCategory = ?, tradingItemCategory = ?, itemCondition = ?, tradingMethod =? , description = ?, images = ? WHERE ID = ?";
 
-                connection.query(query, [title, myItem, tradingItem, condition, tradingMethod, description, postID], (err, result) => {
-                    if (result) {
-                        res.redirect('/item?post_id=' + postID);
-                    } else {
-                        console.log(err)
-                    }
-                })
+                    connection.query(query, [title, myItem, tradingItem, condition, tradingMethod, description, images, postID], (err, result) => {
+                        if (result) {
+                            res.redirect('/item?post_id=' + postID);
+                        } else {
+                            console.log(err)
+                        }
+                    })
+                } else {
+                    // Update except image
+                    let query = "UPDATE listing SET title = ?, myItemCategory = ?, tradingItemCategory = ?, itemCondition = ?, tradingMethod =? , description =? WHERE ID = ?";
+
+                    connection.query(query, [title, myItem, tradingItem, condition, tradingMethod, description, postID], (err, result) => {
+                        if (result) {
+                            res.redirect('/item?post_id=' + postID);
+                        } else {
+                            console.log(err)
+                        }
+                    })
+                }
             }
+
         }
     })
 
