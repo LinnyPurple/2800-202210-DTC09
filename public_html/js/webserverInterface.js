@@ -42,11 +42,11 @@ async function login(username = "testuser") {
     console.log(res);
 }
 
-async function logout() {
-    let res = await getRequest("/api/logout");
-    console.log(res);
-    window.location.assign('/login');
-}
+// async function logout() {
+//     let res = await getRequest("/api/logout");
+//     console.log(res);
+//     window.location.assign('/login');
+// }
 
 async function loginV2(username = "testuser", password = "testPass") {
     let res = await postRequest("/api/login", {
