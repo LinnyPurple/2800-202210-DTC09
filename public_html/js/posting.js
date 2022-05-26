@@ -6,7 +6,7 @@ async function getUserInfo() {
 
     // Check user is logged in
     if (currentUserInfo.loggedIn == true) {
-        console.log("User is logged in")
+        console.log("User is logged in");
 
     } else {
         console.log("No user is signed in");
@@ -20,8 +20,7 @@ function readURL(input) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            $('#imageResult')
-                .attr('src', e.target.result);
+            $('#imageResult').attr('src', e.target.result);
         };
         reader.readAsDataURL(input.files[0]);
     }
@@ -39,7 +38,7 @@ function showFileName(event) {
 }
 
 function setup() {
-    getUserInfo()
+    getUserInfo();
 }
 
-$(document).ready(setup)
+$(document).ready(setup);
