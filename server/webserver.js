@@ -314,7 +314,7 @@ var storage = multer.diskStorage({
 var upload = multer({
     storage: storage,
     limits: {
-        fileSize: 500000
+        fileSize: 10000000000
     }
 }).single('image');
 
@@ -545,7 +545,7 @@ var storagePost = multer.diskStorage({
 var uploadPost = multer({
     storage: storagePost,
     limits: {
-        fileSize: 500000
+        fileSize: 10000000000
     }
 }).single('image');
 
