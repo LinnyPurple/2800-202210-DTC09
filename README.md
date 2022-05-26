@@ -15,10 +15,10 @@
 [SwapOmen](https://sub.yurtle.net/)
 
 ## Creators
-*George Rozitis* ()  
-*Lachlan Butler* ()  
+*George Rozitis* (https://github.com/LinnyPurple)  
+*Lachlan Butler* (https://github.com/Yurtle212)  
 *Toco Tachibana* (https://github.com/toco-t)  
-*Soo Park* ()  
+*Soo Park* (https://github.com/Soohyeun)  
 
 
 ## Technologies
@@ -47,6 +47,7 @@ It has the following subfolders and files:
    └── css
        /chat.css
        /confirmation.css
+       /error.css
        /index.css
        /item.css
        /listing.css
@@ -68,6 +69,7 @@ It has the following subfolders and files:
        /chat.html
        /confirmation.html
        /editPost.html
+       /error.html
        /index.html
        /item.html
        /listings.html
@@ -77,6 +79,7 @@ It has the following subfolders and files:
        /profile.html
        /review.html
        /sendTradeOffer.html
+       /sentOffers.html
        /signup.html
        /tradeOffer.html
        /traderInfo.html
@@ -95,6 +98,7 @@ It has the following subfolders and files:
       /posting.js
       /profile.js
       /review.js
+      /sentTradeOffers.js
       /tradeOffer.js
       /traderInfo.js
       /webserverInterface.js
