@@ -159,6 +159,11 @@ app.get('/traderinfo', reqLogin, function (req, res) {
     res.send(doc);
 });
 
+app.get('/error', function (req, res) {
+    let doc = fs.readFileSync('../public_html/html/error.html', "utf8");
+    res.send(doc);
+});
+
 //#endregion
 
 //#region API
