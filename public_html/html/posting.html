@@ -21,8 +21,6 @@
   <!-- top nav -->
   <header></header>
 
-  <!-- contents -->
-
   <main>
     <form action="/uploadposting" method="post" enctype="multipart/form-data">
       <div id="contents">
@@ -57,19 +55,19 @@
           <div style="display:flex;">
             <select id="myCategory" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="myItem">
               <option selected> My Item </option>
-              <option value="home_stuff">Home stuff</option>
-              <option value="clothes">Clothes</option>
               <option value="accessaries">Accessaries</option>
+              <option value="clothes">Clothes</option>
               <option value="electronics">Electronics</option>
-              <option value="etc">ETC</option>
+              <option value="household_stuff">Household stuff</option>
+              <option value="other">Other</option>
             </select>
             <select id="wantedCategory" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="tradingItem">
               <option selected>Looking For</option>
-              <option value="home_stuff">Home stuff</option>
-              <option value="clothes">Clothes</option>
               <option value="accessaries">Accessaries</option>
+              <option value="clothes">Clothes</option>
               <option value="electronics">Electronics</option>
-              <option value="etc">ETC</option>
+              <option value="household_stuff">Household stuff</option>
+              <option value="other">Other</option>
             </select>
           </div>
         </div>
@@ -81,7 +79,7 @@
           <select id="condition" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="condition">
             <option selected>Select Condition</option>
             <option value="new">New</option>
-            <option value="almost_new">Almost New</option>
+            <option value="mint">Mint</option>
             <option value="good">Good</option>
             <option value="fair">Fair</option>
             <option value="not_bad">Not Bad</option>
@@ -94,9 +92,9 @@
           </div>
           <select id="tradingMethod" class="form-select form-select-lg mb-3" aria-label=".form-select-lg example" name="tradingMethod">
             <option selected>Select Method</option>
-            <option value="any">Any</option>
             <option value="inperson">In-Person</option>
             <option value="delievery">Delivery</option>
+            <option value="any">Any</option>
           </select>
         </div>
         <label>Description</label>
