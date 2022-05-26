@@ -7,13 +7,17 @@ img {
     width: 60%;
 }
 
+.content {
+  width: 95%;
+}
+
 #TradeItem {
     margin-bottom: 50px;
 }
 
 #choseItem {
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
     background: white;
     border: 0.2rem solid #005555;
     border-radius: 5px;
@@ -27,7 +31,7 @@ img {
 
 .offerCard {
     display: flex;
-    flex-direction: row;
+    justify-content: space-between;
     background: white;
     border: 0.2rem solid #005555;
     border-radius: 5px;
