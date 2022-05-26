@@ -70,13 +70,13 @@
       console.log(username_, email_, password_);
 
       if (!username_ || containsWhitespace(username_)) {
-        document.getElementById("unfilled").innerHTML = "INVALID USERNAME...";
+        document.getElementById("unfilled").innerHTML = "INVALID USERNAME... (No whitespace allowed)";
         document.getElementById("username").style["border-color"] = "red";
       } else if (!email_ || containsWhitespace(email_) || !validateEmail(email_)) {
-        document.getElementById("unfilled").innerHTML = "INVALID EMAIL...";
+        document.getElementById("unfilled").innerHTML = "INVALID EMAIL... (No whitespace allowed)";
         document.getElementById("email").style["border-color"] = "red";
       } else if (!password_ || containsWhitespace(password_)) {
-        document.getElementById("unfilled").innerHTML = "INVALID PASSWORD...";
+        document.getElementById("unfilled").innerHTML = "INVALID PASSWORD... (No whitespace allowed)";
         document.getElementById("password").style["border-color"] = "red";
       } else {
         createAccountV2(username_, email_, password_);
