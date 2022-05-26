@@ -108,4 +108,5 @@ It has the following subfolders and files:
 ```
 ## Citation
 * Rating design: https://bbbootstrap.com/snippets/bootstrap-rate-your-experience-template-star-ratings-30972576
-* image-upload: https://bootstrapious.com/p/bootstrap-image-upload
+* image-upload: https://bootstrapious.com/p/bootstrap-image-upload  
+* Rotating text: https://www.geeksforgeeks.org/how-to-rotate-a-text-360-degrees-on-hover-using-html-and-css
