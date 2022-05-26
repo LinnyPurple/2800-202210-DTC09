@@ -1,7 +1,7 @@
 async function populateOffers() {
     // get all my offers
-    let res = JSON.parse(await getRequest('/api/getTradeOffersToMe'));;
-    console.log(res)
+    let res = JSON.parse(await getRequest('/api/getTradeOffersToMe'));
+    console.log(res);
     const parent = document.querySelector("#OfferContainer");
 
     // populate all offers
@@ -20,14 +20,14 @@ async function populateOffers() {
         let offererImg;
         let offereeImg;
         if (!offererData.images) {
-            offererImg = '/etc/camera.svg'
+            offererImg = '/etc/camera.svg';
         } else {
-            offererImg = `/img/post/${offererData.images}`
+            offererImg = `/img/post/${offererData.images}`;
         }
         if (!offereeData.images) {
-            offereeImg = '/etc/camera.svg'
+            offereeImg = '/etc/camera.svg';
         } else {
-            offereeImg = `/img/post/${offereeData.images}`
+            offereeImg = `/img/post/${offereeData.images}`;
         }
         template.querySelector(".OffererPicture").setAttribute('src', offerer.image ? offerer.image : '/etc/person-circle');
 
@@ -43,15 +43,15 @@ async function populateOffers() {
         template.querySelector(".ForImg").setAttribute('src', offereeImg);
         template.querySelector(".ForItem").href = `/item?post_id=${offereeData.ID}`;
 
-        template.querySelector('.aButton').setAttribute('onclick', `tradeReply(${offer.ID}, ${offer.offererID}, true)`)
-        template.querySelector('.dButton').setAttribute('onclick', `tradeReply(${offer.ID}, ${offer.offererID}, false)`)
+        template.querySelector('.aButton').setAttribute('onclick', `tradeReply(${offer.ID}, ${offer.offererID}, true)`);
+        template.querySelector('.dButton').setAttribute('onclick', `tradeReply(${offer.ID}, ${offer.offererID}, false)`);
 
         parent.appendChild(template);
     }
 }
 
 async function tradeReply(offerID, traderID, accept) {
-    let confirmation = confirm(`Do you want to ${accept ? 'accept' : 'decline'} trade?`)
+    let confirmation = confirm(`Do you want to ${accept ? 'accept' : 'decline'} trade?`);
 
     if (confirmation) {
         let res = JSON.parse(await postRequest('/api/replyTradeOffer', {
@@ -60,10 +60,10 @@ async function tradeReply(offerID, traderID, accept) {
         }));
         console.log(res);
         if (res.msg == "Accepted trade offer.") {
-            alert(res.msg)
+            alert(res.msg);
             window.location.href = `/confirmation?offerID=${offerID}&traderID=${traderID}`;
         } else {
-            alert(res.msg)
+            alert(res.msg);
             location.reload();
         }
     }

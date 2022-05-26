@@ -3,7 +3,6 @@ var traderID = 0;
 var traderPostID = 0;
 var myPostID = 0;
 
-
 // get trade ID and other trader ID from URL
 function getTradeInfo()  {
     // create a URL object
@@ -11,7 +10,7 @@ function getTradeInfo()  {
     offerID = params.searchParams.get("offerID");
     traderID = params.searchParams.get("traderID");
 
-    getOfferByid()
+    getOfferByid();
 }
 
 async function getOfferByid() {
@@ -19,7 +18,7 @@ async function getOfferByid() {
         offerID: offerID
     });
 
-    let offerInfo = JSON.parse(res).data
+    let offerInfo = JSON.parse(res).data;
 
     if(traderID == offerInfo.offereeID) {
         traderPostID = offerInfo.offereeListingID;
@@ -28,9 +27,9 @@ async function getOfferByid() {
         traderPostID = offerInfo.offererListingID;
         myPostID = offerInfo.offereeListingID;
     }
-    console.log(traderPostID)
-    console.log(myPostID)
-    changeArchieve()
+    console.log(traderPostID);
+    console.log(myPostID);
+    changeArchieve();
 }
 
 async function changeArchieve() {
@@ -41,11 +40,11 @@ async function changeArchieve() {
 }
 
 function goReview() {
-    window.location.href =`/review?postID=${traderPostID}&traderID=${traderID}`
+    window.location.href =`/review?postID=${traderPostID}&traderID=${traderID}`;
 }
 
 function setup() {
-    getTradeInfo()
+    getTradeInfo();
 }
 
-$(document).ready(setup)
+$(document).ready(setup);

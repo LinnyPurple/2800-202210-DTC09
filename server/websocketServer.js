@@ -1,12 +1,12 @@
-const express = require('express');
+const express = require("express");
 const fs = require("fs");
 const app = express();
-const server = require('http').createServer(app);
-const WebSocket = require('ws');
+const server = require("http").createServer(app);
+const WebSocket = require("ws");
 
 const wss = new WebSocket.Server({ server:server });
 
-let sqlStuff = fs.readFileSync('sqlData.json');
+let sqlStuff = fs.readFileSync("sqlData.json");
 const SQL_DATA = JSON.parse(sqlStuff);
 
 class Connection {
@@ -57,7 +57,7 @@ wss.on('connection', function connection(ws, req) {
         sender: 'server',
         msg: 'Successfully connected.'
     }));
-    
+
     let uid = cUrl.get('uid');
     console.log(uid);
 
@@ -68,7 +68,7 @@ wss.on('connection', function connection(ws, req) {
 
         const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
-        
+
         let query = "INSERT INTO message (senderID, recieverID, msg) VALUES ?";
         let values = [
             [parsedData.sender, parsedData.target, parsedData.msg]
@@ -87,7 +87,7 @@ wss.on('connection', function connection(ws, req) {
         } catch (e) {
             console.log(e);
         }
-        
+
     });
 
     ws.on('error', (e) => {

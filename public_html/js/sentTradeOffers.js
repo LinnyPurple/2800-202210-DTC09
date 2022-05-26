@@ -1,7 +1,7 @@
 async function populateOffers(recieving = true) {
     // get all my offers
     let res = JSON.parse(await getRequest('/api/getTradeOffersFromMe'));
-    console.log(res)
+    console.log(res);
     const parent = document.querySelector("#OfferContainer");
 
     // populate all offers
@@ -20,14 +20,14 @@ async function populateOffers(recieving = true) {
         let offererImg;
         let offereeImg;
         if (!offererData.images) {
-            offererImg = '/etc/camera.svg'
+            offererImg = '/etc/camera.svg';
         } else {
-            offererImg = `/img/post/${offererData.images}`
+            offererImg = `/img/post/${offererData.images}`;
         }
         if (!offereeData.images) {
-            offereeImg = '/etc/camera.svg'
+            offereeImg = '/etc/camera.svg';
         } else {
-            offereeImg = `/img/post/${offereeData.images}`
+            offereeImg = `/img/post/${offereeData.images}`;
         }
         template.querySelector(".OffereePicture").setAttribute('src', offeree.image ? offeree.image : '/etc/person-circle.svg');
 

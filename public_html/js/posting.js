@@ -6,7 +6,7 @@ async function getUserInfo() {
 
     // Check user is logged in
     if (currentUserInfo.loggedIn == true) {
-        console.log("User is logged in")
+        console.log("User is logged in");
 
     } else {
         console.log("No user is signed in");
@@ -30,7 +30,6 @@ function readURL(input) {
                 $('#imageResult').attr('src', "../etc/camera.svg");
                 $("#invalid-file-type").html("Invalid file type. Must upload an image.");
             }
-            
         };
         reader.readAsDataURL(input.files[0]);
     }
@@ -48,7 +47,7 @@ function showFileName(event) {
 }
 
 function setup() {
-    getUserInfo()
+    getUserInfo();
 }
 
-$(document).ready(setup)
+$(document).ready(setup);

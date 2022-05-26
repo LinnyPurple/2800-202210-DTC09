@@ -1,7 +1,6 @@
 var postID = 0;
 var revieweeID = 0;
 
-
 // get trade ID and other trader ID from URL
 function getTradeInfo() {
     // create a URL object
@@ -9,9 +8,8 @@ function getTradeInfo() {
     postID = params.searchParams.get("postID");
     revieweeID = params.searchParams.get("traderID");
 
-    getUserInfo()
+    getUserInfo();
 }
-
 
 // get user info
 async function getUserInfo() {
@@ -21,13 +19,12 @@ async function getUserInfo() {
 
     // Check user is logged in
     if (currentUserInfo.loggedIn) {
-        console.log("User is logged in")
+        console.log("User is logged in");
     } else {
         console.log("No user is signed in");
         window.location.href = "/login";
     }
 }
-
 
 // get rating number from user input
 let ratingNum = 0;
@@ -35,7 +32,6 @@ let ratingNum = 0;
 function rating(src) {
     ratingNum = src.value;
 }
-
 
 // send review when user click submit button
 async function sendReview() {
@@ -50,15 +46,15 @@ async function sendReview() {
             postID: postID
         });
         console.log(res);
-        alert('Thank you for your review!')
-        window.location.href ='/'
+        alert('Thank you for your review!');
+        window.location.href ='/';
     } else{
-        alert("Please rate your trade :)")
+        alert("Please rate your trade :)");
     }
 }
 
 function setup() {
-    getTradeInfo() 
+    getTradeInfo();
 }
 
-$(document).ready(setup)
+$(document).ready(setup);
