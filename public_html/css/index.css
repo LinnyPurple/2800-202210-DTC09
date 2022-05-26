@@ -9,7 +9,7 @@ html {
 }
 
 body {
-  font-family: 'Questrial', sans-serif;
+  font-family: 'Questrial', sans-serif !important;
   background-color: #D4F3EF;
   display: flex;
   flex-direction: column;
