@@ -1136,7 +1136,8 @@ app.get('/api/getTradeOffersToMe', (req, res) => {
 //#endregion
 
 app.use(function (req, res, next) {
-    res.status(404).send("404");
+    let doc = fs.readFileSync('../public_html/html/error.html', "utf8");
+    res.status(404).send(doc);
 })
 
 async function hashPassword(plaintextPassword, callback) {
