@@ -1,28 +1,28 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const fs = require("fs");
-const bcrypt = require('bcrypt');
-const bodyParser = require('body-parser')
+const bcrypt = require("bcrypt");
+const bodyParser = require("body-parser")
 const session = require("express-session");
-const res = require('express/lib/response');
-const childProcess = require('child_process');
-const net = require('net');
+const res = require("express/lib/response");
+const childProcess = require("child_process");
+const net = require("net");
 const {
     resolve
-} = require('path');
+} = require("path");
 // const { connection } = require('mongoose');
 const jsdom = require("jsdom");
 
 const path = require("path");
-const multer = require('multer')
+const multer = require("multer")
 
-const websocketServer = childProcess.fork('websocketServer.js');
+const websocketServer = childProcess.fork("websocketServer.js");
 
 var urlencodedParser = bodyParser.json({
     extended: false
 })
 
-let sqlStuff = fs.readFileSync('sqlData.json');
+let sqlStuff = fs.readFileSync("sqlData.json");
 const SQL_DATA = JSON.parse(sqlStuff);
 
 app.use(session({
@@ -36,7 +36,7 @@ function reqLogin(req, res, next) {
     if (req.session.loggedIn) {
         next();
     } else {
-        res.redirect('/login');
+        res.redirect("/login");
         // res.send({
         //     "Result": "Failed",
         //     "msg": "Not logged in."
@@ -46,126 +46,126 @@ function reqLogin(req, res, next) {
 }
 
 try {
-    fs.readdirSync('../public_html/img');
+    fs.readdirSync("../public_html/img");
 } catch (err) {
-    fs.mkdirSync('../public_html/img');
+    fs.mkdirSync("../public_html/img");
 }
 
 app.use("/html", express.static("../public_html/html"));
 app.use("/css", express.static("../public_html/css"));
 app.use("/js", express.static("../public_html/js"));
 app.use("/img", express.static("../public_html/img"));
-app.use(express.static('../public_html'));
+app.use(express.static("../public_html"));
 
 //#region PUBLIC PAGES
 
 app.get('/', function (req, res) {
     let doc;
     if (!req.session.loggedIn) {
-        doc = fs.readFileSync('../public_html/html/index.html', "utf8");
+        doc = fs.readFileSync("../public_html/html/index.html", "utf8");
     } else {
-        doc = fs.readFileSync('../public_html/html/main.html', "utf8");
+        doc = fs.readFileSync("../public_html/html/main.html", "utf8");
     }
     res.send(doc);
 });
 
 app.get('/login', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/login.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/login.html", "utf8");
     res.send(doc);
 });
 
 app.get('/signup', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/signup.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/signup.html", "utf8");
     res.send(doc);
 });
 
 app.get('/account', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/account.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/account.html", "utf8");
     res.send(doc);
 });
 
 app.get('/admin', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/admin.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/admin.html", "utf8");
     res.send(doc);
 });
 
 app.get('/websocket', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/websocket.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/websocket.html", "utf8");
     res.send(doc);
 });
 
 app.get('/review', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/review.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/review.html", "utf8");
     res.send(doc);
 });
 
 app.get('/profile', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/profile.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/profile.html", "utf8");
     res.send(doc);
 });
 
 app.get('/posting', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/posting.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/posting.html", "utf8");
     res.send(doc);
 });
 
 app.get('/editpost', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/editPost.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/editPost.html", "utf8");
     res.send(doc);
 });
 
 app.get('/tradeOffers', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/tradeOffer.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/tradeOffer.html", "utf8");
     res.send(doc);
 });
 
 app.get('/sentTradeOffers', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/sentOffers.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/sentOffers.html", "utf8");
     res.send(doc);
 });
 
 app.get('/confirmation', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/confirmation.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/confirmation.html", "utf8");
     res.send(doc);
 });
 
 app.get('/listings', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/listings.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/listings.html", "utf8");
     res.send(doc);
 });
 
 app.get('/main', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/main.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/main.html", "utf8");
     res.send(doc);
 });
 
 app.get('/sendTradeOffer', reqLogin, async (req, res) => {
-    let doc = fs.readFileSync('../public_html/html/sendTradeOffer.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/sendTradeOffer.html", "utf8");
     res.send(doc);
 });
 
 app.get('/chat/:uid', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/chat.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/chat.html", "utf8");
     res.send(doc);
 });
 
 app.get('/chat/', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/viewChats.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/viewChats.html", "utf8");
     res.send(doc);
 });
 
 app.get('/item', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/item.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/item.html", "utf8");
     res.send(doc);
 });
 
 app.get('/traderinfo', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/traderInfo.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/traderInfo.html", "utf8");
     res.send(doc);
 });
 
 app.get('/error', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/error.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/error.html", "utf8");
     res.send(doc);
 });
 
@@ -297,14 +297,14 @@ app.post('/api/resetPassword', urlencodedParser, (req, res) => {
 
 //upload profile photo
 try {
-    fs.readdirSync('../public_html/img/profiles'); // check folder
+    fs.readdirSync("../public_html/img/profiles"); // check folder
 } catch (err) {
-    fs.mkdirSync('../public_html/img/profiles'); // Create folder
+    fs.mkdirSync("../public_html/img/profiles"); // Create folder
 }
 
 var storage = multer.diskStorage({
     destination: (req, file, callBack) => {
-        callBack(null, '../public_html/img/profiles/') // directory name where save the file
+        callBack(null, "../public_html/img/profiles/") // directory name where save the file
     },
     filename: (req, file, callBack) => {
         callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
@@ -528,14 +528,14 @@ app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
 
 //upload posting image
 try {
-    fs.readdirSync('../public_html/img/post'); // Check folder
+    fs.readdirSync("../public_html/img/post"); // Check folder
 } catch (err) {
-    fs.mkdirSync('../public_html/img/post'); // Create folder
+    fs.mkdirSync("../public_html/img/post"); // Create folder
 }
 
 var storagePost = multer.diskStorage({
     destination: (req, file, callBack) => {
-        callBack(null, '../public_html/img/post/') // directory name where save the file
+        callBack(null, "../public_html/img/post/") // directory name where save the file
     },
     filename: (req, file, callBack) => {
         callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
@@ -1194,7 +1194,7 @@ app.post('/api/getOfferByid', urlencodedParser, (req, res) => {
 //#endregion
 
 app.use(function (req, res, next) {
-    let doc = fs.readFileSync('../public_html/html/error.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/error.html", "utf8");
     res.status(404).send(doc);
 })
 
