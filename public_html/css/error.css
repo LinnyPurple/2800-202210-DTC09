@@ -1,0 +1,85 @@
+main {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  text-align: center;
+  height: 100vh;
+}
+
+.error {
+  font-family: 'Roboto mono', monospace;
+  font-size: 10rem;
+  font-weight: 700;
+  position: relative;
+}
+
+.error::before, .error::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.error::before {
+  background-color: #D4F3EF;
+  animation: loading 2s steps(3) forwards;
+}
+
+.error__title {
+  font-family: 'Roboto mono', monospace;
+  position: relative;
+  margin: 1% auto 30%;
+}
+
+.error__title::before, .error__title::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  left: 0;
+}
+
+.error__title::before {
+  background-color: #D4F3EF;
+  animation: loading 4s steps(16) 3.5s forwards;
+}
+
+.error__title::after {
+  width: 0.2rem;
+  animation:
+    loading 4s steps(16) 3.5s forwards,
+    blinking 0.8s steps(16) 3s infinite;
+}
+
+@keyframes loading {
+  to {
+    left: 100%;
+  }
+}
+
+@keyframes blinking {
+  from {
+    background: transparent
+  }
+
+  to {
+    background-color: #333;
+  }
+}
+
+.error__title {
+  font-size: 3rem;
+}
+
+.error__subtitle {
+  margin: 0 auto 4%;
+}
+
+.error__subtitle span {
+  font-size: 2rem;
+  line-height: 2;
+  font-style: italic;
+}
