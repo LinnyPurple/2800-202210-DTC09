@@ -38,7 +38,7 @@
                     <div style="display: flex;">
                         <div class="input-group mb-3 px-2 py-2 rounded-pill bg-white shadow-sm">
                             <input id="upload" type="file" onchange="readURL(this);" class="form-control border-0"
-                                name="image">
+                                name="image" accept="image/jpg, image/png">
                             <label id="upload-label" for="upload" class="font-weight-light text-muted">Choose
                                 file</label>
                             <div class="input-group-append">
@@ -48,6 +48,9 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Error message (if invalid file type) -->
+                    <div id="invalid-file-type"></div>
 
                 </div>
                     <input type="text" id="postID" style="display:none;" name="postID">

@@ -576,9 +576,17 @@ app.post("/uploadposting", (req, res) => {
                 images = req.file.filename;
             }
 
+            var re = /(.*)\.(.*)/;
+            var image_type = re.exec(images);
+            if (!image_type) image_type = "null";
+            else image_type = image_type[2];
+
             // Check all mandatory input is filled in
             if (title == '' || myItem == 'My Item' || tradingItem == 'Looking For' || condition == 'Select Condition' || tradingMethod == 'Select Method') {
                 res.write("<script>alert('Please fill out all the required fields (with red asterisk).')</script>");
+                res.write("<script>history.go(-1)</script>");
+            } else if (image_type !== "png" && image_type !== "jpg" && image_type !== "jpeg") {
+                res.write("<script>alert('Invalid file given. Please give an image.')</script>");
                 res.write("<script>history.go(-1)</script>");
             } else {
                 let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description, images) values ?";
@@ -625,10 +633,17 @@ app.post("/editposting", (req, res) => {
             const tradingMethod = req.body.tradingMethod;
             const description = req.body.description;
 
+            var re = /(.*)\.(.*)/;
+            var image_type = re.exec(req.file.filename);
+            if (!image_type) image_type = "null";
+            else image_type = image_type[2];
 
             // Check all mandatory input is filled in
             if (title == '' || myItem == 'My Item' || tradingItem == 'Looking For' || condition == 'Select Condition' || tradingMethod == 'Select Method') {
                 res.write("<script>alert('Please fill out all the reqired fields (with red asterisk).')</script>");
+                res.write("<script>history.go(-1)</script>");
+            } else if (image_type !== "png" && image_type !== "jpg" && image_type !== "jpeg") {
+                res.write("<script>alert('Invalid file given. Please give an image.')</script>");
                 res.write("<script>history.go(-1)</script>");
             } else {
                 // Update database

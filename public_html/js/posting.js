@@ -20,8 +20,17 @@ function readURL(input) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            $('#imageResult')
-                .attr('src', e.target.result);
+            var re = /data:(.*);/;
+            var image_type = re.exec(e.target.result)[1];
+            console.log(`Data type: ${image_type}`);
+            console.log(`Data is image/png or image/jpeg: ${image_type === "image/png" || image_type === "image/jpeg"}`);
+            if (image_type === "image/png" || image_type === "image/jpeg") $('#imageResult').attr('src', e.target.result);
+            else {
+                console.log("INVALID FILE TYPE");
+                $('#imageResult').attr('src', "../etc/camera.svg");
+                $("#invalid-file-type").html("Invalid file type. Must upload an image.");
+            }
+            
         };
         reader.readAsDataURL(input.files[0]);
     }

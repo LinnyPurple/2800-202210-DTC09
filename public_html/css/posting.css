@@ -41,6 +41,11 @@ a {
     position: relative;
 }
 
+#invalid-file-type {
+    color: red;
+    font-size: 1.4rem;
+}
+
 #upload_btn {
     border-radius: 10px;
     height: 40px;
