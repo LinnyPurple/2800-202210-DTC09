@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 const fs = require("fs");
 const bcrypt = require("bcrypt");
-const bodyParser = require("body-parser")
+const bodyParser = require("body-parser");
 const session = require("express-session");
 const res = require("express/lib/response");
 const childProcess = require("child_process");
@@ -14,13 +14,13 @@ const {
 const jsdom = require("jsdom");
 
 const path = require("path");
-const multer = require("multer")
+const multer = require("multer");
 
 const websocketServer = childProcess.fork("websocketServer.js");
 
 var urlencodedParser = bodyParser.json({
     extended: false
-})
+});
 
 let sqlStuff = fs.readFileSync("sqlData.json");
 const SQL_DATA = JSON.parse(sqlStuff);
@@ -182,7 +182,7 @@ app.post('/api/createAccount', urlencodedParser, function (req, res) {
     const email = req.body.email;
     const accessLevel = 1;
 
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
@@ -225,7 +225,7 @@ app.post('/api/deleteAccount', urlencodedParser, function (req, res) {
     const username = req.body.username;
     const email = req.body.email;
 
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
@@ -254,11 +254,11 @@ app.post('/api/editAccount', urlencodedParser, function (req, res) {
         const newEmail = req.body.newEmail;
         const newAccessLevel = req.session.accessLevel;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let query = "UPDATE user SET username = ?, email = ?, accessLevel = ? WHERE ID = ?;"
+        let query = "UPDATE user SET username = ?, email = ?, accessLevel = ? WHERE ID = ?;";
         connection.query(query, [newUsername ? newUsername : req.session.username, newEmail ? newEmail : req.session.email, newAccessLevel ? newAccessLevel : req.session.accessLevel, req.session.uid], (err, result) => {
             if (err) {
                 console.log(err);
@@ -268,7 +268,7 @@ app.post('/api/editAccount', urlencodedParser, function (req, res) {
             req.session.email = newAccessLevel ? newAccessLevel : req.session.accessLevel;
             res.status(200).send({
                 "result": "Account info has been updated."
-            })
+            });
         });
     }
 });
@@ -282,7 +282,7 @@ app.post('/api/resetPassword', urlencodedParser, (req, res) => {
         let userRecords = "UPDATE user SET passwordHash = ?, passwordSalt = ? WHERE ID = ?;";
         let recordValues = [hash, salt, userID];
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
@@ -304,12 +304,12 @@ try {
 
 var storage = multer.diskStorage({
     destination: (req, file, callBack) => {
-        callBack(null, "../public_html/img/profiles/") // directory name where save the file
+        callBack(null, "../public_html/img/profiles/"); // directory name where save the file
     },
     filename: (req, file, callBack) => {
-        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
-})
+});
 
 var upload = multer({
     storage: storage,
@@ -321,7 +321,7 @@ var upload = multer({
 
 //route for upload data
 app.post("/upload", (req, res) => {
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
@@ -333,9 +333,9 @@ app.post("/upload", (req, res) => {
             // res.status(400).json({error: "Allowed file size is 500KB."});
         } else {
             if (req.file) {
-                console.log(req.file.filename)
-                var imgsrc = '/img/profiles/' + req.file.filename
-                let query = `UPDATE user SET image = ? WHERE ID = ${req.session.uid};`
+                console.log(req.file.filename);
+                var imgsrc = '/img/profiles/' + req.file.filename;
+                let query = `UPDATE user SET image = ? WHERE ID = ${req.session.uid};`;
 
                 connection.query(query,
                     [imgsrc ? imgsrc : req.session.image], (err, result) => {
@@ -344,7 +344,7 @@ app.post("/upload", (req, res) => {
                         }
                         req.session.image = imgsrc ? imgsrc : req.session.image;
 
-                        res.redirect("profile")
+                        res.redirect("profile");
                     });
             }
         }
@@ -359,11 +359,11 @@ app.post('/api/editAccount2', urlencodedParser, function (req, res) {
         // const newPassword = req.body.newPassword;
         // const newAccessLevel = req.body.newAccessLevel;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let query = `UPDATE user SET username = ? WHERE ID = ${req.session.uid};`
+        let query = `UPDATE user SET username = ? WHERE ID = ${req.session.uid};`;
 
         connection.query(query,
             [newUsername ? newUsername : req.session.username, ], (err, result) => {
@@ -374,7 +374,7 @@ app.post('/api/editAccount2', urlencodedParser, function (req, res) {
 
                 res.status(200).send({
                     "result": "Account info has been updated."
-                })
+                });
             });
     }
 });
@@ -387,10 +387,10 @@ app.post('/api/admin/promoteAccount', urlencodedParser, function (req, res) {
         const toPromote = req.body.toPromote;
         const newAccessLevel = req.body.newAccessLevel;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
-        let query = "UPDATE user SET accessLevel = ? WHERE ID = ?;"
+        let query = "UPDATE user SET accessLevel = ? WHERE ID = ?;";
         let values = [newAccessLevel, toPromote];
 
         connection.query(query, values, (err, result) => {
@@ -406,13 +406,13 @@ app.post('/api/admin/promoteAccount', urlencodedParser, function (req, res) {
         res.status(400).send({
             "Result": "Failed",
             "msg": "User doesn't have the required access level."
-        })
+        });
     }
 });
 
 app.get('/api/admin/getUserList', (req, res) => {
     if (req.session.accessLevel >= 3) {
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
@@ -427,7 +427,7 @@ app.get('/api/admin/getUserList', (req, res) => {
         res.status(400).send({
             "Result": "Failed",
             "data": "User doesn't have the required access level."
-        })
+        });
     }
 });
 
@@ -453,13 +453,13 @@ app.post('/api/login', urlencodedParser, function (req, res) {
             });
             res.status(200).send({
                 "result": "Successfully logged in."
-            })
+            });
         } else {
             res.status(400).send({
                 "result": "Failed to log in."
-            })
+            });
         }
-    })
+    });
 });
 
 app.get("/api/logout", function (req, res) {
@@ -469,12 +469,12 @@ app.get("/api/logout", function (req, res) {
                 res.status(400).send({
                     "result": "Failed",
                     "msg": "Could not log out."
-                })
+                });
             } else {
                 res.status(200).send({
                     "result": "Succeeded",
                     "msg": "Successfully logged out."
-                })
+                });
             }
         });
     }
@@ -498,7 +498,7 @@ app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
             });
         }
     } else {
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
@@ -516,7 +516,7 @@ app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
                 res.status(400).send({
                     'result': 'Failed',
                     'msg': 'User not found.'
-                })
+                });
             }
         });
     }
@@ -535,12 +535,12 @@ try {
 
 var storagePost = multer.diskStorage({
     destination: (req, file, callBack) => {
-        callBack(null, "../public_html/img/post/") // directory name where save the file
+        callBack(null, "../public_html/img/post/"); // directory name where save the file
     },
     filename: (req, file, callBack) => {
-        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
-})
+});
 
 var uploadPost = multer({
     storage: storagePost,
@@ -552,7 +552,7 @@ var uploadPost = multer({
 
 // Upload posting
 app.post("/uploadposting", (req, res) => {
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
@@ -584,26 +584,24 @@ app.post("/uploadposting", (req, res) => {
                 let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description, images) values ?";
                 let values = [
                     [req.session.uid, title, myItem, tradingItem, condition, tradingMethod, description, images]
-                ]
+                ];
 
                 connection.query(query, [values], (err, result) => {
                     if (result) {
-                        console.log(result.insertId)
+                        console.log(result.insertId);
                         res.redirect('/item?post_id=' + result.insertId);
                     } else {
-                        console.log(err)
+                        console.log(err);
                     }
-                })
+                });
             }
-
         }
-    })
-
+    });
 });
 
 // Edit posting
 app.post("/editposting", (req, res) => {
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
@@ -640,9 +638,9 @@ app.post("/editposting", (req, res) => {
                         if (result) {
                             res.redirect('/item?post_id=' + postID);
                         } else {
-                            console.log(err)
+                            console.log(err);
                         }
-                    })
+                    });
                 } else {
                     // Update except image
                     let query = "UPDATE listing SET title = ?, myItemCategory = ?, tradingItemCategory = ?, itemCondition = ?, tradingMethod =? , description =? WHERE ID = ?";
@@ -651,15 +649,13 @@ app.post("/editposting", (req, res) => {
                         if (result) {
                             res.redirect('/item?post_id=' + postID);
                         } else {
-                            console.log(err)
+                            console.log(err);
                         }
-                    })
+                    });
                 }
             }
-
         }
-    })
-
+    });
 });
 
 app.post('/api/postListing', urlencodedParser, function (req, res) {
@@ -674,14 +670,14 @@ app.post('/api/postListing', urlencodedParser, function (req, res) {
         const description = req.body.description;
         const images = req.body.images;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
         let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description) values ?";
         let values = [
             [req.session.uid, title, myItem, tradingItem, condition, tradingMethod, description]
-        ]
+        ];
 
         connection.query(query, [values], (result, err) => {
             console.log(err);
@@ -690,14 +686,14 @@ app.post('/api/postListing', urlencodedParser, function (req, res) {
                 "msg": "Successfully posted listing.",
                 "id": err.insertId
             });
-        })
+        });
 
     } else {
         res.status(400).send({
             "Result": "Failed",
             "msg": "Not logged in",
             "id": null
-        })
+        });
     }
 });
 
@@ -707,7 +703,7 @@ app.post('/api/archiveListing', urlencodedParser, function (req, res) {
     if (req.session.loggedIn) {
         const id = req.body.postID;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
@@ -728,19 +724,19 @@ app.post('/api/archiveListing', urlencodedParser, function (req, res) {
                         "Result": "Success",
                         "msg": "Successfully archived listing."
                     });
-                })
+                });
             }
         });
     } else {
         res.status(400).send({
             "Result": "Failed",
             "msg": "Not logged in"
-        })
+        });
     }
 });
 
 app.get('/api/searchListings', (req, res) => {
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
@@ -763,7 +759,7 @@ app.get('/api/searchListings', (req, res) => {
 });
 
 app.get('/api/getListingsFromUser/:uid', (req, res) => {
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
     let uid = req.params.uid;
@@ -775,7 +771,7 @@ app.get('/api/getListingsFromUser/:uid', (req, res) => {
 });
 
 app.get('/api/getListingsFromUserNotDone/:uid', (req, res) => {
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
     let uid = req.params.uid;
@@ -795,7 +791,7 @@ app.get("/api/getListingData", async function (req, res) {
 
 function getListingData(auctionID) {
     return new Promise(resolve => {
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
@@ -813,7 +809,7 @@ function getListingData(auctionID) {
                 });
             }
         });
-    })
+    });
 }
 
 app.get('/api/getTraderInfo', urlencodedParser, (req, res) => {
@@ -831,7 +827,7 @@ app.get('/api/getTraderInfo', urlencodedParser, (req, res) => {
             res.send({
                 "result": "Success",
                 "data": result[0]
-            })
+            });
         } else {
             res.status(400).send({
                 "result": "Failed",
@@ -854,12 +850,12 @@ app.post('/api/postReview', urlencodedParser, function (req, res) {
         const score = req.body.score;
         const postID = req.body.postID;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        console.log(reviewText, reviewee, reviewer, score, postID)
-        let query = "INSERT INTO review (reviewerID, revieweeID, reviewText, score, postID) values ?"
+        console.log(reviewText, reviewee, reviewer, score, postID);
+        let query = "INSERT INTO review (reviewerID, revieweeID, reviewText, score, postID) values ?";
         let recordValues = [
             [reviewer, reviewee, reviewText, score, postID]
         ];
@@ -873,7 +869,7 @@ app.post('/api/postReview', urlencodedParser, function (req, res) {
         res.send({
             "result": "Failed",
             "msg": "Not logged in."
-        })
+        });
     }
 });
 
@@ -883,7 +879,7 @@ app.post('/api/deleteReview', urlencodedParser, (req, res) => {
         const reviewer = req.session.uid;
         const reviewee = req.body.reviewee;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
@@ -894,13 +890,13 @@ app.post('/api/deleteReview', urlencodedParser, (req, res) => {
             res.send({
                 "result": "Success",
                 "msg": "Review deleted."
-            })
+            });
         });
     } else {
         res.send({
             "result": "Failed",
             "msg": "Not logged in."
-        })
+        });
     }
 });
 
@@ -923,13 +919,13 @@ app.post('/api/editReview', urlencodedParser, (req, res) => {
             res.send({
                 "result": "Success",
                 "msg": "Review updated."
-            })
+            });
         });
     } else {
         res.status(400).send({
             "result": "Failed",
             "msg": "Not logged in."
-        })
+        });
     }
 });
 
@@ -949,7 +945,7 @@ app.get('/api/getReview', urlencodedParser, (req, res) => {
             res.send({
                 "result": "Success",
                 "data": result[0]
-            })
+            });
         } else {
             res.status(400).send({
                 "result": "Failed",
@@ -974,7 +970,7 @@ app.get('/api/getReviews', (req, res) => {
             res.send({
                 "result": "Success",
                 "data": result
-            })
+            });
         } else {
             res.status(400).send({
                 "result": "Failed",
@@ -988,9 +984,9 @@ app.get('/api/getReviews', (req, res) => {
 
 //#region WEBSOCKET
 
-let ids = {}
+let ids = {};
 
-let responses = {}
+let responses = {};
 
 websocketServer.on('message', (msg) => {
     responses[msg.id] = msg.data;
@@ -1021,7 +1017,7 @@ app.get('/getMessageLogs/:target', reqLogin, (req, res) => {
         const connection = mysql.createConnection(SQL_DATA);
 
         let query = `SELECT * FROM message WHERE ((senderID = ${req.session.uid} AND recieverID = ${parseInt(req.params.target)}) OR (senderID = ${parseInt(req.params.target)} AND recieverID = ${req.session.uid}))`;
-        let values = [req.session.uid, parseInt(req.params.target), parseInt(req.params.target), req.session.uid]
+        let values = [req.session.uid, parseInt(req.params.target), parseInt(req.params.target), req.session.uid];
 
         connection.query(query, values, (err, result) => {
             res.send(result);
@@ -1029,7 +1025,7 @@ app.get('/getMessageLogs/:target', reqLogin, (req, res) => {
     } else {
         res.send({
             'result': 'Error, not logged in.'
-        })
+        });
     }
 });
 
@@ -1039,11 +1035,11 @@ app.get('/openChats', reqLogin, (req, res) => {
     const connection = mysql.createConnection(SQL_DATA);
 
     let query = `SELECT senderID, recieverID FROM message WHERE senderID = ${uid} OR recieverID = ${uid}`;
-    let values = [req.session.uid, req.session.uid]
+    let values = [req.session.uid, req.session.uid];
     let set = new Set();
 
     connection.query(query, values, (err, result) => {
-        for (msgI in result) {
+        for (let msgI in result) {
             let msg = result[msgI];
             set.add(msg.senderID);
             set.add(msg.recieverID);
@@ -1066,11 +1062,11 @@ app.post('/api/sendTradeOffer', urlencodedParser, (req, res) => {
         const offererListingID = req.body.offererListingID;
         const offereeListingID = req.body.offereeListingID;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let query = "INSERT INTO offers (offererID, offereeID, offererListingID, offereeListingID) values ?"
+        let query = "INSERT INTO offers (offererID, offereeID, offererListingID, offereeListingID) values ?";
         let recordValues = [
             [offererID, offereeID, offererListingID, offereeListingID]
         ];
@@ -1084,7 +1080,7 @@ app.post('/api/sendTradeOffer', urlencodedParser, (req, res) => {
         res.send({
             "result": "Failed",
             "msg": "Not logged in."
-        })
+        });
     }
 });
 
@@ -1094,7 +1090,7 @@ app.post('/api/replyTradeOffer', urlencodedParser, reqLogin, (req, res) => {
     const offerID = req.body.offerID;
     console.log(accepted);
 
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
@@ -1113,11 +1109,11 @@ app.get('/api/getTradeOffersToMe', (req, res) => {
     if (req.session.loggedIn) {
         const uid = req.session.uid;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let query = "SELECT * FROM offers WHERE offereeID = ? AND status = -1"
+        let query = "SELECT * FROM offers WHERE offereeID = ? AND status = -1";
         let recordValues = uid;
 
         connection.query(query, [recordValues], (err, result) => {
@@ -1132,7 +1128,7 @@ app.get('/api/getTradeOffersToMe', (req, res) => {
             "result": "Failed",
             "msg": "Not logged in.",
             "data": {}
-        })
+        });
     }
 });
 
@@ -1141,11 +1137,11 @@ app.get('/api/getTradeOffersFromMe', (req, res) => {
     if (req.session.loggedIn) {
         const uid = req.session.uid;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let query = "SELECT * FROM offers WHERE offererID = ?"
+        let query = "SELECT * FROM offers WHERE offererID = ?";
         let recordValues = uid;
 
         connection.query(query, [recordValues], (err, result) => {
@@ -1160,7 +1156,7 @@ app.get('/api/getTradeOffersFromMe', (req, res) => {
             "result": "Failed",
             "msg": "Not logged in.",
             "data": {}
-        })
+        });
     }
 });
 
@@ -1179,7 +1175,7 @@ app.post('/api/getOfferByid', urlencodedParser, (req, res) => {
             res.send({
                 "result": "Success",
                 "data": result[0]
-            })
+            });
         } else {
             res.status(400).send({
                 "result": "Failed",
@@ -1196,7 +1192,7 @@ app.post('/api/getOfferByid', urlencodedParser, (req, res) => {
 app.use(function (req, res, next) {
     let doc = fs.readFileSync("../public_html/html/error.html", "utf8");
     res.status(404).send(doc);
-})
+});
 
 async function hashPassword(plaintextPassword, callback) {
     const saltRounds = 10;
@@ -1215,7 +1211,7 @@ async function hashPassword(plaintextPassword, callback) {
 }
 
 async function authenticate(email, password, callback) {
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
     let query = "SELECT * FROM user WHERE email = '" + email + "' OR username = '" + email + "'";
