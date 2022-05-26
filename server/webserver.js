@@ -549,6 +549,7 @@ var uploadPost = multer({
     }
 }).single('image');
 
+let isrun = false;
 
 // Upload posting
 app.post("/uploadposting", (req, res) => {
@@ -556,55 +557,63 @@ app.post("/uploadposting", (req, res) => {
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
-    uploadPost(req, res, function (err) {
-        // send error message when file size is over 500KB
-        if (err instanceof multer.MulterError) {
-            // A Multer error occurred when uploading.
-            res.write("<script>alert('Maximum file size is 500KB.')</script>");
-            res.write("<script>history.go(-1)</script>");
-            // res.status(400).json({error: "Allowed file size is 500KB."});
-        } else {
-            // store all user input
-            const title = req.body.title;
-            const myItem = req.body.myItem;
-            const tradingItem = req.body.tradingItem;
-            const condition = req.body.condition;
-            const tradingMethod = req.body.tradingMethod;
-            const description = req.body.description;
-            let images = null;
-            if (req.file) {
-                images = req.file.filename;
-            }
+    if (!isrun) {
+        isrun = true;
 
-            var re = /(.*)\.(.*)/;
-            var image_type = re.exec(images);
-            if (!image_type) image_type = "null";
-            else image_type = image_type[2];
-
-            // Check all mandatory input is filled in
-            if (title == '' || myItem == 'My Item' || tradingItem == 'Looking For' || condition == 'Select Condition' || tradingMethod == 'Select Method') {
-                res.write("<script>alert('Please fill out all the required fields (with red asterisk).')</script>");
-                res.write("<script>history.go(-1)</script>");
-            } else if (image_type !== "png" && image_type !== "jpg" && image_type !== "jpeg") {
-                res.write("<script>alert('Invalid file given. Please give an image.')</script>");
+        uploadPost(req, res, function (err) {
+            // send error message when file size is over 500KB
+            if (err instanceof multer.MulterError) {
+                // A Multer error occurred when uploading.
+                res.write("<script>alert('Maximum file size is 500KB.')</script>");
                 res.write("<script>history.go(-1)</script>");
             } else {
-                let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description, images) values ?";
-                let values = [
-                    [req.session.uid, title, myItem, tradingItem, condition, tradingMethod, description, images]
-                ];
+                // store all user input
+                const title = req.body.title;
+                const myItem = req.body.myItem;
+                const tradingItem = req.body.tradingItem;
+                const condition = req.body.condition;
+                const tradingMethod = req.body.tradingMethod;
+                const description = req.body.description;
+                let images = null;
+                if (req.file) {
+                    images = req.file.filename;
+                }
 
-                connection.query(query, [values], (err, result) => {
-                    if (result) {
-                        console.log(result.insertId);
-                        res.redirect('/item?post_id=' + result.insertId);
-                    } else {
-                        console.log(err);
-                    }
-                });
+                var re = /(.*)\.(.*)/;
+                var image_type = re.exec(images);
+                if (!image_type) image_type = "null";
+                else image_type = image_type[2];
+
+                // Check all mandatory input is filled in
+                if (title == '' || myItem == 'My Item' || tradingItem == 'Looking For' || condition == 'Select Condition' || tradingMethod == 'Select Method') {
+                    res.write("<script>alert('Please fill out all the required fields (with red asterisk).')</script>");
+                    res.write("<script>history.go(-1)</script>");
+                } else if (image_type !== "png" && image_type !== "jpg" && image_type !== "jpeg") {
+                    res.write("<script>alert('Invalid file given. Please give an image.')</script>");
+                    res.write("<script>history.go(-1)</script>");
+                } else {
+                    let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description, images) values ?";
+                    let values = [
+                        [req.session.uid, title, myItem, tradingItem, condition, tradingMethod, description, images]
+                    ];
+
+                    connection.query(query, [values], (err, result) => {
+                        if (result) {
+                            console.log(result.insertId);
+                            res.redirect('/item?post_id=' + result.insertId);
+                        } else {
+                            console.log(err);
+                        }
+                    });
+                }
             }
-        }
-    });
+
+            isrun = false;
+            
+        });
+    }
+
+
 });
 
 // Edit posting
