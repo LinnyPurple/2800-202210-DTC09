@@ -63,8 +63,8 @@
 
 .account__delete button {
   background-color: #D4F3EF;
-  border: #EE8572 2px solid;
-  color: #EE8572;
+  border: #aaa 2px solid;
+  color: #aaa;
   margin: 2% 0 0 auto;
   width: 25%;
 }
