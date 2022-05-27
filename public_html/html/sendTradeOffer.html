@@ -84,7 +84,7 @@
                 console.log(!offer.images)
                 let imgs = '';
                 if (!offer.images) {
-                    imgs = '/etc/camera.svg';
+                    imgs = '/img/default/camera.svg';
                 } else {
                     imgs = `/img/post/${offer.images}`;
                 }
@@ -118,7 +118,7 @@
             $('#traderName').html(traderInfo.data.username);
             $('#tradeItemName').html(tradeItemInfo.title);
             if (!tradeItemInfo.images) {
-                $('#tradeItemImg').attr("src", '/etc/camera.svg')
+                $('#tradeItemImg').attr("src", '/img/default/camera.svg')
             } else {
                 $('#tradeItemImg').attr("src", '/img/post/' + tradeItemInfo.images)
             };

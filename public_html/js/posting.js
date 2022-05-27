@@ -24,7 +24,7 @@ function readURL(input) {
             if (image_type === "image/png" || image_type === "image/jpeg") $('#imageResult').attr('src', e.target.result);
             else {
                 console.log("INVALID FILE TYPE");
-                $('#imageResult').attr('src', "../etc/camera.svg");
+                $('#imageResult').attr('src', "/img/default/camera.svg");
                 $("#invalid-file-type").html("Invalid file type. Must upload an image.");
             }
         };

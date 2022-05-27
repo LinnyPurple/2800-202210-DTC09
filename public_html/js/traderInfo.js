@@ -20,7 +20,7 @@ async function getTraderInfo() {
     var currentImage = currentTraderInfo.data.image;
 
     $(".traderName").html(traderName);
-    $(""#traderEmail").html(traderEmail);
+    $("#traderEmail").html(traderEmail);
     if (currentImage) {
         $("#profilePicture").html(`<img src="${currentImage}" class="rounded-circle border border-dark border-1 mx-auto d-block" style="width: 110px; height: 110px;">`);
     }
@@ -39,7 +39,7 @@ async function getTraderhistory() {
             if (currentTraderhistroy[i].images) {
                 itemImage = "../img/post/" + currentTraderhistroy[i].images;
             } else {
-                itemImage = "../etc/camera.svg";
+                itemImage = "../img/default/camera.svg";
             }
 
             histories += `<div class="each_history">

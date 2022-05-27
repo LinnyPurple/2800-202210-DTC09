@@ -61,7 +61,7 @@
                 let template = document.querySelector("#chatT").content.cloneNode(true);
                 user = JSON.parse(await user);
 
-                template.querySelector('.profileImg').setAttribute('src', (user.image ? user.image : '/img/Default_pfp.jpg'));
+                template.querySelector('.profileImg').setAttribute('src', (user.image ? user.image : '/img/default/person-circle.svg'));
                 template.querySelector('.profileName').innerHTML = user.username;
                 template.querySelector('.openChat').setAttribute('onclick', `window.location.assign('/chat/${user.uid}')`);
 

@@ -8,21 +8,21 @@
         <header>
             <button id="backButton" onclick="window.location.assign('/chat')">&lt</button>
             <div id="profile">
-                <img class="profilePhoto" src="/img/Default_pfp.jpg" />
+                <img class="profilePhoto" src="/img/default/person-circle.svg" />
                 <h2 class="profileName">Name</h2>
             </div>
         </header>
         <div id="chat">
             <template id="reciChatT">
                 <div class="reciChat msg">
-                    <img class="reciImg cImg" src="/img/Default_pfp.jpg" />
+                    <img class="reciImg cImg" src="/img/default/person-circle.svg" />
                     <p class="reciP cP"></p>
                 </div>
             </template>
             <template id="sentChatT">
                 <div class="sentChat msg">
                     <p class="sentP cP"></p>
-                    <img class="sentImg cImg" src="/img/Default_pfp.jpg" />
+                    <img class="sentImg cImg" src="/img/default/person-circle.svg" />
                 </div>
             </template>
         </div>
@@ -47,7 +47,7 @@
                 logs = JSON.parse(await getRequest(`/getMessageLogs/${otherUser.uid}`));
                 logs = logs.sort((a, b) => (a.timestamp > b.timestamp) ? 1 : -1);
 
-                document.querySelector('.profilePhoto').setAttribute('src', (otherUser.image ? otherUser.image : '/img/Default_pfp.jpg'));
+                document.querySelector('.profilePhoto').setAttribute('src', (otherUser.image ? otherUser.image : '/img/default/person-circle.svg'));
                 document.querySelector('.profileName').innerHTML = otherUser.username;
 
                 const parent = document.querySelector('#chat');
@@ -55,7 +55,7 @@
                     let log = logs[logI];
 
                     let template = document.querySelector((log.senderID == currentUser.uid) ? '#sentChatT' : '#reciChatT').content.cloneNode(true);
-                    template.querySelector('.cImg').setAttribute('src', (log.senderID == currentUser.uid) ? (currentUser.image ? currentUser.image : '/img/Default_pfp.jpg') : (otherUser.image ? otherUser.image : '/img/Default_pfp.jpg'));
+                    template.querySelector('.cImg').setAttribute('src', (log.senderID == currentUser.uid) ? (currentUser.image ? currentUser.image : '/img/default/person-circle.svg') : (otherUser.image ? otherUser.image : '/img/default/person-circle.svg'));
                     template.querySelector('.cP').innerHTML = log.msg;
 
                     parent.appendChild(template);
@@ -69,7 +69,7 @@
                 const parent = document.querySelector('#chat');
 
                 let template = document.querySelector((sent) ? '#sentChatT' : '#reciChatT').content.cloneNode(true);
-                template.querySelector('.cImg').setAttribute('src', (sent) ? (currentUser.image ? currentUser.image : '/img/Default_pfp.jpg') : (otherUser.image ? otherUser.image : '/img/Default_pfp.jpg'));
+                template.querySelector('.cImg').setAttribute('src', (sent) ? (currentUser.image ? currentUser.image : '/img/default/person-circle.svg') : (otherUser.image ? otherUser.image : '/img/default/person-circle.svg'));
                 template.querySelector('.cP').innerHTML = msg;
                 parent.appendChild(template);
                 parent.scrollTo(0, parent.scrollHeight);
