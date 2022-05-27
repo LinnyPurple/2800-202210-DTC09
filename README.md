@@ -84,6 +84,7 @@ It has the following subfolders and files:
        /viewChats.html
        /websocket.html
    ├── img                    # Directory for images
+       ├── default            # Directory for default images
        ├── post               # Directory for posts' images
        └── profiles           # Directory for profile images  
    ├── js                     # Directory for JavaScript files
