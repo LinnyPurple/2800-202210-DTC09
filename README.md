@@ -5,27 +5,25 @@
 ## Table of Contents
 
 * [General info](#general-info)
-* [Creators](#creators)
 * [Technologies](#technologies)
 * [Contents](#content)
+* [Installation](#installation)
+* [Features](#features)
 * [Citation](#citation)
+* [Creators](#creators)
 
 ## General Info
 
 [SwapOmen](https://sub.yurtle.net/)
-
-## Creators
-*George Rozitis* (https://github.com/LinnyPurple)  
-*Lachlan Butler* (https://github.com/Yurtle212)  
-*Toco Tachibana* (https://github.com/toco-t)  
-*Soo Park* (https://github.com/Soohyeun)  
-
+* To allow products to be used to their fullest extent and reduce waste, DTC-09 is developing a trading app, that makes it easy for people to trade their items instead of throwing them away
 
 ## Technologies
 Technologies used for this project:
 * HTML, CSS
 * JavaScript, jQuery
+* Node.js
 * Bootstrap
+* MySQL
 
 * [Google fonts](https://fonts.google.com/)
 
@@ -106,7 +104,33 @@ It has the following subfolders and files:
     /webserver.js              
     /websocketServer.css             
 ```
+
+## Installation
+1. Install Node.js and Visual Studio Code.
+2. Install MySQL.
+3. If you set password for your local MySQL, go to `sqlData.json` file inside `server` folder and change password value to your root account's password.
+4. Open a terminal, go to the project directory and enter ```npm install``` to install all pakages you need.
+5. Enter ```cd server``` in terminal and enter ```node /webserver.js``` in same terminal.
+6. Open your internet browser and visit ```localhost:8000``` by using URL
+7. Now you can browse our application!
+
+
+## Features
+* Create an account to start trading your items
+* Upload your posting with items that you don't use anymore
+* Browse other user's posting
+* Send trade offer to other users
+* Accecpt / Decline offers you have received from others
+* Chat with others
+* Leave reviews after trading
+
 ## Citation
 * Rating design: https://bbbootstrap.com/snippets/bootstrap-rate-your-experience-template-star-ratings-30972576
 * image-upload: https://bootstrapious.com/p/bootstrap-image-upload  
 * Rotating text: https://www.geeksforgeeks.org/how-to-rotate-a-text-360-degrees-on-hover-using-html-and-css
+
+## Creators
+*George Rozitis* (https://github.com/LinnyPurple)  
+*Lachlan Butler* (https://github.com/Yurtle212)  
+*Toco Tachibana* (https://github.com/toco-t)  
+*Soo Park* (https://github.com/Soohyeun) 
