@@ -7,7 +7,7 @@ async function getProfileInfo() {
     if (currentUserInfo.loggedIn == true) {
         var currentUsername = currentUserInfo.name;
         var currentUserEmail = currentUserInfo.email;
-        var currentImage = currentUserInfo.image ? currentUserInfo.image : '/img/default/person-circle.svg';
+        var currentImage = currentUserInfo.image ? currentUserInfo.image : '/img/Default_pfp.jpg';
 
         if (currentUsername != '') {
             document.getElementById("nameInput").value = currentUsername;
@@ -33,7 +33,6 @@ async function resetPassword(newPassword) {
     let res = await postRequest('/api/resetPassword', {
         newPassword: newPassword
     });
-    console.log(res);
 }
 
 // save -> update data

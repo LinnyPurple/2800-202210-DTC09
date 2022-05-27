@@ -1,50 +1,57 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Websockets</title>
-    </head>
-    <body>
-        <h1>Websocket Client</h1>
-        <input name="message" id="wsMessage" type="text">
-        <button onclick="sendMessage(document.querySelector('#wsMessage').value)">Send Msg</button>
 
-        <script src="/js/httpRequests.js"></script>
-        <script src="/js/webserverInterface.js"></script>
-        <script>
-            let socket;
-            let wsid;
-            let userInfo;
+<head>
+  <title>Websockets</title>
+</head>
 
-            async function sendMessage(target, msg) {
-                if (userInfo.loggedIn) {
-                    socket.send(JSON.stringify({'sender': userInfo.uid, 'target': target, 'msg': msg}));
-                }
-                else {
-                    console.log("User is not logged in.");
-                }
-            }
+<body>
+  <h1>Websocket Client</h1>
+  <input name="message" id="wsMessage" type="text">
+  <button onclick="sendMessage(document.querySelector('#wsMessage').value)">Send Msg</button>
 
-            async function initWebsocket() { 
-                userInfo = JSON.parse(await getRequest("/api/getUserInfo"));
-                
-                socket = new WebSocket(`ws://localhost:8001?uid=${encodeURIComponent(userInfo.uid)}`);
+  <!-- SCRIPTS -->
+  <script src="/js/httpRequests.js"></script>
+  <script src="/js/webserverInterface.js"></script>
+  <script>
+    let socket;
+    let wsid;
+    let userInfo;
 
-                socket.addEventListener('open', function (event) {
-                    console.log("Successfully connected to websocket.");
-                });
+    async function sendMessage(target, msg) {
+      if (userInfo.loggedIn) {
+        socket.send(JSON.stringify({
+          'sender': userInfo.uid,
+          'target': target,
+          'msg': msg
+        }));
+      } else {
+        console.log("User is not logged in.");
+      }
+    }
 
-                socket.addEventListener('message', function (event) {
-                    let message = JSON.parse(event.data);
-                    console.log(`From ${message.sender}: `, message.msg);
-                });
-            }
+    async function initWebsocket() {
+      userInfo = JSON.parse(await getRequest("/api/getUserInfo"));
 
-            async function getMessageLogs(target) {
-                let res = JSON.parse(await getRequest(`/getMessageLogs?target=${target}`));
-                console.log(res);
-            }
+      socket = new WebSocket(`ws://localhost:8001?uid=${encodeURIComponent(userInfo.uid)}`);
 
-            initWebsocket();
-        </script>
-    </body>
+      socket.addEventListener('open', function(event) {
+        console.log("Successfully connected to websocket.");
+      });
+
+      socket.addEventListener('message', function(event) {
+        let message = JSON.parse(event.data);
+        console.log(`From ${message.sender}: `, message.msg);
+      });
+    }
+
+    async function getMessageLogs(target) {
+      let res = JSON.parse(await getRequest(`/getMessageLogs?target=${target}`));
+      console.log(res);
+    }
+
+    initWebsocket();
+  </script>
+</body>
+
 </html>
