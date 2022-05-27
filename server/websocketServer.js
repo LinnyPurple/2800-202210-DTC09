@@ -87,7 +87,6 @@ wss.on('connection', function connection(ws, req) {
         } catch (e) {
             console.log(e);
         }
-
     });
 
     ws.on('error', (e) => {
