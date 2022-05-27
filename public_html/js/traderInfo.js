@@ -39,7 +39,7 @@ async function getTraderhistory() {
             if (currentTraderhistroy[i].images) {
                 itemImage = "../img/post/" + currentTraderhistroy[i].images;
             } else {
-                itemImage = "../etc/camera.svg";
+                itemImage = "../img/default/camera.svg";
             }
 
             histories += `<div class="each_history">

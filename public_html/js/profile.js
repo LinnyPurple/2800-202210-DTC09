@@ -33,7 +33,6 @@ async function resetPassword(newPassword) {
     let res = await postRequest('/api/resetPassword', {
         newPassword: newPassword
     });
-    console.log(res);
 }
 
 // save -> update data

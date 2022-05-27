@@ -19,16 +19,16 @@ async function populateOffers(recieving = true) {
         let offererImg;
         let offereeImg;
         if (!offererData.images) {
-            offererImg = '/etc/camera.svg';
+            offererImg = '/img/default/camera.svg';
         } else {
             offererImg = `/img/post/${offererData.images}`;
         }
         if (!offereeData.images) {
-            offereeImg = '/etc/camera.svg';
+            offereeImg = '/img/default/camera.svg';
         } else {
             offereeImg = `/img/post/${offereeData.images}`;
         }
-        template.querySelector(".OffereePicture").setAttribute('src', offeree.image ? offeree.image : '/etc/person-circle.svg');
+        template.querySelector(".OffereePicture").setAttribute('src', offeree.image ? offeree.image : '/img/default/person-circle.svg');
         template.querySelector(".offerDate").innerHTML = offer.timestamp.split('T')[0];
         template.querySelector(".OffereeName").innerHTML = offeree.username;
         template.querySelector(".TradeOfferer").href = `/traderinfo?trader_id=${offer.offereeID}`;

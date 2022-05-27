@@ -3,27 +3,26 @@
 
 <head>
     <title>SwapOmen</title>
+    <!-- meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- css -->
+    <!-- fonts & icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
     <!-- bootstrap -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
+    <!-- custom CSS -->
     <link rel="stylesheet" href="../css/profile.css">
     <link rel="stylesheet" href="../css/index.css">
 </head>
 
 <body onload="f()">
-    <!-- top nav -->
     <header></header>
 
-    <!-- contents -->
     <main>
         <div id="userinfo">
             <div class="container">
@@ -33,25 +32,19 @@
                 </div>
                 <!-- form for user to update their profile -->
                 <fieldset class="my-3" id="personalInfoFields" disabled>
-                    <!-- Name -->
                     <div class="form-group my-3">
                         <label>Name <span style="color: red;">*</span></label>
                         <input type="text" id="nameInput" class="form-control" placeholder="Enter your name" maxlength="40">
                     </div>
-
-                    <!-- E-mail -->
                     <div class="form-group my-3">
                         <label>E-mail</label>
                         <input type="text" id="emailInput" class="form-control" placeholder="Enter your E-mail">
                     </div>
-
-                    <!-- Password -->
                     <div class="form-group my-3">
                         <label>Password</label>
                         <input type="password" id="passwordInput" class="form-control search"
                             placeholder="New password" />
                     </div>
-
                     <form action="/upload" method="post" enctype="multipart/form-data">
                         <!-- place for uploading profile picture -->
                         <div class="form-group my-3">
@@ -73,12 +66,6 @@
         </div>
 
         <div class="account">
-            <!-- todo: previous button? -->
-            <!-- <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My listings</button>
-
-            <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My reviews</button> -->
-
-            <!-- TODO: GET THIS WORKING!!! -->
             <div id="admin-button">
                 <button type="button" class="btn btn-secondary btn-block" onclick="gotoAdminPage()">Go to admin page</button>
             </div>
@@ -104,12 +91,9 @@
         </div>
     </main>
 
-
-    <!-- botton nav -->
     <footer></footer>
 
-
-    <!-- jquery -->
+    <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- SCRIPTS -->
@@ -119,13 +103,7 @@
     <script src="/js/webserverInterface.js"></script>
     <script>
         async function f() {
-            console.log("On account page");
-
-            // Gets the user info and shows it on the screen
             var currentUserInfo = JSON.parse(await getUserInfo());
-            // document.getElementById("current-username").innerHTML = `Hello,  ${currentUserInfo.name}`;
-            // document.getElementById("current-email").innerHTML = `Your email is '${currentUserInfo.email}'`;
-
             // Determine if user is an admin and show admin button if so
             if (currentUserInfo.accessLevel >= 3) document.getElementById("admin-button").style.display = "block";
             else document.getElementById("admin-button").style.display = "none";
@@ -136,7 +114,6 @@
             var specialMessage = "";
             var currentUserInfo = JSON.parse(await getUserInfo());
             var currentUsername = currentUserInfo.name.toLowerCase();
-            // console.log(currentUsername);
 
             if (currentUsername === "george") specialMessage = "You're the coolest man on Earth!";
             else if (currentUsername === "chris" || currentUsername === "christopher" || currentUsername === "cthompson" || currentUsername === "christhompson") {
@@ -198,7 +175,6 @@
             window.location.assign('/tradeOffers');
         }
     </script>
-
 </body>
 
 </html>

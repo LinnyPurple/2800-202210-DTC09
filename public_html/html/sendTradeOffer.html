@@ -3,28 +3,26 @@
 
 <head>
     <title>SwapOmen</title>
+    <!-- meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- css -->
+    <!-- fonts & icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
     <!-- bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-    integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
+    <!-- custom CSS -->
     <link rel="stylesheet" href="../css/index.css">
     <link rel="stylesheet" href="../css/sendTradeOffer.css">
 </head>
 
 <body>
-    <!-- top nav -->
     <header></header>
 
-    <!-- the body of the page -->
     <main>
       <div id="content">
         <div id="TradeItem">
@@ -37,7 +35,6 @@
               <h4>User name"</h4>
               <div id="traderName"></div>
             </div>
-
           </div>
         </div>
 
@@ -55,14 +52,13 @@
           </template>
         </div>
       </div>
-
     </main>
 
-    <!-- botton nav -->
     <footer></footer>
 
-    <!-- JavaScript functions -->
+    <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- SCRIPTS -->
     <script src="/js/global.js"></script>
     <script src="/js/webserverInterface.js"></script>
     <script src="/js/httpRequests.js"></script>
@@ -72,7 +68,6 @@
         async function getPotentialOffers() {
             userInfo = JSON.parse(await getUserInfo());
             listings = JSON.parse(await getRequest('/api/getListingsFromUserNotDone/' + userInfo.uid));
-            console.log(listings);
 
             const parent = document.querySelector("#potentialOffers");
 
@@ -81,16 +76,14 @@
                 let offer = listings[offerInd];
 
                 template.querySelector(".OfferName").innerHTML = offer.title;
-                console.log(!offer.images)
                 let imgs = '';
                 if (!offer.images) {
-                    imgs = '/etc/camera.svg';
+                    imgs = '/img/default/camera.svg';
                 } else {
                     imgs = `/img/post/${offer.images}`;
                 }
                 template.querySelector(".OfferImg").setAttribute('src', imgs);
                 template.querySelector(".SendOffer").setAttribute('onclick', `sendOffer(${offer.ID})`);
-
                 parent.appendChild(template);
             }
         }
@@ -112,13 +105,11 @@
             var traderInfo = JSON.parse(await getRequest(`/api/getTraderInfo?id=${encodeURIComponent(traderID)}`));
             var tradeItemInfo = JSON.parse(await getRequest(
                 `/api/getListingData?id=${encodeURIComponent(tradeItemID)}`));
-            console.log(traderInfo);
-            console.log(tradeItemInfo)
 
             $('#traderName').html(traderInfo.data.username);
             $('#tradeItemName').html(tradeItemInfo.title);
             if (!tradeItemInfo.images) {
-                $('#tradeItemImg').attr("src", '/etc/camera.svg')
+                $('#tradeItemImg').attr("src", '/img/default/camera.svg')
             } else {
                 $('#tradeItemImg').attr("src", '/img/post/' + tradeItemInfo.images)
             };
@@ -126,7 +117,6 @@
 
         async function sendOffer(id) {
             let offerListing = listings.find(e => e.ID == id);
-
             let confirmation = confirm(`Do you want to trade off ${offerListing.title}?`);
 
             if (confirmation) {
@@ -135,11 +125,9 @@
                     offereeListingID: tradeItemID,
                     offererListingID: id
                 });
-                console.log(res);
                 alert("Offer has been sent.")
                 window.location.href = "/";
             }
-
         }
 
         getTradesInfo()

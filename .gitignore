@@ -1,3 +1,4 @@
 server/sqlData.json
 /node_modules
-/public_html/img/*
+/public_html/img/post/*
+/public_html/img/profiles/*
