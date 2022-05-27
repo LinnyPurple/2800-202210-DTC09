@@ -4,7 +4,6 @@ async function createAccount(username = "testuser") {
         username: username,
         email: "testEmail"
     });
-    console.log(res);
 }
 
 async function createAccountV2(username = "testuser", email = "testEmail", password = "testPass") {
@@ -13,7 +12,6 @@ async function createAccountV2(username = "testuser", email = "testEmail", passw
         username: username,
         email: email
     });
-    console.log(res);
 }
 
 async function deleteAccount() {
@@ -22,7 +20,6 @@ async function deleteAccount() {
         username: "testUser",
         email: "testEmail"
     });
-    console.log(res);
 }
 
 async function deleteAccountV2(username = "testuser", email = "testEmail", password = "testPass") {
@@ -39,7 +36,6 @@ async function login(username = "testuser") {
         password: "testPass",
         username: username
     });
-    console.log(res);
 }
 
 // async function logout() {
@@ -53,13 +49,11 @@ async function loginV2(username = "testuser", password = "testPass") {
         password: password,
         username: username
     });
-    // console.log(res);
     return res;
 }
 
 async function getUserInfo() {
     let res = await getRequest("/api/getUserInfo");
-    // console.log(res);
     return res;
 }
 async function getOtherUserInfo(id) {
@@ -75,17 +69,14 @@ async function postListing() {
         title: "Test Title",
         description: "This is a test description for posting listings."
     });
-    console.log(res);
 }
 async function archiveListing(arhivePostID) {
     let res = await postRequest("/api/archiveListing", {
         postID: arhivePostID
     });
-    console.log(res);
 }
 async function getListingData(listingID) {
     let res = await getRequest(`/api/getListingData?id=${encodeURIComponent(listingID)}`);
-    console.log(res);
 }
 
 async function sendReview(reviewee, reviewText, score) {
@@ -94,24 +85,20 @@ async function sendReview(reviewee, reviewText, score) {
         reviewText: reviewText,
         score: score
     });
-    console.log(res);
 }
 
 async function deleteReview(reviewee) {
     let res = await postRequest('/api/deleteReview', {
         reviewee: reviewee,
     });
-    console.log(res);
 }
 
 async function getReview(reviewer, reviewee) {
     let res = await getRequest(`/api/getReview?reviewer=${encodeURIComponent(reviewer)}&reviewee=${encodeURIComponent(reviewee)}`);
-    console.log(res);
 }
 
 async function getReviews(reviewee) {
     let res = await getRequest(`/api/getReviews?reviewee=${encodeURIComponent(reviewee)}`);
-    console.log(res);
 }
 
 async function promoteAccount(accountID, level) {
@@ -119,12 +106,10 @@ async function promoteAccount(accountID, level) {
         toPromote: accountID,
         newAccessLevel: level
     });
-    console.log(res);
 }
 
 async function adminGetAccounts() {
     let res = await getRequest('/api/admin/getUserList');
-    console.log(res);
     return res;
 }
 
@@ -138,5 +123,4 @@ async function resetPassword(uid, newPassword) {
         userId: uid,
         newPassword: newPassword
     });
-    console.log(res);
 }

@@ -1,7 +1,6 @@
 async function populateOffers() {
     // get all my offers
     let res = JSON.parse(await getRequest('/api/getTradeOffersToMe'));
-    console.log(res);
     const parent = document.querySelector("#OfferContainer");
 
     // populate all offers
@@ -30,22 +29,17 @@ async function populateOffers() {
             offereeImg = `/img/post/${offereeData.images}`;
         }
         template.querySelector(".OffererPicture").setAttribute('src', offerer.image ? offerer.image : '/etc/person-circle');
-
         template.querySelector(".offerDate").innerHTML = offer.timestamp.split('T')[0];
         template.querySelector(".OffererName").innerHTML = offerer.username;
         template.querySelector(".TradeOfferer").href = `/traderinfo?trader_id=${offer.offererID}`;
-
         template.querySelector(".OfferName").innerHTML = "Their item: " + offererData.title;
         template.querySelector(".OfferImg").setAttribute('src', offererImg);
         template.querySelector(".OfferItem").href = `/item?post_id=${offererData.ID}`;
-
         template.querySelector(".ForName").innerHTML = "My Item: " + offereeData.title;
         template.querySelector(".ForImg").setAttribute('src', offereeImg);
         template.querySelector(".ForItem").href = `/item?post_id=${offereeData.ID}`;
-
         template.querySelector('.aButton').setAttribute('onclick', `tradeReply(${offer.ID}, ${offer.offererID}, true)`);
         template.querySelector('.dButton').setAttribute('onclick', `tradeReply(${offer.ID}, ${offer.offererID}, false)`);
-
         parent.appendChild(template);
     }
 }
@@ -58,7 +52,6 @@ async function tradeReply(offerID, traderID, accept) {
             'offerID': offerID,
             'accepted': (accept ? 1 : 0)
         }));
-        console.log(res);
         if (res.msg == "Accepted trade offer.") {
             alert(res.msg);
             window.location.href = `/confirmation?offerID=${offerID}&traderID=${traderID}`;

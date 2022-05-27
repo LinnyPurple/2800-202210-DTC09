@@ -7,7 +7,6 @@
 
 async function logout() {
     let res = await getRequest("/api/logout");
-    console.log(res);
     window.location.assign('/login');
 }
 
@@ -17,4 +16,3 @@ $(document).ready(() => {
     $(".top-nav__hamburger__nav").toggleClass("active");
   });
 });
-

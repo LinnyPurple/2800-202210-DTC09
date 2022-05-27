@@ -14,14 +14,13 @@ function gettraderID() {
 async function getTraderInfo() {
     let res = await getRequest(`/api/getTraderInfo?id=${encodeURIComponent(traderID)}`);
     var currentTraderInfo = JSON.parse(res);
-    // console.log(currentTraderInfo);
 
     var traderName = currentTraderInfo.data.username;
     var traderEmail = currentTraderInfo.data.email;
     var currentImage = currentTraderInfo.data.image;
 
-    $('.traderName').html(traderName);
-    $('#traderEmail').html(traderEmail);
+    $(".traderName").html(traderName);
+    $(""#traderEmail").html(traderEmail);
     if (currentImage) {
         $("#profilePicture").html(`<img src="${currentImage}" class="rounded-circle border border-dark border-1 mx-auto d-block" style="width: 110px; height: 110px;">`);
     }
@@ -30,7 +29,6 @@ async function getTraderInfo() {
 async function getTraderhistory() {
     let res = await getRequest(`/api/getListingsFromUser/${traderID}`);
     var currentTraderhistroy = JSON.parse(res);
-    // console.log(currentTraderhistroy);
 
     let itemImage = "";
     let histories = "";
@@ -55,16 +53,12 @@ async function getTraderhistory() {
 
 async function getTraderReview() {
     let res = await getRequest(`/api/getReviews?reviewee=${encodeURIComponent(traderID)}`);
-
     var currentTraderReviews = JSON.parse(res).data;
-    // console.log(currentTraderReviews)
-
     let reviews = "";
 
     // Store all user's reviews in variable reviews
     if (currentTraderReviews) {
         for (let j = 0; j < currentTraderReviews.length; j++) {
-
             let rating = '⭐️ '.repeat(currentTraderReviews[j].score);
 
             // get reviewer's name from database
@@ -73,19 +67,14 @@ async function getTraderReview() {
             let reviewerName = reviewerInfo.data.username;
 
             reviews += `<li class="each_review">
-            <a href="/traderinfo?trader_id=${currentTraderReviews[j].reviewerID}"> ${reviewerName} </a>
+            <a href="/traderinfo?trader_id=${currentTraderReviews[j].reviewerID}">${reviewerName}</a>
             <span class="stars">${rating}</span>
-            <div class="reviewText">
-                ${currentTraderReviews[j].reviewText}
-            </div></li>`;
+            <div class="reviewText">${currentTraderReviews[j].reviewText}</div></li>`;
         }
     }
-
     $('#reviews_section').html(reviews);
 }
 
-function setup() {
-    gettraderID();
-}
-
-$(document).ready(setup);
+$(document).ready(() => {
+  gettraderID();
+});

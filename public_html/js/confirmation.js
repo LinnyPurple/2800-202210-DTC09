@@ -43,8 +43,6 @@ function goReview() {
     window.location.href =`/review?postID=${traderPostID}&traderID=${traderID}`;
 }
 
-function setup() {
-    getTradeInfo();
-}
-
-$(document).ready(setup);
+$(document).ready(() => {
+  getTradeInfo();
+});

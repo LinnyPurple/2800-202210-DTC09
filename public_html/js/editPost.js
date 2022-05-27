@@ -10,7 +10,6 @@ function getPostID() {
     getListingData();
 }
 
-
 // get previous item information
 async function getListingData() {
     let res = await getRequest(`/api/getListingData?id=${encodeURIComponent(listingID)}`);
@@ -51,8 +50,6 @@ function showFileName(event) {
     infoArea.textContent = 'File name: ' + fileName;
 }
 
-function setup() {
-    getPostID();
-}
-
-$(document).ready(setup);
+$(document).ready(() => {
+  getPostID();
+});

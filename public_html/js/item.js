@@ -14,11 +14,9 @@ function getPostID() {
 async function checkTwoUsers() {
     let res = await getRequest("/api/getUserInfo");
     var currentUserInfo = JSON.parse(res);
-    console.log(currentUserInfo);
 
     // Check user is logged in
     if (currentUserInfo.loggedIn == true) {
-        console.log("User is logged in");
         var currentUserID = currentUserInfo.uid;
 
         if(currentUserID == traderID){
@@ -27,8 +25,7 @@ async function checkTwoUsers() {
         }
 
     } else {
-        console.log("No user is signed in");
-        // window.location.href = "/login";
+        window.location.href = "/login";
     }
 }
 
@@ -78,8 +75,6 @@ async function getListingData(listingID) {
     getTraderInfo();
 }
 
-function setup() {
-    getPostID();
-}
-
-$(document).ready(setup);
+$(document).ready(() => {
+  getPostID();
+});

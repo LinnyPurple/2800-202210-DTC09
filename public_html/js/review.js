@@ -14,7 +14,6 @@ function getTradeInfo() {
 // get user info
 async function getUserInfo() {
     let res = await getRequest("/api/getUserInfo");
-    console.log(res);
     var currentUserInfo = JSON.parse(res);
 
     // Check user is logged in
@@ -45,7 +44,6 @@ async function sendReview() {
             score: score,
             postID: postID
         });
-        console.log(res);
         alert('Thank you for your review!');
         window.location.href ='/';
     } else{
@@ -53,8 +51,6 @@ async function sendReview() {
     }
 }
 
-function setup() {
+$(document).ready(() => {
     getTradeInfo();
-}
-
-$(document).ready(setup);
+});
