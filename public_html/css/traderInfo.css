@@ -1,6 +1,5 @@
-/* main */
 main {
-    margin: 0px 20px;
+  height: 100vh;
 }
 
 /* user info section */
@@ -32,6 +31,7 @@ main {
     padding: 10px 20px;
     border: 3px solid rgba(95, 128, 127, 0.478);
     border-radius: 10px;
+    width: 80%;
     height: 170px;
     margin-bottom: 10px;
     overflow:auto;
@@ -83,6 +83,8 @@ main {
 
 #buttons button {
     background-color: rgba(95, 128, 127, 0.478);
+    border-radius: 10%;
+    color: #fff;
     margin-top: 7px;
     height: 40px;
 }

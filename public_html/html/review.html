@@ -3,30 +3,27 @@
 
 <head>
     <title>SwapOmen</title>
+    <!-- meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- css -->
+    <!-- fonts & icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-    <link rel="stylesheet" href="../css/review.css">
-    <link rel="stylesheet" href="../css/template.css">
-
     <!-- bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
+    <!-- custom CSS -->
+    <link rel="stylesheet" href="../css/review.css">
+    <link rel="stylesheet" href="../css/index.css" />
 </head>
 
 <body>
-    <!-- top nav -->
-    <header class="sticky-top"></header>
+    <header></header>
 
-    <!-- contents -->
-    <main>
+    <main class="jumbotron">
         <div id="title">
             <h2>How was the trade?</h2>
         </div>
@@ -45,32 +42,26 @@
             <form>
                 <div class="form-group">
                     <label for="comment">Feedback:</label>
-                    <textarea class="form-control input-lg" rows="7" id="comment"></textarea>
+                    <textarea class="form-control input-lg" rows="7" id="comment" style="resize: none;" maxlength="300" placeholder="Please enter your feedback! (Max 300 letters)"></textarea>
                 </div>
             </form>
         </div>
 
         <div id="buttons">
             <button id="back_btn" type="button" class="btn btn-secondary btn-lg" onclick="history.back()">Go Back</button>
-
             <button id="submit_btn" type="button" class="btn btn-secondary btn-lg" onclick="sendReview()">Submit</button>
         </div>
     </main>
 
+    <footer></footer>
 
-    <!-- botton nav -->
-    <footer class="fixed-bottom"></footer>
-
-
-    <!-- jquery -->
+    <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- SCRIPTS -->
     <script src="js/global.js"></script>
     <script src="../js/review.js"></script>
     <script src="/js/httpRequests.js"></script>
-
-
 </body>
 
 </html>

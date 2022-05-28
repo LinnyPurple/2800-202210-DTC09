@@ -3,115 +3,97 @@
 
 <head>
     <title>SwapOmen</title>
+    <!-- meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- css -->
+    <!-- fonts & icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-    <link rel="stylesheet" href="../css/profile.css">
-    <link rel="stylesheet" href="../css/template.css">
-
     <!-- bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
+    <!-- custom CSS -->
+    <link rel="stylesheet" href="../css/profile.css">
+    <link rel="stylesheet" href="../css/index.css">
 </head>
 
 <body onload="f()">
-    <!-- top nav -->
-    <header class="sticky-top"></header>
+    <header></header>
 
-    <!-- contents -->
     <main>
         <div id="userinfo">
             <div class="container">
-
                 <!-- User profile picture -->
                 <div id="profilePicture">
                     <i id="profilePic" class="fa-solid fa-circle-user"></i>
                 </div>
-
                 <!-- form for user to update their profile -->
-
                 <fieldset class="my-3" id="personalInfoFields" disabled>
-                    <!-- Name -->
                     <div class="form-group my-3">
-                        <label>Name</label>
-                        <input type="text" id="nameInput" class="form-control" placeholder="Enter your name">
+                        <label>Name <span style="color: red;">*</span></label>
+                        <input type="text" id="nameInput" class="form-control" placeholder="Enter your name" maxlength="40">
                     </div>
-
-                    <!-- E-mail -->
                     <div class="form-group my-3">
                         <label>E-mail</label>
                         <input type="text" id="emailInput" class="form-control" placeholder="Enter your E-mail">
                     </div>
-
-                    <!-- Password -->
                     <div class="form-group my-3">
                         <label>Password</label>
                         <input type="password" id="passwordInput" class="form-control search"
                             placeholder="New password" />
                     </div>
-
                     <form action="/upload" method="post" enctype="multipart/form-data">
                         <!-- place for uploading profile picture -->
                         <div class="form-group my-3">
                             <label>Upload picture:</label>
-                            <div style="display: flex;"> 
+                            <div style="display: flex;">
                                 <input type="file" name="image" id="uploadButton" accept="image/*" />
-                                <input type="submit" value="Submit">
+                                <input class="profile__submit" type="submit" value="Submit">
                             </div>
                         </div>
                     </form>
                 </fieldset>
-
+                <div class="divider"></div>
                 <!-- edit and save buttons -->
                 <div class="d-flex justify-content-end">
-                    <button type="button" class="btn btn-danger my-2" onclick="logoutUser()">Logout</button>
-                    <button type="button" id="edit_btn" class="btn btn-secondary m-2"
-                        onclick="editUserInfo()">Edit</button>
-                    <button type="button" id="save_btn" class="btn btn-primary m-2"
-                        onclick="saveUserInfo()">Save</button>
+                    <button type="button" id="edit_btn" class="btn btn-secondary" onclick="editUserInfo()">Edit</button>
+                    <button type="button" id="save_btn" class="btn btn-primary" onclick="saveUserInfo()">Save</button>
                 </div>
-
-
             </div>
-
         </div>
 
-        <div id="history_buttons">
-            <!-- todo: previous button? -->
-            <!-- <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My listings</button>
-
-            <button type="button" class="btn btn-secondary btn-block" onclick="document.location='#'">My reviews</button> -->
-
-            <!-- TODO: GET THIS WORKING!!! -->
+        <div class="account">
             <div id="admin-button">
                 <button type="button" class="btn btn-secondary btn-block" onclick="gotoAdminPage()">Go to admin page</button>
             </div>
-
             <div id="special-message"></div>
 
-            <div class="form-group my-3">
-                <label>Enter password to delete account</label>
-                <input type="text" id="passwordDelete" class="form-control" placeholder="Enter your password">
+            <div id="send-offer">
+              <label>Check trade offers:</label>
+              <button type="button" class="btn btn-info btn-block" onclick="goToTradeOffers()">Trade</button>
             </div>
-            <button type="button" class="btn btn-danger btn-block" onclick="deleteLoggedInUser()">DELETE ACCOUNT</button>
+
+            <div id="sent-offers">
+                <label>Check sent trade offers:</label>
+                <button type="button" class="btn btn-info btn-block" onclick="window.location.assign('/sentTradeOffers')">Sent</button>
+            </div>
+
+            <div class="account__delete form-group my-3">
+                <label>Enter password to delete account:</label>
+                <input type="text" id="passwordDelete" class="form-control" placeholder="Enter your password">
+                <div id="account-delete-buttons">
+                    <button type="button" class="btn btn-danger btn-block" onclick="confirmDeleteButtons()">Delete</button>
+                </div>
+            </div>
         </div>
-
-
     </main>
 
+    <footer></footer>
 
-    <!-- botton nav -->
-    <footer class="fixed-bottom"></footer>
-
-
-    <!-- jquery -->
+    <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
     <!-- SCRIPTS -->
@@ -121,13 +103,7 @@
     <script src="/js/webserverInterface.js"></script>
     <script>
         async function f() {
-            console.log("On account page");
-
-            // Gets the user info and shows it on the screen
             var currentUserInfo = JSON.parse(await getUserInfo());
-            // document.getElementById("current-username").innerHTML = `Hello,  ${currentUserInfo.name}`;
-            // document.getElementById("current-email").innerHTML = `Your email is '${currentUserInfo.email}'`;
-
             // Determine if user is an admin and show admin button if so
             if (currentUserInfo.accessLevel >= 3) document.getElementById("admin-button").style.display = "block";
             else document.getElementById("admin-button").style.display = "none";
@@ -138,24 +114,19 @@
             var specialMessage = "";
             var currentUserInfo = JSON.parse(await getUserInfo());
             var currentUsername = currentUserInfo.name.toLowerCase();
-            // console.log(currentUsername);
 
             if (currentUsername === "george") specialMessage = "You're the coolest man on Earth!";
             else if (currentUsername === "chris" || currentUsername === "christopher" || currentUsername === "cthompson" || currentUsername === "christhompson") {
                 specialMessage = "Thanks for joining us, Chris! Please give us full marks for COMP 2800.";
             } else if (currentUsername === "lachlan" || currentUsername === "yurtle") specialMessage = "bruh";
-            else if (currentUsername === "toco") specialMessage = "Cool message!";
+            else if (currentUsername === "toco") specialMessage = "Such a cool guy!";
+            else if (currentUsername === "soo") specialMessage = "Such a cool girl!";
+            else if (currentUsername === "monstera") specialMessage = "Hello, Chris! Glad to see you again!";
 
             if (currentUserInfo.accessLevel >= 3) var adminMessage = `<br>Oh look, you're an admin!`;
 
             document.getElementById("special-message").innerHTML = specialMessage;
             document.getElementById("admin-button").innerHTML += adminMessage;
-        }
-
-        async function logoutUser() {
-            await logout();
-            getProfileInfo();
-            window.location.assign('/login');
         }
 
         async function gotoAdminPage() {
@@ -166,17 +137,44 @@
             window.location.assign('/sendTradeOffer/1');
         }
 
+        async function confirmDeleteButtons() {
+            document.getElementById("account-delete-buttons").innerHTML =
+            `Delete account?
+            <button type="button" id="yes-delete" class="btn btn-primary btn-block" onclick="deleteLoggedInUser()">Yes</button>
+            <button type="button" id="no-delete" class="btn btn-primary btn-block" onclick="removeDeleteButtons()">No</button>`;
+        }
+
+        async function removeDeleteButtons() {
+            document.getElementById("account-delete-buttons").innerHTML =
+            `<button type="button" class="btn btn-danger btn-block" onclick="confirmDeleteButtons()">Delete</button>`;
+        }
+
         async function deleteLoggedInUser() {
             var currentUserInfo = JSON.parse(await getUserInfo());
+            var accountDelete;
             console.log(currentUserInfo.name, currentUserInfo.email, currentUserInfo.uid, currentUserInfo.ID);
             console.log(currentUserInfo);
             console.log(document.getElementById("passwordDelete").value);
-            await deleteAccountV2(currentUserInfo.name, currentUserInfo.email, document.getElementById("passwordDelete").value);
-            logout();
-            window.location.assign("/");
+            accountDelete = JSON.parse(await deleteAccountV2(currentUserInfo.name, currentUserInfo.email, document.getElementById("passwordDelete").value));
+            confirmDeletion(accountDelete);
+        }
+
+        function confirmDeletion(accountDelete) {
+            console.log(accountDelete);
+            if (accountDelete.msg === "Account Deleted.") {
+                logout();
+                window.location.assign("/");
+            } else {
+                document.getElementById("account-delete-buttons").innerHTML =
+                `<div id="delete-fail">Could not delete account.</div>
+                <button type="button" class="btn btn-danger btn-block" onclick="confirmDeleteButtons()">Delete</button>`;
+            }
+        }
+
+        async function goToTradeOffers() {
+            window.location.assign('/tradeOffers');
         }
     </script>
-
 </body>
 
 </html>

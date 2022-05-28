@@ -1,12 +1,10 @@
-/* main */
-main {
-    margin: 20px 40px;
-}
-
 label {
-    font-size: 13px;
+  font-size: 1.6rem;
 }
 
+a {
+  text-decoration: none;
+}
 
 /* upload picture */
 #upload {
@@ -18,6 +16,10 @@ label {
     top: 50%;
     left: 1rem;
     transform: translateY(-50%);
+}
+
+.input-group .btn {
+  z-index: 1;
 }
 
 .image-area {
@@ -36,8 +38,12 @@ label {
 }
 
 .image-area img {
-    z-index: 2;
     position: relative;
+}
+
+#invalid-file-type {
+    color: red;
+    font-size: 1.4rem;
 }
 
 #upload_btn {
@@ -45,12 +51,10 @@ label {
     height: 40px;
     padding: 5px;
     margin-left: 10px;
-
     color: #45807E;
     border: 1px solid #45807E;
     background-color: #D4F3EF;
 }
-
 
 /* buttons */
 #buttons {

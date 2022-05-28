@@ -1,16 +1,10 @@
-/* main */
-main {
-    margin: 30px 20px;
-}
-
 /* user info section */
 .container {
+    border: #005555 solid 2px;
     display: flex;
     flex-direction: column;
     align-content: space-around;
     padding: 20px;
-    border: 3px solid rgba(95, 128, 127, 0.478);
-    border-radius: 10px;
 }
 
 #profilePic {
@@ -34,20 +28,61 @@ main {
     border: none;
     color: #f1f1f1;
     background-color: #EE8572;
+    margin-left: 5%;
 }
 
+.profile__submit {
+  background-color: #f1f1f1;
+  border-radius: 5px;
+  padding: 2% 3%;
+}
 
-/* buttons */
-#history_buttons {
-    margin-top: 10px;
-    margin-bottom: 10px;
+#send-offer, #sent-offers {
+  display: flex;
+  margin: 10% 0 5%;
+}
+
+#send-offer button, #sent-offers button {
+  background-color: #45807E;
+  border: none;
+  color: #f1f1f1;
+  margin: 2% 0 0 auto;
+  width: 25%;
+}
+
+/* account section */
+.account {
+  margin: 7% auto 0;
+  width: 80%;
+}
+
+.account__delete {
+  display: flex;
+  flex-direction: column;
+}
+
+.account__delete button {
+  background-color: #D4F3EF;
+  border: #aaa 2px solid;
+  color: #aaa;
+  margin: 2% 0 0 auto;
+  width: 25%;
+}
+
+#account-delete-buttons {
     display: flex;
-    flex-direction: column;
-    align-content: space-around
+    flex-direction: row;
+    align-items: center;
 }
 
-#history_buttons button {
-    background-color: rgba(95, 128, 127, 0.478);
-    margin-top: 7px;
-    height: 40px;
+#yes-delete {
+    background-color: #e64225;
+    border: #e64225 2px solid;
+    color: #f1f1f1;
+    margin: 2% 0 0 auto;
+    width: 25%;
+}
+
+#delete-fail {
+    color: red;
 }

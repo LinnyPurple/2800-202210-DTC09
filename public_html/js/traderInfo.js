@@ -1,4 +1,4 @@
-var traderID = '';
+var traderID = "";
 
 // get trader ID from URL
 function gettraderID() {
@@ -6,49 +6,45 @@ function gettraderID() {
     let params = new URL(window.location.href);
     traderID = params.searchParams.get("trader_id");
 
-    getTraderInfo()
-    getTraderhistory()
-    getTraderReview()
+    getTraderInfo();
+    getTraderhistory();
+    getTraderReview();
 }
 
 async function getTraderInfo() {
     let res = await getRequest(`/api/getTraderInfo?id=${encodeURIComponent(traderID)}`);
     var currentTraderInfo = JSON.parse(res);
-    // console.log(currentTraderInfo);
 
     var traderName = currentTraderInfo.data.username;
     var traderEmail = currentTraderInfo.data.email;
     var currentImage = currentTraderInfo.data.image;
 
-    $('.traderName').html(traderName);
-    $('#traderEmail').html(traderEmail);
+    $(".traderName").html(traderName);
+    $("#traderEmail").html(traderEmail);
     if (currentImage) {
-        $("#profilePicture").html(`<img src="${currentImage}" class="rounded-circle border border-dark border-1 mx-auto d-block" style="width: 110px; height: 110px;">`)
+        $("#profilePicture").html(`<img src="${currentImage}" class="rounded-circle border border-dark border-1 mx-auto d-block" style="width: 110px; height: 110px;">`);
     }
 }
 
 async function getTraderhistory() {
     let res = await getRequest(`/api/getListingsFromUser/${traderID}`);
     var currentTraderhistroy = JSON.parse(res);
-    // console.log(currentTraderhistroy);
 
-    let itemImage = '';
-    let histories = '';
-
+    let itemImage = "";
+    let histories = "";
 
     // Store all user's history posting in variable histories
     if (currentTraderhistroy) {
-        for (i = 0; i < currentTraderhistroy.length; i++) {
+        for (let i = 0; i < currentTraderhistroy.length; i++) {
             if (currentTraderhistroy[i].images) {
                 itemImage = "../img/post/" + currentTraderhistroy[i].images;
             } else {
-                itemImage = "../etc/camera.svg"
+                itemImage = "../img/default/camera.svg";
             }
 
             histories += `<div class="each_history">
         <img class="fa-solid fa-circle-user" src="${itemImage}">
-        <a href="item?post_id=${currentTraderhistroy[i].ID}">${currentTraderhistroy[i].title}</a>
-        </div>`
+        <a href="item?post_id=${currentTraderhistroy[i].ID}">${currentTraderhistroy[i].title}</a></div>`;
         }
     }
 
@@ -57,17 +53,12 @@ async function getTraderhistory() {
 
 async function getTraderReview() {
     let res = await getRequest(`/api/getReviews?reviewee=${encodeURIComponent(traderID)}`);
-
     var currentTraderReviews = JSON.parse(res).data;
-    // console.log(currentTraderReviews)
-
-    let reviews = '';
-
+    let reviews = "";
 
     // Store all user's reviews in variable reviews
     if (currentTraderReviews) {
-        for (j = 0; j < currentTraderReviews.length; j++) {
-
+        for (let j = 0; j < currentTraderReviews.length; j++) {
             let rating = '⭐️ '.repeat(currentTraderReviews[j].score);
 
             // get reviewer's name from database
@@ -75,24 +66,15 @@ async function getTraderReview() {
             let reviewerInfo = JSON.parse(reviewer_res);
             let reviewerName = reviewerInfo.data.username;
 
-
             reviews += `<li class="each_review">
-            <a href="/traderinfo?trader_id=${currentTraderReviews[j].reviewerID}"> ${reviewerName} </a>
+            <a href="/traderinfo?trader_id=${currentTraderReviews[j].reviewerID}">${reviewerName}</a>
             <span class="stars">${rating}</span>
-            <div class="reviewText">
-                ${currentTraderReviews[j].reviewText}
-            </div>
-        </li>`
+            <div class="reviewText">${currentTraderReviews[j].reviewText}</div></li>`;
         }
     }
-
     $('#reviews_section').html(reviews);
-
 }
 
-
-function setup() {
-    gettraderID()
-}
-
-$(document).ready(setup)
+$(document).ready(() => {
+  gettraderID();
+});

@@ -26,30 +26,11 @@ span {
   width: 100%;
 }
 
-#invalid-login {
-    color: red;
-    font-size: 1.5rem;
+#invalid-login, #unfilled {
+  color: red;
+  font-size: 1.8rem;
 }
 
 #login-form {
   width: 70%;
 }
-
-
-/* label, input {
-    display: table-cell;
-}
-
-#login-form {
-    margin: 0 auto;
-    text-align: center;
-}
-
-#login-table {
-    display: table;
-    padding-top: 40%;
-}
-
-.t-row {
-    display: table-row;
-} */

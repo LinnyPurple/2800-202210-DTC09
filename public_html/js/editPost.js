@@ -7,14 +7,12 @@ function getPostID() {
     let params = new URL(window.location.href);
     listingID = params.searchParams.get("post_id");
 
-    getListingData()
+    getListingData();
 }
-
 
 // get previous item information
 async function getListingData() {
     let res = await getRequest(`/api/getListingData?id=${encodeURIComponent(listingID)}`);
-    // console.log(res);
     var currentItemInfo = JSON.parse(res);
 
     if(currentItemInfo.images) {
@@ -29,15 +27,13 @@ async function getListingData() {
     $('#description').val(currentItemInfo.description);
 }
 
-
 // upload picture
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            $('#imageResult')
-                .attr('src', e.target.result);
+            $('#imageResult').attr('src', e.target.result);
         };
         reader.readAsDataURL(input.files[0]);
     }
@@ -54,9 +50,6 @@ function showFileName(event) {
     infoArea.textContent = 'File name: ' + fileName;
 }
 
-
-function setup() {
-    getPostID()
-}
-
-$(document).ready(setup)
+$(document).ready(() => {
+  getPostID();
+});

@@ -16,23 +16,24 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
     <!-- custom CSS -->
-    <link rel="stylesheet" href="/css/index.css">
-    <link rel="stylesheet" href="/css/tradeOffer.css">
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/tradeOffer.css">
 </head>
 
 <body>
     <header></header>
 
     <div id="content">
-        <h2>Offers you received</h2>
+        <h2>Offers you've sent</h2>
         <div id="OfferContainer">
             <template id="OfferTemplate">
                 <div class="TradeOffer">
+                    <h3 class="statusM">Status: </h3>
                     <div class="offerDate"></div>
                     <a href="#" class="TradeOfferer">
-                        <h3>From: </h3>
-                        <img class="OffererPicture" />
-                        <h3 class="OffererName"></h3>
+                        <h3>To: </h3>
+                        <img class="OffereePicture" />
+                        <h3 class="OffereeName"></h3>
                     </a>
                     <div class="OfferDetails">
                         <a href="#" class="OfferItem">
@@ -46,10 +47,10 @@
                             <h4 class="ForName"></h4>
                         </a>
                     </div>
-                    <form class="TradeActions">
-                        <input type="button" value="Decline" class="btn btn-lg dButton" />
-                        <input type="button" value="Accept" class="btn btn-lg aButton" />
-                    </form>
+                    <div class="TradeActions">
+                        <button type="button" class="btn btn-secondary btn-lg chat_btn" onclick="" style="width: 100px;">Chat</button>
+                        <button type="button" class="btn btn-secondary btn-lg confirm_btn" onclick="confirmation(this)" style="width: 100px;" disabled>Confirm</button>
+                    </div>
                 </div>
             </template>
         </div>
@@ -63,7 +64,7 @@
     <script src="/js/global.js"></script>
     <script src="/js/webserverInterface.js"></script>
     <script src="/js/httpRequests.js"></script>
-    <script src="/js/tradeOffer.js"></script>
+    <script src="/js/sentTradeOffers.js"></script>
 </body>
 
 </html>

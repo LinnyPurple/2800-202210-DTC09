@@ -3,54 +3,62 @@
 
 <head>
     <title>SwapOmen</title>
+    <!-- meta -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- css -->
+    <!-- fonts & icons -->
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap"
-        rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Monoton&family=Questrial&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
 
-    <link rel="stylesheet" href="#">
-    <link rel="stylesheet" href="../css/template.css">
-    <link rel="stylesheet" href="../css/sendTradeOffer.css">
-
     <!-- bootstrap -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 
+    <!-- custom CSS -->
+    <link rel="stylesheet" href="../css/index.css">
+    <link rel="stylesheet" href="../css/sendTradeOffer.css">
 </head>
 
 <body>
-    <!-- HTML Layout -->
+    <header></header>
 
-    <!-- top nav -->
-    <header class="sticky-top"></header>
-
-    <!-- the body of the page -->
-    <div id="content">
+    <main>
+      <div id="content">
         <div id="TradeItem">
-            <p class="TraderName"></p>
-            <p class="TradeItemName"></p>
-            <img class="TradeItemImg" />
+          <h2>Item you chose</h2>
+          <div id="choseItem">
+            <img id="tradeItemImg" />
+            <div>
+              <h4>Title:</h4>
+              <div id="tradeItemName"></div>
+              <h4>User name"</h4>
+              <div id="traderName"></div>
+            </div>
+          </div>
         </div>
+
         <div id="potentialOffers">
-            <template id="offerTemplate">
-                <div class="offerCard">
-                    <p class="OfferName"></p>
-                    <img class="OfferImg" />
-                    <button class="SendOffer">Send Offer</button>
-                </div>
-            </template>
+          <h2>Trade off item</h2>
+          <template id="offerTemplate">
+            <div class="offerCard">
+              <img class="OfferImg" />
+              <div style="padding-top: 15%;">
+                <h4 class="OfferName" style="padding-bottom: 15%; text-align: center;"></h4>
+                <button class="SendOffer">Send Offer</button>
+              </div>
+
+            </div>
+          </template>
         </div>
-    </div>
+      </div>
+    </main>
 
-    <!-- botton nav -->
-    <footer class="fixed-bottom"></footer>
+    <footer></footer>
 
-    <!-- JavaScript functions -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!-- SCRIPTS -->
     <script src="/js/global.js"></script>
     <script src="/js/webserverInterface.js"></script>
     <script src="/js/httpRequests.js"></script>
@@ -59,8 +67,7 @@
         let userInfo;
         async function getPotentialOffers() {
             userInfo = JSON.parse(await getUserInfo());
-            listings = JSON.parse(await getRequest('/api/getListingsFromUser/' + userInfo.uid));
-            console.log(listings);
+            listings = JSON.parse(await getRequest('/api/getListingsFromUserNotDone/' + userInfo.uid));
 
             const parent = document.querySelector("#potentialOffers");
 
@@ -68,34 +75,62 @@
                 let template = document.querySelector("#offerTemplate").content.cloneNode(true);
                 let offer = listings[offerInd];
 
-                template.querySelector(".OfferName").innerHTML = "Your: " + offer.title;
-                let imgs = `/img/post/${offer.images}`;
-                template.querySelector(".OfferImg").setAttribute('src', imgs ? imgs : 'https://dummyimage.com/200x200/000/fff');
+                template.querySelector(".OfferName").innerHTML = offer.title;
+                let imgs = '';
+                if (!offer.images) {
+                    imgs = '/img/default/camera.svg';
+                } else {
+                    imgs = `/img/post/${offer.images}`;
+                }
+                template.querySelector(".OfferImg").setAttribute('src', imgs);
                 template.querySelector(".SendOffer").setAttribute('onclick', `sendOffer(${offer.ID})`);
-
                 parent.appendChild(template);
             }
         }
 
-        async function sendOffer(id) {
-            let offerListing = listings.find(e => e.ID == id);
-            let listing = JSON.parse(await getRequest(`/api/getListingData?id=${window.location.href.split('/')[window.location.href.split('/').length - 1]}`))
-            console.log(listing);
-            console.log(offerListing);
-            let res = await postRequest('/api/sendTradeOffer', {
-                offereeID: listing.posterID,
-                offererData: JSON.stringify({
-                    name: offerListing.title,
-                    img: (offerListing.images && JSON.parse(offerListing.images).length) > 0 ? JSON.parse(offerListing.images)[0] : 'https://dummyimage.com/200x200/000/fff'
-                }),
-                offereeData: JSON.stringify({
-                    name: listing.title,
-                    img: (listing.images && JSON.parse(listing.images).length) > 0 ? JSON.parse(listing.images)[0] : 'https://dummyimage.com/200x200/000/fff'
-                })
-            });
-            console.log(res);
+        let traderID = ''
+        let tradeItemID = ''
+
+        // get post ID and trader ID from URL
+        function getTradesInfo() {
+            // create a URL object
+            let params = new URL(window.location.href);
+            traderID = params.searchParams.get("trader");
+            tradeItemID = params.searchParams.get("post");
+
+            loadSelectedItem()
         }
 
+        async function loadSelectedItem() {
+            var traderInfo = JSON.parse(await getRequest(`/api/getTraderInfo?id=${encodeURIComponent(traderID)}`));
+            var tradeItemInfo = JSON.parse(await getRequest(
+                `/api/getListingData?id=${encodeURIComponent(tradeItemID)}`));
+
+            $('#traderName').html(traderInfo.data.username);
+            $('#tradeItemName').html(tradeItemInfo.title);
+            if (!tradeItemInfo.images) {
+                $('#tradeItemImg').attr("src", '/img/default/camera.svg')
+            } else {
+                $('#tradeItemImg').attr("src", '/img/post/' + tradeItemInfo.images)
+            };
+        }
+
+        async function sendOffer(id) {
+            let offerListing = listings.find(e => e.ID == id);
+            let confirmation = confirm(`Do you want to trade off ${offerListing.title}?`);
+
+            if (confirmation) {
+                let res = await postRequest('/api/sendTradeOffer', {
+                    offereeID: traderID,
+                    offereeListingID: tradeItemID,
+                    offererListingID: id
+                });
+                alert("Offer has been sent.")
+                window.location.href = "/";
+            }
+        }
+
+        getTradesInfo()
         getPotentialOffers();
     </script>
 </body>

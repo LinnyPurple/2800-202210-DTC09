@@ -1,15 +1,12 @@
 // check user logged in
 async function getUserInfo() {
     let res = await getRequest("/api/getUserInfo");
-    console.log(res);
     var currentUserInfo = JSON.parse(res);
 
     // Check user is logged in
     if (currentUserInfo.loggedIn == true) {
-        console.log("User is logged in")
-
+        console.log("User is logged in");
     } else {
-        console.log("No user is signed in");
         window.location.href = "/login";
     }
 }
@@ -20,8 +17,16 @@ function readURL(input) {
         var reader = new FileReader();
 
         reader.onload = function (e) {
-            $('#imageResult')
-                .attr('src', e.target.result);
+            var re = /data:(.*);/;
+            var image_type = re.exec(e.target.result)[1];
+            console.log(`Data type: ${image_type}`);
+            console.log(`Data is image/png or image/jpeg: ${image_type === "image/png" || image_type === "image/jpeg"}`);
+            if (image_type === "image/png" || image_type === "image/jpeg") $('#imageResult').attr('src', e.target.result);
+            else {
+                console.log("INVALID FILE TYPE");
+                $('#imageResult').attr('src', "/img/default/camera.svg");
+                $("#invalid-file-type").html("Invalid file type. Must upload an image.");
+            }
         };
         reader.readAsDataURL(input.files[0]);
     }
@@ -38,8 +43,6 @@ function showFileName(event) {
     infoArea.textContent = 'File name: ' + fileName;
 }
 
-function setup() {
-    getUserInfo()
-}
-
-$(document).ready(setup)
+$(document).ready(() => {
+    getUserInfo();
+});

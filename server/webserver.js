@@ -1,28 +1,28 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const fs = require("fs");
-const bcrypt = require('bcrypt');
-const bodyParser = require('body-parser')
+const bcrypt = require("bcrypt");
+const bodyParser = require("body-parser");
 const session = require("express-session");
-const res = require('express/lib/response');
-const childProcess = require('child_process');
-const net = require('net');
+const res = require("express/lib/response");
+const childProcess = require("child_process");
+const net = require("net");
 const {
     resolve
-} = require('path');
+} = require("path");
 // const { connection } = require('mongoose');
 const jsdom = require("jsdom");
 
 const path = require("path");
-const multer = require('multer')
+const multer = require("multer");
 
-const websocketServer = childProcess.fork('websocketServer.js');
+const websocketServer = childProcess.fork("websocketServer.js");
 
 var urlencodedParser = bodyParser.json({
     extended: false
-})
+});
 
-let sqlStuff = fs.readFileSync('sqlData.json');
+let sqlStuff = fs.readFileSync("sqlData.json");
 const SQL_DATA = JSON.parse(sqlStuff);
 
 app.use(session({
@@ -36,7 +36,7 @@ function reqLogin(req, res, next) {
     if (req.session.loggedIn) {
         next();
     } else {
-        res.redirect('/login');
+        res.redirect("/login");
         // res.send({
         //     "Result": "Failed",
         //     "msg": "Not logged in."
@@ -46,122 +46,126 @@ function reqLogin(req, res, next) {
 }
 
 try {
-    fs.readdirSync('../public_html/img');
+    fs.readdirSync("../public_html/img");
 } catch (err) {
-    fs.mkdirSync('../public_html/img');
+    fs.mkdirSync("../public_html/img");
 }
 
 app.use("/html", express.static("../public_html/html"));
 app.use("/css", express.static("../public_html/css"));
 app.use("/js", express.static("../public_html/js"));
 app.use("/img", express.static("../public_html/img"));
-app.use(express.static('../public_html'));
+app.use(express.static("../public_html"));
 
 //#region PUBLIC PAGES
 
 app.get('/', function (req, res) {
     let doc;
     if (!req.session.loggedIn) {
-        doc = fs.readFileSync('../public_html/html/index.html', "utf8");
+        doc = fs.readFileSync("../public_html/html/index.html", "utf8");
     } else {
-        doc = fs.readFileSync('../public_html/html/main.html', "utf8");
+        doc = fs.readFileSync("../public_html/html/main.html", "utf8");
     }
     res.send(doc);
 });
 
 app.get('/login', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/login.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/login.html", "utf8");
     res.send(doc);
 });
 
 app.get('/signup', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/signup.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/signup.html", "utf8");
     res.send(doc);
 });
 
 app.get('/account', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/account.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/account.html", "utf8");
     res.send(doc);
 });
 
 app.get('/admin', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/admin.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/admin.html", "utf8");
     res.send(doc);
 });
 
 app.get('/websocket', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/websocket.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/websocket.html", "utf8");
     res.send(doc);
 });
 
-app.get('/review', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/review.html', "utf8");
+app.get('/review', reqLogin, function (req, res) {
+    let doc = fs.readFileSync("../public_html/html/review.html", "utf8");
     res.send(doc);
 });
 
-app.get('/profile', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/profile.html', "utf8");
+app.get('/profile', reqLogin, function (req, res) {
+    let doc = fs.readFileSync("../public_html/html/profile.html", "utf8");
     res.send(doc);
 });
 
-app.get('/posting', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/posting.html', "utf8");
+app.get('/posting', reqLogin, function (req, res) {
+    let doc = fs.readFileSync("../public_html/html/posting.html", "utf8");
     res.send(doc);
 });
 
-app.get('/editpost', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/editPost.html', "utf8");
+app.get('/editpost', reqLogin, function (req, res) {
+    let doc = fs.readFileSync("../public_html/html/editPost.html", "utf8");
     res.send(doc);
 });
 
 app.get('/tradeOffers', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/tradeOffer.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/tradeOffer.html", "utf8");
     res.send(doc);
 });
 
-app.get('/confirmation', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/confirmation.html', "utf8");
+app.get('/sentTradeOffers', reqLogin, function (req, res) {
+    let doc = fs.readFileSync("../public_html/html/sentOffers.html", "utf8");
     res.send(doc);
 });
 
-app.get('/listings', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/listings.html', "utf8");
+app.get('/confirmation', reqLogin, function (req, res) {
+    let doc = fs.readFileSync("../public_html/html/confirmation.html", "utf8");
     res.send(doc);
 });
 
-app.get('/main', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/main.html', "utf8");
+app.get('/listings', reqLogin, function (req, res) {
+    let doc = fs.readFileSync("../public_html/html/listings.html", "utf8");
     res.send(doc);
 });
 
-app.get('/sendTradeOffer/:listingID', reqLogin, async (req, res) => {
-    let doc = new jsdom.JSDOM(fs.readFileSync('../public_html/html/sendTradeOffer.html', "utf8"));
-    const listing = (await getListingData(req.params.listingID));
-    doc.window.document.querySelector('.TradeItemName').textContent = listing.title;
+app.get('/main', reqLogin, function (req, res) {
+    let doc = fs.readFileSync("../public_html/html/main.html", "utf8");
+    res.send(doc);
+});
 
-    let imgs = listing.images;
-
-    // doc.window.document.querySelector('.TradeItemImg').src = imgs ? imgs : 'https://dummyimage.com/200x200/000/fff';
-    res.send(doc.serialize());
+app.get('/sendTradeOffer', reqLogin, async (req, res) => {
+    let doc = fs.readFileSync("../public_html/html/sendTradeOffer.html", "utf8");
+    res.send(doc);
 });
 
 app.get('/chat/:uid', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/chat.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/chat.html", "utf8");
     res.send(doc);
 });
 
 app.get('/chat/', reqLogin, function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/viewChats.html', "utf8");
+    let doc = fs.readFileSync("../public_html/html/viewChats.html", "utf8");
     res.send(doc);
 });
 
-app.get('/item', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/item.html', "utf8");
+app.get('/item', reqLogin, function (req, res) {
+    let doc = fs.readFileSync("../public_html/html/item.html", "utf8");
     res.send(doc);
 });
 
-app.get('/traderinfo', function (req, res) {
-    let doc = fs.readFileSync('../public_html/html/traderInfo.html', "utf8");
+app.get('/traderinfo', reqLogin, function (req, res) {
+    let doc = fs.readFileSync("../public_html/html/traderInfo.html", "utf8");
+    res.send(doc);
+});
+
+app.get('/error', function (req, res) {
+    let doc = fs.readFileSync("../public_html/html/error.html", "utf8");
     res.send(doc);
 });
 
@@ -178,7 +182,7 @@ app.post('/api/createAccount', urlencodedParser, function (req, res) {
     const email = req.body.email;
     const accessLevel = 1;
 
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
@@ -221,7 +225,7 @@ app.post('/api/deleteAccount', urlencodedParser, function (req, res) {
     const username = req.body.username;
     const email = req.body.email;
 
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
@@ -250,11 +254,11 @@ app.post('/api/editAccount', urlencodedParser, function (req, res) {
         const newEmail = req.body.newEmail;
         const newAccessLevel = req.session.accessLevel;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let query = "UPDATE user SET username = ?, email = ?, accessLevel = ? WHERE ID = ?;"
+        let query = "UPDATE user SET username = ?, email = ?, accessLevel = ? WHERE ID = ?;";
         connection.query(query, [newUsername ? newUsername : req.session.username, newEmail ? newEmail : req.session.email, newAccessLevel ? newAccessLevel : req.session.accessLevel, req.session.uid], (err, result) => {
             if (err) {
                 console.log(err);
@@ -264,7 +268,7 @@ app.post('/api/editAccount', urlencodedParser, function (req, res) {
             req.session.email = newAccessLevel ? newAccessLevel : req.session.accessLevel;
             res.status(200).send({
                 "result": "Account info has been updated."
-            })
+            });
         });
     }
 });
@@ -278,7 +282,7 @@ app.post('/api/resetPassword', urlencodedParser, (req, res) => {
         let userRecords = "UPDATE user SET passwordHash = ?, passwordSalt = ? WHERE ID = ?;";
         let recordValues = [hash, salt, userID];
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
@@ -293,46 +297,58 @@ app.post('/api/resetPassword', urlencodedParser, (req, res) => {
 
 //upload profile photo
 try {
-    fs.readdirSync('../public_html/img/profiles'); // check folder
+    fs.readdirSync("../public_html/img/profiles"); // check folder
 } catch (err) {
-    fs.mkdirSync('../public_html/img/profiles'); // Create folder
+    fs.mkdirSync("../public_html/img/profiles"); // Create folder
 }
 
 var storage = multer.diskStorage({
     destination: (req, file, callBack) => {
-        callBack(null, '../public_html/img/profiles/') // directory name where save the file
+        callBack(null, "../public_html/img/profiles/"); // directory name where save the file
     },
     filename: (req, file, callBack) => {
-        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
-})
+});
 
 var upload = multer({
-    storage: storage
-});
+    storage: storage,
+    limits: {
+        fileSize: 10000000000
+    }
+}).single('image');
 
 
 //route for upload data
-app.post("/upload", upload.single('image'), (req, res) => {
-    const mysql = require("mysql2")
+app.post("/upload", (req, res) => {
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
-    if (req.file) {
-        console.log(req.file.filename)
-        var imgsrc = '/img/profiles/' + req.file.filename
-        let query = `UPDATE user SET image = ? WHERE ID = ${req.session.uid};`
+    upload(req, res, function (err) {
+        if (err instanceof multer.MulterError) {
+            // A Multer error occurred when uploading.
+            res.write("<script>alert('Maximum file size is 500KB.')</script>");
+            res.write("<script>window.location.href = '/profile'</script>");
+            // res.status(400).json({error: "Allowed file size is 500KB."});
+        } else {
+            if (req.file) {
+                console.log(req.file.filename);
+                var imgsrc = '/img/profiles/' + req.file.filename;
+                let query = `UPDATE user SET image = ? WHERE ID = ${req.session.uid};`;
 
-        connection.query(query,
-            [imgsrc ? imgsrc : req.session.image], (err, result) => {
-                if (err) {
-                    console.log(err);
-                }
-                req.session.image = imgsrc ? imgsrc : req.session.image;
+                connection.query(query,
+                    [imgsrc ? imgsrc : req.session.image], (err, result) => {
+                        if (err) {
+                            console.log(err);
+                        }
+                        req.session.image = imgsrc ? imgsrc : req.session.image;
 
-                res.redirect("profile")
-            });
-    }
+                        res.redirect("profile");
+                    });
+            }
+        }
+    });
 });
 
 
@@ -343,11 +359,11 @@ app.post('/api/editAccount2', urlencodedParser, function (req, res) {
         // const newPassword = req.body.newPassword;
         // const newAccessLevel = req.body.newAccessLevel;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let query = `UPDATE user SET username = ? WHERE ID = ${req.session.uid};`
+        let query = `UPDATE user SET username = ? WHERE ID = ${req.session.uid};`;
 
         connection.query(query,
             [newUsername ? newUsername : req.session.username, ], (err, result) => {
@@ -358,7 +374,7 @@ app.post('/api/editAccount2', urlencodedParser, function (req, res) {
 
                 res.status(200).send({
                     "result": "Account info has been updated."
-                })
+                });
             });
     }
 });
@@ -371,10 +387,10 @@ app.post('/api/admin/promoteAccount', urlencodedParser, function (req, res) {
         const toPromote = req.body.toPromote;
         const newAccessLevel = req.body.newAccessLevel;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
-        let query = "UPDATE user SET accessLevel = ? WHERE ID = ?;"
+        let query = "UPDATE user SET accessLevel = ? WHERE ID = ?;";
         let values = [newAccessLevel, toPromote];
 
         connection.query(query, values, (err, result) => {
@@ -390,13 +406,13 @@ app.post('/api/admin/promoteAccount', urlencodedParser, function (req, res) {
         res.status(400).send({
             "Result": "Failed",
             "msg": "User doesn't have the required access level."
-        })
+        });
     }
 });
 
 app.get('/api/admin/getUserList', (req, res) => {
     if (req.session.accessLevel >= 3) {
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
@@ -411,7 +427,7 @@ app.get('/api/admin/getUserList', (req, res) => {
         res.status(400).send({
             "Result": "Failed",
             "data": "User doesn't have the required access level."
-        })
+        });
     }
 });
 
@@ -437,13 +453,13 @@ app.post('/api/login', urlencodedParser, function (req, res) {
             });
             res.status(200).send({
                 "result": "Successfully logged in."
-            })
+            });
         } else {
             res.status(400).send({
                 "result": "Failed to log in."
-            })
+            });
         }
-    })
+    });
 });
 
 app.get("/api/logout", function (req, res) {
@@ -453,12 +469,12 @@ app.get("/api/logout", function (req, res) {
                 res.status(400).send({
                     "result": "Failed",
                     "msg": "Could not log out."
-                })
+                });
             } else {
                 res.status(200).send({
                     "result": "Succeeded",
                     "msg": "Successfully logged out."
-                })
+                });
             }
         });
     }
@@ -482,7 +498,7 @@ app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
             });
         }
     } else {
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
@@ -500,7 +516,7 @@ app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
                 res.status(400).send({
                     'result': 'Failed',
                     'msg': 'User not found.'
-                })
+                });
             }
         });
     }
@@ -512,95 +528,158 @@ app.get('/api/getUserInfo', urlencodedParser, function (req, res) {
 
 //upload posting image
 try {
-    fs.readdirSync('../public_html/img/post'); // Check folder
+    fs.readdirSync("../public_html/img/post"); // Check folder
 } catch (err) {
-    fs.mkdirSync('../public_html/img/post'); // Create folder
+    fs.mkdirSync("../public_html/img/post"); // Create folder
 }
 
 var storagePost = multer.diskStorage({
     destination: (req, file, callBack) => {
-        callBack(null, '../public_html/img/post/') // directory name where save the file
+        callBack(null, "../public_html/img/post/"); // directory name where save the file
     },
     filename: (req, file, callBack) => {
-        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname))
+        callBack(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
-})
-
-var uploadPost = multer({
-    storage: storagePost
 });
 
+var uploadPost = multer({
+    storage: storagePost,
+    limits: {
+        fileSize: 10000000000
+    }
+}).single('image');
+
+let isrun = false;
 
 // Upload posting
-app.post("/uploadposting", uploadPost.single('image'), (req, res) => {
-    const title = req.body.title;
-    const myItem = req.body.myItem;
-    const tradingItem = req.body.tradingItem;
-    const condition = req.body.condition;
-    const tradingMethod = req.body.tradingMethod;
-    const description = req.body.description;
-    let images = null;
-    if (req.file) {
-        images = req.file.filename;
-    }
-
-    const mysql = require("mysql2")
+app.post("/uploadposting", (req, res) => {
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
-    let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description, images) values ?";
-    let values = [
-        [req.session.uid, title, myItem, tradingItem, condition, tradingMethod, description, images]
-    ]
+    if (!isrun) {
+        isrun = true;
 
-    connection.query(query, [values], (err, result) => {
-        if (result) {
-            console.log(result.insertId)
-            res.redirect('/item?post_id=' + result.insertId);
-        } else {
-            console.log(err)
-        }
-    })
+        uploadPost(req, res, function (err) {
+            // send error message when file size is over 500KB
+            if (err instanceof multer.MulterError) {
+                // A Multer error occurred when uploading.
+                res.write("<script>alert('Maximum file size is 500KB.')</script>");
+                res.write("<script>history.go(-1)</script>");
+            } else {
+                // store all user input
+                const title = req.body.title;
+                const myItem = req.body.myItem;
+                const tradingItem = req.body.tradingItem;
+                const condition = req.body.condition;
+                const tradingMethod = req.body.tradingMethod;
+                const description = req.body.description;
+                let images = null;
+                if (req.file) {
+                    images = req.file.filename;
+                }
+
+                var re = /(.*)\.(.*)/;
+                var image_type = re.exec(images);
+                if (!image_type) image_type = "null";
+                else image_type = image_type[2];
+
+                // Check all mandatory input is filled in
+                if (title == '' || myItem == 'My Item' || tradingItem == 'Looking For' || condition == 'Select Condition' || tradingMethod == 'Select Method') {
+                    res.write("<script>alert('Please fill out all the required fields (with red asterisk).')</script>");
+                    res.write("<script>history.go(-1)</script>");
+                } else if (image_type !== "png" && image_type !== "jpg" && image_type !== "jpeg") {
+                    res.write("<script>alert('Invalid file given. Please give an image.')</script>");
+                    res.write("<script>history.go(-1)</script>");
+                } else {
+                    let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description, images) values ?";
+                    let values = [
+                        [req.session.uid, title, myItem, tradingItem, condition, tradingMethod, description, images]
+                    ];
+
+                    connection.query(query, [values], (err, result) => {
+                        if (result) {
+                            console.log(result.insertId);
+                            res.redirect('/item?post_id=' + result.insertId);
+                        } else {
+                            console.log(err);
+                        }
+                    });
+                }
+            }
+
+            isrun = false;
+            
+        });
+    }
+
 
 });
 
 // Edit posting
-app.post("/editposting", uploadPost.single('image'), (req, res) => {
-    const postID = req.body.postID;
-    const title = req.body.title;
-    const myItem = req.body.myItem;
-    const tradingItem = req.body.tradingItem;
-    const condition = req.body.condition;
-    const tradingMethod = req.body.tradingMethod;
-    const description = req.body.description;
-
-    const mysql = require("mysql2")
+app.post("/editposting", (req, res) => {
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
-    if (req.file) {
-        const images = req.file.filename;
-        let query = "UPDATE listing SET title = ?, myItemCategory = ?, tradingItemCategory = ?, itemCondition = ?, tradingMethod =? , description = ?, images = ? WHERE ID = ?";
 
-        connection.query(query, [title, myItem, tradingItem, condition, tradingMethod, description, images, postID], (err, result) => {
-            if (result) {
-                res.redirect('/item?post_id=' + postID);
+    uploadPost(req, res, function (err) {
+        // send error message when file size is over 500KB
+        if (err instanceof multer.MulterError) {
+            // A Multer error occurred when uploading.
+            res.write("<script>alert('Maximum file size is 500KB.')</script>");
+            res.write("<script>history.go(-1)</script>");
+            // res.status(400).json({error: "Allowed file size is 500KB."});
+        } else {
+            // store all user input
+            const postID = req.body.postID;
+            const title = req.body.title;
+            const myItem = req.body.myItem;
+            const tradingItem = req.body.tradingItem;
+            const condition = req.body.condition;
+            const tradingMethod = req.body.tradingMethod;
+            const description = req.body.description;
+
+            var re = /(.*)\.(.*)/;
+            var image_type = re.exec(req.file.filename);
+            if (!image_type) image_type = "null";
+            else image_type = image_type[2];
+
+            // Check all mandatory input is filled in
+            if (title == '' || myItem == 'My Item' || tradingItem == 'Looking For' || condition == 'Select Condition' || tradingMethod == 'Select Method') {
+                res.write("<script>alert('Please fill out all the reqired fields (with red asterisk).')</script>");
+                res.write("<script>history.go(-1)</script>");
+            } else if (image_type !== "png" && image_type !== "jpg" && image_type !== "jpeg") {
+                res.write("<script>alert('Invalid file given. Please give an image.')</script>");
+                res.write("<script>history.go(-1)</script>");
             } else {
-                console.log(err)
-            }
-        })
-    } else {
-        let query = "UPDATE listing SET title = ?, myItemCategory = ?, tradingItemCategory = ?, itemCondition = ?, tradingMethod =? , description =? WHERE ID = ?";
+                // Update database
+                if (req.file) {
+                    const images = req.file.filename;
+                    let query = "UPDATE listing SET title = ?, myItemCategory = ?, tradingItemCategory = ?, itemCondition = ?, tradingMethod =? , description = ?, images = ? WHERE ID = ?";
 
-        connection.query(query, [title, myItem, tradingItem, condition, tradingMethod, description, postID], (err, result) => {
-            if (result) {
-                res.redirect('/item?post_id=' + postID);
-            } else {
-                console.log(err)
-            }
-        })
-    }
+                    connection.query(query, [title, myItem, tradingItem, condition, tradingMethod, description, images, postID], (err, result) => {
+                        if (result) {
+                            res.redirect('/item?post_id=' + postID);
+                        } else {
+                            console.log(err);
+                        }
+                    });
+                } else {
+                    // Update except image
+                    let query = "UPDATE listing SET title = ?, myItemCategory = ?, tradingItemCategory = ?, itemCondition = ?, tradingMethod =? , description =? WHERE ID = ?";
 
+                    connection.query(query, [title, myItem, tradingItem, condition, tradingMethod, description, postID], (err, result) => {
+                        if (result) {
+                            res.redirect('/item?post_id=' + postID);
+                        } else {
+                            console.log(err);
+                        }
+                    });
+                }
+            }
+        }
+    });
 });
 
 app.post('/api/postListing', urlencodedParser, function (req, res) {
@@ -615,14 +694,14 @@ app.post('/api/postListing', urlencodedParser, function (req, res) {
         const description = req.body.description;
         const images = req.body.images;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
         let query = "INSERT INTO listing (posterID, title, myItemCategory, tradingItemCategory, itemCondition, tradingMethod, description) values ?";
         let values = [
             [req.session.uid, title, myItem, tradingItem, condition, tradingMethod, description]
-        ]
+        ];
 
         connection.query(query, [values], (result, err) => {
             console.log(err);
@@ -631,14 +710,14 @@ app.post('/api/postListing', urlencodedParser, function (req, res) {
                 "msg": "Successfully posted listing.",
                 "id": err.insertId
             });
-        })
+        });
 
     } else {
         res.status(400).send({
             "Result": "Failed",
             "msg": "Not logged in",
             "id": null
-        })
+        });
     }
 });
 
@@ -648,7 +727,7 @@ app.post('/api/archiveListing', urlencodedParser, function (req, res) {
     if (req.session.loggedIn) {
         const id = req.body.postID;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
@@ -669,19 +748,19 @@ app.post('/api/archiveListing', urlencodedParser, function (req, res) {
                         "Result": "Success",
                         "msg": "Successfully archived listing."
                     });
-                })
+                });
             }
         });
     } else {
         res.status(400).send({
             "Result": "Failed",
             "msg": "Not logged in"
-        })
+        });
     }
 });
 
 app.get('/api/searchListings', (req, res) => {
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
@@ -704,12 +783,24 @@ app.get('/api/searchListings', (req, res) => {
 });
 
 app.get('/api/getListingsFromUser/:uid', (req, res) => {
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
     let uid = req.params.uid;
 
     let query = "SELECT * FROM listing WHERE posterID = ?";
+    connection.query(query, uid, (err, result) => {
+        res.send(result);
+    });
+});
+
+app.get('/api/getListingsFromUserNotDone/:uid', (req, res) => {
+    const mysql = require("mysql2");
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+    let uid = req.params.uid;
+
+    let query = "SELECT * FROM listing WHERE posterID = ? AND archived = 0";
     connection.query(query, uid, (err, result) => {
         res.send(result);
     });
@@ -724,7 +815,7 @@ app.get("/api/getListingData", async function (req, res) {
 
 function getListingData(auctionID) {
     return new Promise(resolve => {
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
@@ -742,7 +833,7 @@ function getListingData(auctionID) {
                 });
             }
         });
-    })
+    });
 }
 
 app.get('/api/getTraderInfo', urlencodedParser, (req, res) => {
@@ -760,7 +851,7 @@ app.get('/api/getTraderInfo', urlencodedParser, (req, res) => {
             res.send({
                 "result": "Success",
                 "data": result[0]
-            })
+            });
         } else {
             res.status(400).send({
                 "result": "Failed",
@@ -781,16 +872,16 @@ app.post('/api/postReview', urlencodedParser, function (req, res) {
         const reviewee = req.body.reviewee;
         const reviewText = req.body.reviewText;
         const score = req.body.score;
-        const itemID = req.body.itemID;
+        const postID = req.body.postID;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        console.log(reviewText, reviewee, reviewer, score, itemID)
-        let query = "INSERT INTO review (reviewerID, revieweeID, reviewText, score, itemID) values ?"
+        console.log(reviewText, reviewee, reviewer, score, postID);
+        let query = "INSERT INTO review (reviewerID, revieweeID, reviewText, score, postID) values ?";
         let recordValues = [
-            [reviewer, reviewee, reviewText, score, itemID]
+            [reviewer, reviewee, reviewText, score, postID]
         ];
 
         connection.query(query, [recordValues]);
@@ -802,7 +893,7 @@ app.post('/api/postReview', urlencodedParser, function (req, res) {
         res.send({
             "result": "Failed",
             "msg": "Not logged in."
-        })
+        });
     }
 });
 
@@ -812,7 +903,7 @@ app.post('/api/deleteReview', urlencodedParser, (req, res) => {
         const reviewer = req.session.uid;
         const reviewee = req.body.reviewee;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
@@ -823,13 +914,13 @@ app.post('/api/deleteReview', urlencodedParser, (req, res) => {
             res.send({
                 "result": "Success",
                 "msg": "Review deleted."
-            })
+            });
         });
     } else {
         res.send({
             "result": "Failed",
             "msg": "Not logged in."
-        })
+        });
     }
 });
 
@@ -852,13 +943,13 @@ app.post('/api/editReview', urlencodedParser, (req, res) => {
             res.send({
                 "result": "Success",
                 "msg": "Review updated."
-            })
+            });
         });
     } else {
         res.status(400).send({
             "result": "Failed",
             "msg": "Not logged in."
-        })
+        });
     }
 });
 
@@ -878,7 +969,7 @@ app.get('/api/getReview', urlencodedParser, (req, res) => {
             res.send({
                 "result": "Success",
                 "data": result[0]
-            })
+            });
         } else {
             res.status(400).send({
                 "result": "Failed",
@@ -903,7 +994,7 @@ app.get('/api/getReviews', (req, res) => {
             res.send({
                 "result": "Success",
                 "data": result
-            })
+            });
         } else {
             res.status(400).send({
                 "result": "Failed",
@@ -917,9 +1008,9 @@ app.get('/api/getReviews', (req, res) => {
 
 //#region WEBSOCKET
 
-let ids = {}
+let ids = {};
 
-let responses = {}
+let responses = {};
 
 websocketServer.on('message', (msg) => {
     responses[msg.id] = msg.data;
@@ -950,7 +1041,7 @@ app.get('/getMessageLogs/:target', reqLogin, (req, res) => {
         const connection = mysql.createConnection(SQL_DATA);
 
         let query = `SELECT * FROM message WHERE ((senderID = ${req.session.uid} AND recieverID = ${parseInt(req.params.target)}) OR (senderID = ${parseInt(req.params.target)} AND recieverID = ${req.session.uid}))`;
-        let values = [req.session.uid, parseInt(req.params.target), parseInt(req.params.target), req.session.uid]
+        let values = [req.session.uid, parseInt(req.params.target), parseInt(req.params.target), req.session.uid];
 
         connection.query(query, values, (err, result) => {
             res.send(result);
@@ -958,7 +1049,7 @@ app.get('/getMessageLogs/:target', reqLogin, (req, res) => {
     } else {
         res.send({
             'result': 'Error, not logged in.'
-        })
+        });
     }
 });
 
@@ -968,11 +1059,11 @@ app.get('/openChats', reqLogin, (req, res) => {
     const connection = mysql.createConnection(SQL_DATA);
 
     let query = `SELECT senderID, recieverID FROM message WHERE senderID = ${uid} OR recieverID = ${uid}`;
-    let values = [req.session.uid, req.session.uid]
+    let values = [req.session.uid, req.session.uid];
     let set = new Set();
 
     connection.query(query, values, (err, result) => {
-        for (msgI in result) {
+        for (let msgI in result) {
             let msg = result[msgI];
             set.add(msg.senderID);
             set.add(msg.recieverID);
@@ -992,16 +1083,16 @@ app.post('/api/sendTradeOffer', urlencodedParser, (req, res) => {
     if (req.session.loggedIn) {
         const offererID = req.session.uid;
         const offereeID = req.body.offereeID;
-        const offererData = req.body.offererData;
-        const offereeData = req.body.offereeData;
+        const offererListingID = req.body.offererListingID;
+        const offereeListingID = req.body.offereeListingID;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let query = "INSERT INTO offers (offererID, offereeID, offererData, offereeData) values ?"
+        let query = "INSERT INTO offers (offererID, offereeID, offererListingID, offereeListingID) values ?";
         let recordValues = [
-            [offererID, offereeID, offererData, offereeData]
+            [offererID, offereeID, offererListingID, offereeListingID]
         ];
 
         connection.query(query, [recordValues]);
@@ -1013,7 +1104,7 @@ app.post('/api/sendTradeOffer', urlencodedParser, (req, res) => {
         res.send({
             "result": "Failed",
             "msg": "Not logged in."
-        })
+        });
     }
 });
 
@@ -1023,7 +1114,7 @@ app.post('/api/replyTradeOffer', urlencodedParser, reqLogin, (req, res) => {
     const offerID = req.body.offerID;
     console.log(accepted);
 
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
 
@@ -1042,11 +1133,11 @@ app.get('/api/getTradeOffersToMe', (req, res) => {
     if (req.session.loggedIn) {
         const uid = req.session.uid;
 
-        const mysql = require("mysql2")
+        const mysql = require("mysql2");
         const connection = mysql.createConnection(SQL_DATA);
         connection.connect();
 
-        let query = "SELECT * FROM offers WHERE offereeID = ?"
+        let query = "SELECT * FROM offers WHERE offereeID = ? AND status = -1";
         let recordValues = uid;
 
         connection.query(query, [recordValues], (err, result) => {
@@ -1061,8 +1152,61 @@ app.get('/api/getTradeOffersToMe', (req, res) => {
             "result": "Failed",
             "msg": "Not logged in.",
             "data": {}
-        })
+        });
     }
+});
+
+app.get('/api/getTradeOffersFromMe', (req, res) => {
+    res.setHeader("Content-Type", "application/json");
+    if (req.session.loggedIn) {
+        const uid = req.session.uid;
+
+        const mysql = require("mysql2");
+        const connection = mysql.createConnection(SQL_DATA);
+        connection.connect();
+
+        let query = "SELECT * FROM offers WHERE offererID = ?";
+        let recordValues = uid;
+
+        connection.query(query, [recordValues], (err, result) => {
+            res.send({
+                "result": "Success",
+                "msg": "Retrieved offers.",
+                "data": result
+            });
+        });
+    } else {
+        res.send({
+            "result": "Failed",
+            "msg": "Not logged in.",
+            "data": {}
+        });
+    }
+});
+
+app.post('/api/getOfferByid', urlencodedParser, (req, res) => {
+    const offerID = req.body.offerID;
+
+    const mysql = require("mysql2");
+    const connection = mysql.createConnection(SQL_DATA);
+    connection.connect();
+
+    let query = 'SELECT * FROM offers WHERE ID = ?';
+    let values = [offerID];
+
+    connection.query(query, values, (err, result) => {
+        if (result[0] != null) {
+            res.send({
+                "result": "Success",
+                "data": result[0]
+            });
+        } else {
+            res.status(400).send({
+                "result": "Failed",
+                "data": null
+            });
+        }
+    });
 });
 
 //#endregion
@@ -1070,8 +1214,9 @@ app.get('/api/getTradeOffersToMe', (req, res) => {
 //#endregion
 
 app.use(function (req, res, next) {
-    res.status(404).send("404");
-})
+    let doc = fs.readFileSync("../public_html/html/error.html", "utf8");
+    res.status(404).send(doc);
+});
 
 async function hashPassword(plaintextPassword, callback) {
     const saltRounds = 10;
@@ -1090,7 +1235,7 @@ async function hashPassword(plaintextPassword, callback) {
 }
 
 async function authenticate(email, password, callback) {
-    const mysql = require("mysql2")
+    const mysql = require("mysql2");
     const connection = mysql.createConnection(SQL_DATA);
     connection.connect();
     let query = "SELECT * FROM user WHERE email = '" + email + "' OR username = '" + email + "'";
@@ -1164,21 +1309,21 @@ async function initializeDB() {
         );
 
         CREATE TABLE IF NOT EXISTS review (
-            itemID int NOT NULL AUTO_INCREMENT,
+            postID int NOT NULL,
             reviewerID int NOT NULL,
             revieweeID int NOT NULL,
             reviewText TEXT NOT NULL,
             score int NOT NULL,
             timestamp DATETIME default CURRENT_TIMESTAMP NOT NULL,
-            PRIMARY KEY (itemID)
+            PRIMARY KEY (postID)
         );
 
         CREATE TABLE IF NOT EXISTS offers (
             ID int NOT NULL AUTO_INCREMENT,
             offererID int NOT NULL,
             offereeID int NOT NULL,
-            offererData TEXT NOT NULL,
-            offereeData TEXT NOT NULL,
+            offererListingID int NOT NULL,
+            offereeListingID int NOT NULL,
             status int default -1,
             timestamp DATETIME default CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY (ID)

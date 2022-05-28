@@ -13,9 +13,26 @@
 
 .confirmation__img {
   font-size: 30rem;
-  background: -webkit-linear-gradient(#f19c8e, #e33a1c);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation-name: confirmation;
+  animation-duration: 2s;
+  animation-direction: alternate;
+  animation-iteration-count: infinite;
+}
+
+@keyframes confirmation {
+  0% {
+    background-color: #D4F3EF;
+  }
+
+  50% {
+    background-color: #45807E;
+  }
+
+  100% {
+    background-color: #005555;
+  }
 }
 
 .confirmation__review {

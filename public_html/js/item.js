@@ -1,6 +1,5 @@
-// Todo: get ID from URL
-var listingID = 2;
-var traderID = '';
+var listingID = 0;
+var traderID = "";
 
 // get post ID from URL
 function getPostID() {
@@ -8,38 +7,33 @@ function getPostID() {
     let params = new URL(window.location.href);
     listingID = params.searchParams.get("post_id");
 
-    getListingData(listingID)
+    getListingData(listingID);
 }
-
 
 // check user's post or not
 async function checkTwoUsers() {
     let res = await getRequest("/api/getUserInfo");
-    // console.log(res);
     var currentUserInfo = JSON.parse(res);
-    console.log(currentUserInfo)
 
     // Check user is logged in
     if (currentUserInfo.loggedIn == true) {
-        console.log("User is logged in")
         var currentUserID = currentUserInfo.uid;
 
         if(currentUserID == traderID){
-            $('#chatOrEdit').html('<button id="chat_btn" type="button" class="btn btn-secondary btn-lg" onclick="go_edit()">Edit</button>')
+            $('#tradeOrEdit').html('<button id="edit_btn" type="button" class="btn btn-lg" onclick="go_edit()">Edit</button>');
+            $('#chat_btn').css('display','none');
         }
 
     } else {
-        console.log("No user is signed in");
-        // window.location.href = "/login";
+        window.location.href = "/login";
     }
 }
 
 async function getTraderInfo() {
     let res = await getRequest(`/api/getTraderInfo?id=${encodeURIComponent(traderID)}`);
-    // console.log(res);
     var currentTraderInfo = JSON.parse(res);
     var traderName = currentTraderInfo.data.username;
-    var tradersID = currentTraderInfo.data.ID
+    var tradersID = currentTraderInfo.data.ID;
 
     $('#traderName').html(traderName);
     $('#traderName').attr("href", `/traderinfo?trader_id=${tradersID}`);
@@ -55,9 +49,12 @@ function go_chat() {
     window.location.href = "/chat/" + traderID;
 }
 
+function send_offer() {
+    window.location.href = `/sendTradeOffer?post=${listingID}&trader=${traderID}`;
+}
+
 async function getListingData(listingID) {
     let res = await getRequest(`/api/getListingData?id=${encodeURIComponent(listingID)}`);
-    // console.log(res);
     var currentItemInfo = JSON.parse(res);
     var date = currentItemInfo.posted.split('T');
 
@@ -74,12 +71,10 @@ async function getListingData(listingID) {
     $('#condition').html(currentItemInfo.itemCondition);
     $('#trading_method').html(currentItemInfo.tradingMethod);
 
-    traderID = currentItemInfo.posterID
-    getTraderInfo()
+    traderID = currentItemInfo.posterID;
+    getTraderInfo();
 }
 
-function setup() {
-    getPostID()
-}
-
-$(document).ready(setup)
+$(document).ready(() => {
+  getPostID();
+});
