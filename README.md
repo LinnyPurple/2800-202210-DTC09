@@ -106,23 +106,24 @@ It has the following subfolders and files:
 ```
 
 ## Installation
-1. Install Node.js and Visual Studio Code.
-2. Install MySQL.
-3. If you set password for your local MySQL, go to `sqlData.json` file inside `server` folder and change password value to your root account's password.
+1. Install Node.js and any text editor (e.g. Visual Studio Code).
+2. Install MySQL (e.g. XAMPP).
+3. If you set a password for your local MySQL, go to `sqlData.json` file inside `server` folder and change the password value to your root account's password. If not, you can skip this step.
 4. Open a terminal, go to the project directory and enter ```npm install``` to install all packages you need.
-5. Enter ```cd server``` in terminal and enter ```node /webserver.js``` in same terminal.
-6. Open your internet browser and visit ```localhost:8000``` by using URL
-7. Now you can browse our application!
+5. Move into the server directory by entering ```cd server``` in terminal and then enter ```node webserver.js``` in the same terminal.
+6. Open your internet browser and visit ```localhost:8000```.
+7. Now you can check our application and start contributing!
 
+* Testing log: https://docs.google.com/spreadsheets/d/1PWQ-gMZc-iZ76VCwrFyb8hJ5h6Xkt-yLE8JaL5LrAGc/edit#gid=394496370
 
 ## Features
-* Create an account to start trading your items
-* Upload your posting with items that you don't use anymore
-* Browse other user's posting
+* Create and log in to an account to start trading your items
+* Post your item that you no longer need/use
+* Browse other user's posting from the search page
 * Send trade offer to other users
 * Accept / Decline offers you have received from others
-* Chat with others
-* Leave reviews after trading
+* Chat with other traders
+* Leave reviews when completing trades
 
 ## Citation
 * Rating design: https://bbbootstrap.com/snippets/bootstrap-rate-your-experience-template-star-ratings-30972576
